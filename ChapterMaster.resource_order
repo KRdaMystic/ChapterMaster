@@ -139,6 +139,7 @@
     {"name":"spr_purge_buttons","order":3,"path":"sprites/spr_purge_buttons/spr_purge_buttons.yy",},
     {"name":"spr_mm_butts","order":11,"path":"sprites/spr_mm_butts/spr_mm_butts.yy",},
     {"name":"spr_mm_glowold","order":13,"path":"sprites/spr_mm_glowold/spr_mm_glowold.yy",},
+    {"name":"scr_vehicle_struct","order":76,"path":"scripts/scr_vehicle_struct/scr_vehicle_struct.yy",},
     {"name":"spr_new_ui","order":15,"path":"sprites/spr_new_ui/spr_new_ui.yy",},
     {"name":"spr_new_resource","order":17,"path":"sprites/spr_new_resource/spr_new_resource.yy",},
     {"name":"spr_warp_level_icon","order":12,"path":"sprites/spr_warp_level_icon/spr_warp_level_icon.yy",},
