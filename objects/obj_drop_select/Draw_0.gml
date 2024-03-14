@@ -153,10 +153,14 @@ if (speeders>1) then sel+=string(speeders)+" Land Speeders, ";
 if (speeders=1) then sel+="1 Land Speeder, ";
 if (rhinos>1) then sel+=string(rhinos)+" Rhinos, ";
 if (rhinos=1) then sel+="1 Rhino, ";
+if (razorbacks>1) then sel+=string(razorbacks)+" Razorbacks, ";
+if (razorbacks=1) then sel+="1 Razorback, ";
 if (whirls>1) then sel+=string(whirls)+" Whirlwinds, ";
 if (whirls=1) then sel+="1 Whirlwind, ";
 if (predators>1) then sel+=string(predators)+" Predators, ";
 if (predators=1) then sel+="1 Predator, ";
+if (vindicators>1) then sel+=string(vindicators)+" Vindicators, ";
+if (vindicators=1) then sel+="1 Vindicator, ";
 if (raiders>1) then sel+=string(raiders)+" Land Raider, ";
 if (raiders=1) then sel+="1 Land Raider, ";
 draw_text_ext(xx+550,yy+486,string_hash_to_newline(string(sel)),-1,590);
@@ -254,8 +258,8 @@ if (add_ground=1){ships_selected+=1;remove_local=-1;
     psykers+=l_psykers;apothecaries+=l_apothecaries;
     techmarines+=l_techmarines;champions+=l_champions;*/
     
-    bikes+=l_bikes;rhinos+=l_rhinos;
-    whirls+=l_whirls;predators+=l_predators;
+    bikes+=l_bikes;rhinos+=l_rhinos;razorbacks+=l_razorbacks;
+    whirls+=l_whirls;predators+=l_predators;vindicators+=l_vindicators;
     raiders+=l_raiders;speeders+=l_speeders;
     
     refresh_raid=1;ship_all[500]=1;ship_use[500]=ship_max[500];
@@ -270,8 +274,8 @@ if (add_ground=-1){ships_selected-=1;remove_local=1;
     
     // Fuck me
     
-    bikes-=l_bikes;rhinos-=l_rhinos;
-    whirls-=l_whirls;predators-=l_predators;
+    bikes-=l_bikes;rhinos-=l_rhinos;razorbacks-=l_razorbacks;
+    whirls-=l_whirls;predators-=l_predators;vindicators-=l_vindicators;
     raiders-=l_raiders;speeders-=l_speeders;
     
     refresh_raid=1;ship_all[500]=0;ship_use[500]=0;

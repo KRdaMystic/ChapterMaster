@@ -371,6 +371,14 @@ function scr_battle_roster(required_location, _target_location, _is_planet) {
                                 col = obj_controller.bat_rhino_column;
                                 new_combat.rhinos++;
                                 break;
+							case "Razorback":
+								col = obj_controller.bat_rhino_column;
+								new_combat.razorbacks += 1;
+								break;
+							case "Vindicator":
+							col = obj_controller.bat_predator_column;
+								new_combat.vindicators += 1;
+								break;
                             case "Predator":
                                 col = obj_controller.bat_predator_column;
                                 new_combat.predators++;
@@ -397,15 +405,21 @@ function scr_battle_roster(required_location, _target_location, _is_planet) {
                         targ.veh_acc[targ.veh] = deploying_unit.veh_acc[company][v];
                         if (vokay = 2) then targ.veh_local[targ.veh] = 1;
 
-                        if (deploying_unit.veh_role[company][v] = "Rhino") or(deploying_unit.veh_role[company][v] = "Whirlwind") or(deploying_unit.veh_role[company][v] = "Land Speeder") {
+						if (deploying_unit.veh_role[company][v] = "Land Speeder"){
+						targ.veh_hp[targ.veh] = deploying_unit.veh_hp[company][v] * 1.25;
+                        targ.veh_hp_multiplier[targ.veh] = 2;
+                        targ.veh_ac[targ.veh] = 25;
+						}
+						
+                        if (deploying_unit.veh_role[company][v] = "Rhino") or(deploying_unit.veh_role[company][v] = "Whirlwind") or(deploying_unit.veh_role[company][v] = "Razorback") {
                             targ.veh_hp[targ.veh] = deploying_unit.veh_hp[company][v] * 2;
                             targ.veh_hp_multiplier[targ.veh] = 2;
-                            targ.veh_ac[targ.veh] = 20;
-                        }
-                        if (deploying_unit.veh_role[company][v] = "Predator") {
-                            targ.veh_hp[targ.veh] = deploying_unit.veh_hp[company][v] * 3;
-                            targ.veh_hp_multiplier[targ.veh] = 3;
                             targ.veh_ac[targ.veh] = 30;
+                        }
+                        if (deploying_unit.veh_role[company][v] = "Predator") or (deploying_unit.veh_role[company][v] = "Vindicator") {
+                            targ.veh_hp[targ.veh] = deploying_unit.veh_hp[company][v] * 2;
+                            targ.veh_hp_multiplier[targ.veh] = 2;
+                            targ.veh_ac[targ.veh] = 35;
                         }
                         if (deploying_unit.veh_role[company][v] = "Land Raider") {
                             targ.veh_hp[targ.veh] = deploying_unit.veh_hp[company][v] * 4;

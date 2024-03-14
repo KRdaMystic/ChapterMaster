@@ -358,6 +358,8 @@ function scr_management(argument0) {
 	        nam[19]="Rhino";
 	        nam[20]="Land Speeder";
 	        nam[21]="Whirlwind";
+			nam[22]="Razorback";
+			nam[23]="Vindicator";
         
 	        for (var i=1;i<=300;i++) {
 	            if (obj_ini.role[company,i]=obj_ini.role[100][5]) then num[1]+=1;
@@ -386,6 +388,8 @@ function scr_management(argument0) {
 	                if (obj_ini.veh_role[company,i]="Rhino") then num[19]+=1;
 	                if (obj_ini.veh_role[company,i]="Land Speeder") then num[20]+=1;
 	                if (obj_ini.veh_role[company,i]="Whirlwind") then num[21]+=1;
+					if (obj_ini.veh_role[company,i]="Razorback") then num[22]+=1;
+					if (obj_ini.veh_role[company,i]="Vindicator") then num[23]+=1;
 	            }
 	        }
 			

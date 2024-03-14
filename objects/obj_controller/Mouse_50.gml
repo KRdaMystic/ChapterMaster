@@ -2166,9 +2166,13 @@ if (action_if_number(obj_saveload, 0, 0) &&
                             } else if (man[f]=="vehicle"){
                                 if (ma_role[f]=="Land Raider") { vih=50;}
                                 else if (ma_role[f]=="Rhino") { vih=51;}
-                                else if (ma_role[f]=="Predator") {vih=52;}
-                                else if (ma_role[f]=="Land Speeder") { vih=53;}
-                                else if (ma_role[f]=="Whirlwind") {vih=54;}
+                                else if (ma_role[f]=="Razorback") { vih=52;}
+                                else if (ma_role[f]=="Predator") {vih=53;}
+								else if (ma_role[f]=="Vindicator") { vih=54;}
+                                else if (ma_role[f]=="Land Speeder") { vih=55;}
+                                else if (ma_role[f]=="Whirlwind") {vih=56;}
+                                else if (ma_role[f]=="Land Speeder") { vih=57;}
+                                else if (ma_role[f]=="Whirlwind") {vih=58;}
                                 prev_role = ma_role[f]=="Whirlwind";
                             }
                         } else {

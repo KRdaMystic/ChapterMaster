@@ -101,8 +101,8 @@ if (add_ground=1){ships_selected+=1;
     psykers+=l_psykers;apothecaries+=l_apothecaries;
     techmarines+=l_techmarines;champions+=l_champions;
     
-    bikes+=l_bikes;rhinos+=l_rhinos;
-    whirls+=l_whirls;predators+=l_predators;
+    bikes+=l_bikes;rhinos+=l_rhinos;razorbacks+=l_razorbacks;
+    whirls+=l_whirls;predators+=l_predators;vindicators+=l_vindicators;
     raiders+=l_raiders;speeders+=l_speeders;
 }
 if (add_ground=-1){ships_selected-=1;
@@ -113,8 +113,8 @@ if (add_ground=-1){ships_selected-=1;
     psykers-=l_psykers;apothecaries-=l_apothecaries;
     techmarines-=l_techmarines;champions-=l_champions;
     
-    bikes-=l_bikes;rhinos-=l_rhinos;
-    whirls-=l_whirls;predators-=l_predators;
+    bikes-=l_bikes;rhinos-=l_rhinos;razorbacks-=l_razorbacks;
+    whirls-=l_whirls;predators-=l_predators;vindicators-=l_vindicators;
     raiders-=l_raiders;speeders-=l_speeders;
 }
 

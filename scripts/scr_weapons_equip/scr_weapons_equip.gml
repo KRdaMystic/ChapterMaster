@@ -278,7 +278,32 @@ function scr_weapons_equip() {
 		i+=1;item_name[i]="Storm Bolter";
 		i+=1;item_name[i]="HK Missile";
 	}
-
+	if (tc=1) and (tb=1) and (dude=55){var i;i=0; // Razorback Turret
+			i+=1;item_name[i]="Twin Linked Heavy Bolter Mount";
+			i+=1;item_name[i]="Twin Linked Assault Cannon Turret";
+			i+=1;item_name[i]="Twin Linked Lascannon Turret";
+			i+=1;item_name[i]="Multi-Melta";
+		}
+		if (tc=2) and (tb=1) and (dude=55){var i;i=0; // Razorback Pintle
+			i+=1;item_name[i]="(None)";
+			i+=1;item_name[i]="Bolter";
+			i+=1;item_name[i]="Combiflamer";
+			i+=1;item_name[i]="Storm Bolter";
+			i+=1;item_name[i]="HK Missile";
+		}
+		if (tc=1) and (tb=1) and (dude=56){var i;i=0; // Vindicator Cannon
+			i+=1;item_name[i]="(None)";
+			i+=1;item_name[i]="Demolisher Cannon";
+		}
+		if (tc=1) and (tb=2) and (dude=56){var i;i=0; // Vindicator Relic Cannon
+			i+=1;item_name[i]="(None)";
+			//i+=1;item_name[i]="Laser Destroyer Array";
+		}
+		if (tc=2) and (tb=1) and (dude=56){var i;i=0; // Vindicator Pintle
+			i+=1;item_name[i]="(None)";
+			i+=1;item_name[i]="Storm Bolter";
+			i+=1;item_name[i]="HK Missile";
+		}
 	if (tc=4) and (tb=1) and ((dude=50) or (dude=51) or (dude=52) or (dude=54)){var i=0; // Tank Upgrade
 			i+=1;item_name[i]="(None)";
 	    i+=1;item_name[i]="Armoured Ceramite";
@@ -286,7 +311,7 @@ function scr_weapons_equip() {
 	    i+=1;item_name[i]="Heavy Armour";
 			if dude!=50{i+=1;item_name[i]="Lucifer Pattern Engine";} //not available for Land Raiders
 	}
-	if (tc=5) and (tb=1) and ((dude=50) or (dude=51) or (dude=52) or (dude=54)){var i;i=0; // Tank Accessory
+	if (tc=5) and (tb=1) and ((dude=50) or (dude=51) or (dude=52) or (dude=54) or (dude=55)or (dude=56)){var i;i=0; // Tank Accessory
 			i+=1;item_name[i]="(None)";
 	    i+=1;item_name[i]="Dozer Blades";
 	    i+=1;item_name[i]="Searchlight";

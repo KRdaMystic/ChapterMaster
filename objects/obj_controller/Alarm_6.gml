@@ -4,7 +4,7 @@ if (menu==1) and (managing>0){
     // marine types    
     var cap=0,apo=0,chap=0,bear=0,tct=0,assa=0,dev=0,sco=0,hon=0,ve=0,ter=0,oth=0,drea=0,vdrea=0,codi=0,lexi=0,lib=0,tech=0,sgt=0,vet_sgt=0;
     // vehicle types
-    var rhi=0,pre=0,lrad=0,lspi=0,whi=0,unit;
+    var rhi=0,pre=0,lrad=0,lspi=0,whi=0,vind=0,rzr=0,unit;
     // non chapter units
     otha=0;
     
@@ -52,7 +52,9 @@ if (menu==1) and (managing>0){
                 vanz+=1;
                 if (ma_role[f]="Land Raider") then lrad+=1;
                 if (ma_role[f]="Rhino") then rhi+=1;
+                if (ma_role[f]="Razorback") then rzr+=1;
                 if (ma_role[f]="Predator") then pre+=1;
+				if (ma_role[f]="Vindicator") then vind+=1;
                 if (ma_role[f]="Land Speeder") then lspi+=1;
                 if (ma_role[f]="Whirlwind") then whi+=1;
             }
@@ -157,9 +159,19 @@ if (menu==1) and (managing>0){
         if (pre>1) then selecting_dudes+="s";
         selecting_dudes+=", ";
     }
+	if (vind>0){
+        selecting_dudes+=string(vind)+" Vindicator";
+        if (vind>1) then selecting_dudes+="s";
+        selecting_dudes+=", ";
+    }
     if (rhi>0){
         selecting_dudes+=string(rhi)+" Rhino";
         if (rhi>1) then selecting_dudes+="s";
+        selecting_dudes+=", ";
+    }
+	if (rzr>0){
+        selecting_dudes+=string(rzr)+" Razorback";
+        if (rzr>1) then selecting_dudes+="s";
         selecting_dudes+=", ";
     }
     if (whi>0){

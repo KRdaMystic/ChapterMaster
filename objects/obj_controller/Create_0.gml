@@ -1420,7 +1420,7 @@ temp[33]=string_upper(scr_thought());// Thought of the day
 // Starts the vars for the 4 pages of intro
 var njm=34,com=0,vih=0,word="",masta=0,forga=0,chapla=0,apa=0,liba=0,techa=0,libra=0,coda=0,lexa=0,apotha=0,old_dudes=0;
 
-var honoh=0,termi=0,veter=0,capt=0,chap=0,apoth=0,stand=0,dread=0,tact=0,assa=0,deva=0,rhino=0,speeder=0,raider=0,standard=0,bike=0,scou=0,whirl=0,pred=0;
+var honoh=0,termi=0,veter=0,capt=0,chap=0,apoth=0,stand=0,dread=0,tact=0,assa=0,deva=0,rhino=0,speeder=0,raider=0,standard=0,bike=0,scou=0,whirl=0,pred=0,razor=0,vindi=0;
 for(var mm=1; mm<=100; mm++){
     if (obj_ini.role[com,mm]=="Chapter Master") then masta=1;
     if (obj_ini.role[com,mm]=="Forge Master") then forga=1;
@@ -1476,6 +1476,8 @@ for(var company=0; company<10; company++){
     assa=0;
     deva=0;
     rhino=0;
+	razor=0;
+	vindi=0;
     speeder=0;
     raider=0;
     standard=0;
@@ -1501,9 +1503,11 @@ for(var company=0; company<10; company++){
     for(vih=1; vih<=100; vih++){
         if (obj_ini.veh_role[com,vih]=="Land Raider") then raider+=1;
         if (obj_ini.veh_role[com,vih]=="Rhino") then rhino+=1;
+		if (obj_ini.veh_role[com,vih]=="Razorback") then razor+=1;
         if (obj_ini.veh_role[com,vih]=="Land Speeder") then speeder+=1;
         if (obj_ini.veh_role[com,vih]=="Bike") then bike+=1;
         if (obj_ini.veh_role[com,vih]=="Predator") then pred+=1;
+		if (obj_ini.veh_role[com,vih]=="Vindicator") then vindi+=1;
         if (obj_ini.veh_role[com,vih]=="Whirlwind") then whirl+=1;
     }
     
@@ -1543,10 +1547,14 @@ for(var company=0; company<10; company++){
     if (raider>1) then temp[njm]+=", "+string(raider)+" Land Raiders";
     if (pred==1) then temp[njm]+=", "+string(pred)+" Predator";
     if (pred>1) then temp[njm]+=", "+string(pred)+" Predators";
+	if (vindi==1) then temp[njm]+=", "+string(vindi)+" Vindicator";
+    if (vindi>1) then temp[njm]+=", "+string(vindi)+" Vindicators";
     if (whirl==1) then temp[njm]+=", "+string(whirl)+" Whirlwind";
     if (whirl>1) then temp[njm]+=", "+string(whirl)+" Whirlwinds";
     if (rhino==1) then temp[njm]+=", "+string(rhino)+" Rhino";
     if (rhino>1) then temp[njm]+=", "+string(rhino)+" Rhinos";
+	if (razor==1) then temp[njm]+=", "+string(razor)+" Razorback";
+    if (razor>1) then temp[njm]+=", "+string(razor)+" Razorbacks";
     if (speeder==1) then temp[njm]+=", "+string(speeder)+" Land Speeder";
     if (speeder>1) then temp[njm]+=", "+string(speeder)+" Land Speeders";
     if (bike==1) then temp[njm]+=", "+string(bike)+" Attack Bike";

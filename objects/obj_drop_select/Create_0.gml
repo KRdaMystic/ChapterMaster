@@ -102,6 +102,8 @@ whirls=0;
 predators=0;
 raiders=0;
 speeders=0;
+razorbacks=0
+vindicators=0
 
 // These should be set to a negative value; that is, effectively, how much when it is selected (i.e. *-1)
 l_master=0;
@@ -124,7 +126,8 @@ l_whirls=0;
 l_predators=0;
 l_raiders=0;
 l_speeders=0;
-
+l_razorbacks=0;
+l_vindicators=0;
 
 
 

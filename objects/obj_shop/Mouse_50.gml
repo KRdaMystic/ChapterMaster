@@ -36,11 +36,11 @@ if (obj_controller.cooldown<=0){
             cost=item_cost[i];
             if (keyboard_check(vk_shift)) and (shop!="warships") then cost=item_cost[i]*5;
             if (obj_controller.requisition>=cost) and (shop!="warships"){
-                if (item[i]!="Rhino") and (item[i]!="Predator") and (item[i]!="Land Raider") and (item[i]!="Whirlwind") and (item[i]!="Land Speeder"){
+                if (item[i]!="Rhino") and (item[i]!="Razorback")  and (item[i]!="Vindicator") and (item[i]!="Predator") and (item[i]!="Land Raider") and (item[i]!="Whirlwind") and (item[i]!="Land Speeder"){
                     if (keyboard_check(vk_shift)){scr_add_item(item[i],5);item_stocked[i]+=5;click2=1;}
                     if (!keyboard_check(vk_shift)){scr_add_item(item[i],1);item_stocked[i]+=1;click2=1;}
                 }
-                if (item[i]="Rhino") or (item[i]="Predator") or (item[i]="Land Raider") or (item[i]="Whirlwind") or (item[i]="Land Speeder"){
+                if (item[i]="Rhino") and (item[i]!="Razorback")  and (item[i]!="Vindicator") or (item[i]="Predator") or (item[i]="Land Raider") or (item[i]="Whirlwind") or (item[i]="Land Speeder"){
                     if (keyboard_check(vk_shift)){repeat(5){scr_add_vehicle(item[i],target_comp,"standard","standard","standard","standard","standard");}item_stocked[i]+=5;click2=1;}
                     if (!keyboard_check(vk_shift)){scr_add_vehicle(item[i],target_comp,"standard","standard","standard","standard","standard");item_stocked[i]+=1;click2=1;}
                 }

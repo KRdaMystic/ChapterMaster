@@ -192,6 +192,8 @@ rhinos=0;
 predators=0;
 land_raiders=0;
 whirlwinds=0;
+razorbacks=0;
+vindicators=0;
 
 big_mofo=10;
 

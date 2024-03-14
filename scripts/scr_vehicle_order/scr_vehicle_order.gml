@@ -26,6 +26,8 @@ function scr_vehicle_order(company_number) {
     for (var i = 1; i <= 150; i++) { // TODO why 150?
         var _is_vehicle_role =
         	veh_role[company_number, i] = "Rhino" // TODO change to enums/string ids
+			or veh_role[company_number, i] = "Razorback"
+			or veh_role[company_number, i] = "Vindicator"
         	or veh_role[company_number, i] = "Predator"
         	or veh_role[company_number, i] = "Whirlwind"
         	or veh_role[company_number, i] = "Land Speeder"

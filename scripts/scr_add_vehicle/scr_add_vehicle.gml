@@ -61,6 +61,7 @@ function scr_add_vehicle(argument0, argument1, argument2, argument3, argument4, 
 
 	    if (argument2="standard") and (argument3="standard") and (argument4="standard"){
 	        if (argument0="Rhino"){obj_ini.veh_wep1[argument1][good]="Storm Bolter";}
+			if (argument0="Razorback"){obj_ini.veh_wep1[argument1][good]="Twin Linked Heavy Bolter Mount"}
 	        if (argument0="Whirlwind"){obj_ini.veh_wep1[argument1][good]="Whirlwind Missiles";}
 	        if (argument0="Predator"){
 	            var randumb;randumb=choose(1,2)

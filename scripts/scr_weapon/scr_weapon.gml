@@ -1174,6 +1174,21 @@ global.weapons={
         "arp": 1,
         "tags":["vehicle", "Sponson", "melta"]
     },
+	"Demolisher Cannon": {
+        "attack": {
+            "standard": 500,
+            "master_crafted": 545,
+            "artifact": 600
+		},
+        "description": "The Demolisher Cannon is the weapon of choice when faced with dug-in enemy infantry in a dense environment such as urban warfare or the siege of a fortified enemy stronghold",
+        "melee_hands": 0,
+        "ranged_hands": 0,
+        "ammo": 25,
+        "range": 2,
+        "spli": 1,
+        "arp": 1,
+		"tags":["vehicle"]
+	},
     "Twin Linked Volkite Culverin Sponsons": {
         "abbreviation": "TwnVlkCulvs", 
         "attack": {

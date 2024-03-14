@@ -5,18 +5,13 @@ Gunnery: Attacks potency when it comes to vehicle weapons whether that be damage
 Survivability:Chance of vehicles being recovered after being destroyed.
 Autonomy: Chance of heroic deeds by vehicles whether it be ignoring a fatal hit or going out in a blaze of glory similar to "piety".
 */
-global.hull.parts = [ "left_track", "right_track", "left_sponson", "right_sponson", "hull", "turret", "engine" ]
+global.hull_parts = [ "left_track", "right_track", "left_sponson", "right_sponson", "hull", "turret", "engine" ]
 
 global.vehicle_hull_armour=["Heavy Armour","Armoured Ceramite","Artificer Hull"];
 global.taint={
     "untainted":{"name":"Untainted"},
     "chaos":{"name":"Chaotic"}
 }; 
-enum location_types {
-	planet,
-	ship,
-	warp
-};
 
 global.vehic_trait_list = {
 	"venerated":{
@@ -117,7 +112,7 @@ global.vehic_base_stats = {
 
 }
 	
-	function TTRPG_stats(faction, comp, veh, class = "vehicle") constructor{
+	function TTRPG_veh_stats(faction, comp, veh, class = "vehicle") constructor{
 	Manuverability=0; Survivability=0;Autonomy=0;Gunnery=0;size = 0;planet_location=0;
 	if (!instance_exists(obj_controller) && class!="blank"){//game start unit planet location
 		planet_location=2;
@@ -135,7 +130,7 @@ global.vehic_base_stats = {
 	static add_exp = function(add_val){
 		var instace_stat_point_gains = {};
 		stat_point_exp_marker += add_val;
-		obj_ini.experience[company][vehicle_number] += add_val;
+		obj_ini.veh_experience[company][vehicle_number] += add_val;
 		if (base_group == "astartes_veh"){
 			while (stat_point_exp_marker>=10){
 				var stat_gains = choose("Manuverability", "Gunnery", "Survivability");
@@ -153,10 +148,9 @@ global.vehic_base_stats = {
 				} else {
 					turn_stat_gains[$ stat_gains]=1;
 				}
-			}
-		}
 				return instace_stat_point_gains;
-			}
+	}
+				
 	static armour = function(){ 
 		return obj_ini.armour[company][vehicle_number];
 	};
@@ -165,16 +159,7 @@ global.vehic_base_stats = {
 		var arm = veh_upgrade();
 		var sz = 0;
 		sz = 10;
-		var large_vehicle = ["Land Raider"]
-		var small_vehicle = ["Land Speeder"]
 	    if (unit_role) = "Land Speeder" {sz-=5;} else if (unit_role = "Land Raider"){sz +=10};
-		//var mobi =  mobility_item();
-		/*if (mobi == "Jump Pack"){
-			sz++;
-		}*/
-		if (unit_role == "Chapter Master"){sz++}
-		size =sz;
-		return size
 	};
 
 
