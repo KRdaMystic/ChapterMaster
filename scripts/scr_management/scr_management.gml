@@ -358,6 +358,7 @@ function scr_management(argument0) {
 				nam[i] = "";
 			}
 			// Indexing the names to nam array
+
 			// nam[1] = role_names[Role.CAPTAIN];
 			nam[2] = role_names[Role.CHAPLAIN];
 			nam[3] = role_names[Role.APOTHECARY];
@@ -382,6 +383,8 @@ function scr_management(argument0) {
 			nam[22] = "Rhino";
 			nam[23] = "Land Speeder";
 			nam[24] = "Whirlwind";
+      nam[25]="Razorback";
+			nam[26]="Vindicator";
 	        for (var i=1;i<500;i++) {
 	        	if (obj_ini.name[company][i] == "") then continue;
 	        	unit = fetch_unit([company,i]);
@@ -415,8 +418,9 @@ function scr_management(argument0) {
 					if (obj_ini.veh_role[company,i] == "Rhino") then num[22]++;
 					if (obj_ini.veh_role[company,i] == "Land Speeder") then num[23]++;
 					if (obj_ini.veh_role[company,i] == "Whirlwind") then num[24]++;
+          if (obj_ini.veh_role[company,i] =="Razorback") then num[22]++1;
+					if (obj_ini.veh_role[company,i] =="Vindicator") then num[23]++1;
 				}
-				
 	        }
 			
 	        with(obj_managment_panel){

@@ -460,6 +460,7 @@
     {"id":{"name":"spr_mm_butts","path":"sprites/spr_mm_butts/spr_mm_butts.yy",},},
     {"id":{"name":"scr_colour_modifiers","path":"scripts/scr_colour_modifiers/scr_colour_modifiers.yy",},},
     {"id":{"name":"spr_mm_glowold","path":"sprites/spr_mm_glowold/spr_mm_glowold.yy",},},
+    {"id":{"name":"scr_vehicle_struct","path":"scripts/scr_vehicle_struct/scr_vehicle_struct.yy",},},
     {"id":{"name":"spr_new_ui","path":"sprites/spr_new_ui/spr_new_ui.yy",},},
     {"id":{"name":"spr_new_resource","path":"sprites/spr_new_resource/spr_new_resource.yy",},},
     {"id":{"name":"spr_warp_level_icon","path":"sprites/spr_warp_level_icon/spr_warp_level_icon.yy",},},

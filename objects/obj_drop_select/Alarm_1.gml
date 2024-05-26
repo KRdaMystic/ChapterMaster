@@ -20,6 +20,8 @@ l_whirls=0;
 l_predators=0;
 l_raiders=0;
 l_speeders=0;
+l_razorbacks=0;
+l_vindicators=0;
 
 max_ships=0;
 
@@ -61,6 +63,8 @@ repeat(11){co+=1;i=0;
             if (obj_ini.veh_role[co][i]="Rhino") then l_rhinos+=1;
             if (obj_ini.veh_role[co][i]="Whirlwind") then l_whirls+=1;
             if (obj_ini.veh_role[co][i]="Predator") then l_predators+=1;
+			if (obj_ini.veh_role[co][i]="Razorback") then l_razorbacks+=1;
+			if (obj_ini.veh_role[co][i]="Vindicator") then l_vindicators+=1;
             if (obj_ini.veh_role[co][i]="Land Raider") then l_raiders+=1;
         }}
         unit=obj_ini.TTRPG[co][i];
@@ -111,7 +115,7 @@ l_size+=l_techmarines;
 l_size+=l_champions;
 
 l_size+=l_bikes;
-l_size+=(rhinos+predators+whirls)*10;
+l_size+=(rhinos+predators+whirls+razorbacks+vindicators)*10;
 l_size+=l_speeders*6;
 l_size+=l_raiders*20;
 

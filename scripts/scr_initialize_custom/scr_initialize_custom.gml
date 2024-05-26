@@ -2521,10 +2521,10 @@ function scr_initialize_custom() {
 		if (predtype=2){veh_wep1[company,v]="Heavy Conversion Beamer Turret";veh_wep2[company,v]="Lascannon Sponsons";veh_wep3[company,v]="HK Missile";veh_upgrade[company,v]="Artificer Hull";veh_acc[company,v]="Searchlight";}
 		if (predtype=3){veh_wep1[company,v]="Flamestorm Cannon Turret";veh_wep2[company,v]="Heavy Flamer Sponsons";veh_wep3[company,v]="Storm Bolter";veh_upgrade[company,v]="Artificer Hull";veh_acc[company,v]="Dozer Blades";}
 		if (predtype=4){veh_wep1[company,v]="Magna-Melta Turret";veh_wep2[company,v]="Heavy Flamer Sponsons";veh_wep3[company,v]="Storm Bolter";veh_upgrade[company,v]="Artificer Hull";veh_acc[company,v]="Dozer Blades";}
-		veh_hp[company,v]=100;veh_chaos[company,v]=0;veh_pilots[company,v]=0;veh_lid[company,v]=0;
+		veh_hp[company,v]=550;veh_experience=200;veh_chaos[company,v]=0;veh_pilots[company,v]=0;veh_lid[company,v]=0;
 	}
 	if (global.chapter_name!="Lamenters") then repeat(6){v+=1;man_size+=20;
-	    veh_race[company,v]=1;veh_loc[company,v]=home_name;veh_role[company,v]="Land Raider";veh_hp[company,v]=100;veh_chaos[company,v]=0;veh_pilots[company,v]=0;veh_lid[company,v]=0;veh_wid[company,v]=2;
+	    veh_race[company,v]=1;veh_loc[company,v]=home_name;veh_role[company,v]="Land Raider";veh_hp[company,v]=800;veh_chaos[company,v]=0;veh_experience=250;veh_pilots[company,v]=0;veh_lid[company,v]=0;veh_wid[company,v]=2;
 			if (floor(v mod 4) == 1) or (floor(v mod 4) == 2){veh_wep1[company,v]="Twin Linked Heavy Bolter Mount";veh_wep2[company,v]="Twin Linked Lascannon Sponsons";veh_wep3[company,v]="HK Missile";veh_upgrade[company,v]="";veh_acc[company,v]="Searchlight";}
 			if (floor(v mod 4) == 3){veh_wep1[company,v]="Twin Linked Assault Cannon Mount";veh_wep2[company,v]="Hurricane Bolter Sponsons";veh_wep3[company,v]="Storm Bolter";veh_upgrade[company,v]="Heavy Armour";veh_acc[company,v]="Frag Assault Launchers";}
 			if (floor(v mod 4) == 0){veh_wep1[company,v]="Twin Linked Assault Cannon Mount";veh_wep2[company,v]="Flamestorm Cannon Sponsons";veh_wep3[company,v]="Storm Bolter";veh_upgrade[company,v]="Heavy Armour";veh_acc[company,v]="Frag Assault Launchers";}
@@ -2556,7 +2556,7 @@ function scr_initialize_custom() {
 			TTRPG[company,i]= new TTRPG_stats("chapter", company,i, "blank");
 	    }
 
-	    var company_experience=0, company_unit2="", company_unit3="", dready=0, rhinoy=0, whirly=0, speedy=0,stahp=0;
+	    var company_experience=0, company_unit2="", company_unit3="", dready=0, rhinoy=0, whirly=0, speedy=0,stahp=0, vindy=0, razory=0;
 
 	    v=0;
 	    i=-1;
@@ -2597,7 +2597,7 @@ function scr_initialize_custom() {
 
 	            dready=1;
 	            if (string_count("Sieged",strin2)>0) or (obj_creation.custom=0) then dready+=1;
-	            rhinoy=8;whirly=whirlwind;speedy=2;
+	            rhinoy=6;whirly=whirlwind;speedy=2;razory=2;predy=2;
 	            if (second=0) then stahp=1;
 			
 	      }
@@ -2606,7 +2606,7 @@ function scr_initialize_custom() {
 	            temp1-=2;
 	            // dready=2;
 	            if (string_count("Sieged",strin2)>0) or (obj_creation.custom=0) then dready+=2;
-	            rhinoy=8;whirly=whirlwind;speedy=2;
+	            rhinoy=6;whirly=whirlwind;speedy=2;razory=2;predy=2;
 	            if (third=0) then stahp=1;
 	        }
 	        if (company=4){
@@ -2614,7 +2614,7 @@ function scr_initialize_custom() {
 	            temp1-=2;
 	            // dready=2;
 	            if (string_count("Sieged",strin2)>0) or (obj_creation.custom=0) then dready+=2;
-	            rhinoy=8;whirly=whirlwind;speedy=2;
+	            rhinoy=6;whirly=whirlwind;speedy=2;razory=2;predy=2;
 	            if (fourth=0) then stahp=1;
 	        }
 	        if (company=5){
@@ -2622,7 +2622,7 @@ function scr_initialize_custom() {
 	            temp1-=2;
 	            // dready=2;
 	            if (string_count("Sieged",strin2)>0) or (obj_creation.custom=0) then dready+=2;
-	            rhinoy=8;whirly=whirlwind;speedy=2;
+	            rhinoy=6;whirly=whirlwind;speedy=2;razory=2;predy=2;
 	            if (fifth=0) then stahp=1;
 	        }
 	        if (company=6){
@@ -2630,14 +2630,14 @@ function scr_initialize_custom() {
 	            temp1-=2;
 	            // dready=2;
 	            if (string_count("Sieged",strin2)>0) or (obj_creation.custom=0) then dready+=2;
-	            rhinoy=8;whirly=whirlwind;speedy=0;
+	            rhinoy=5;whirly=whirlwind;speedy=0;razory=3;
 	            if (sixth=0) then stahp=1;
 	        }
 	        if (company=7){
 	            temp1=seventh;company_unit2="";company_unit3="";
 	            temp1-=2;
 	            if (obj_creation.custom=0) then dready=2;
-	            rhinoy=8;whirly=0;speedy=8;
+	            rhinoy=5;whirly=0;speedy=8;razory=3;
 	            if (seventh=0) then stahp=1;
 	        }
 	        if (company=8){
@@ -2652,7 +2652,7 @@ function scr_initialize_custom() {
 	            company_unit2="";
 	            company_unit3="";
 	            if (obj_creation.custom=0) then dready=2;
-	            rhinoy=2;whirly=0;speedy=0;
+	            rhinoy=2;whirly=0;speedy=0;vindy=3;
 	            if (ninth=0) then stahp=1;
 	        }
 	        if (company=10){
@@ -3075,20 +3075,54 @@ function scr_initialize_custom() {
 	            }
 	        }
 
+			if (vindy>0) then repeat(vindy){v+=1;man_size+=10;
+	            veh_race[company,v]=1;
+				veh_loc[company,v]=home_name;
+				veh_role[company,v]="Vindicator";
+				veh_wep1[company,v]="Demolisher Cannon";
+				veh_wep2[company,v]="Storm Bolter";
+				veh_wep3[company,v]="";
+	            veh_upgrade[company,v]="";
+				veh_acc[company,v]="Dozer Blades"; //Siege Shield
+				veh_hp[company,v]=550;
+				veh_chaos[company,v]=0;
+				veh_pilots[company,v]=0;
+				veh_lid[company,v]=0;
+				veh_wid[company,v]=2;
+				veh_experience[company,v]=200;
+	        }
+			if (razory>0) then repeat(razory){v+=1;man_size+=10;
+	            veh_race[company,v]=1;
+				veh_loc[company,v]=home_name;
+				veh_role[company,v]="Razorback";
+				veh_wep1[company,v]="Twin Linked Heavy Bolter Mount";
+				veh_wep2[company,v]="Storm Bolter";
+				veh_wep3[company,v]="";
+	            veh_upgrade[company,v]="";
+				veh_acc[company,v]="Dozer Blades";
+				veh_hp[company,v]=500;
+				veh_chaos[company,v]=0;
+				veh_pilots[company,v]=0;
+				veh_lid[company,v]=0;
+				veh_wid[company,v]=2;
+				veh_experience[company,v]=100;
+	        }
 
 	        if (rhinoy>0) then repeat(rhinoy){v+=1;man_size+=10;
 	            veh_race[company,v]=1;
 	            veh_loc[company,v]=home_name;
 	            veh_role[company,v]="Rhino";
 	            veh_wep1[company,v]="Storm Bolter";
-	            veh_wep2[company,v]="HK Missile";veh_wep3[company,v]="";
+	            veh_wep2[company,v]="HK Missile";
+				veh_wep3[company,v]="";
 	            veh_upgrade[company,v]="";
 	            veh_acc[company,v]="Dozer Blades";
-	            veh_hp[company,v]=100;
+	            veh_hp[company,v]=500;
 	            veh_chaos[company,v]=0;
 	            veh_pilots[company,v]=0;
 	            veh_lid[company,v]=0;
 	            veh_wid[company,v]=2;
+				veh_experience[company,v]=100;
 	        }
 	        if (whirly>0) then repeat(whirly){v+=1;man_size+=10;
 	            veh_race[company,v]=1;
@@ -3097,11 +3131,14 @@ function scr_initialize_custom() {
 	            veh_wep1[company,v]="Whirlwind Missiles";
 	            veh_wep2[company,v]="HK Missile";
 	            veh_wep3[company,v]="";
-	            veh_upgrade[company,v]="";veh_acc[company,v]="";
-	            veh_hp[company,v]=100;
+	            veh_upgrade[company,v]="";
+				veh_acc[company,v]="";
+	            veh_hp[company,v]=400;
 	            veh_chaos[company,v]=0;
-	            veh_pilots[company,v]=0;veh_lid[company,v]=0;
+	            veh_pilots[company,v]=0;
+				veh_lid[company,v]=0;
 	            veh_wid[company,v]=2;
+				veh_experience[company,v]=100;
 	        }
 	        if (speedy>0) then repeat(speedy){
 	        	v+=1;
@@ -3109,13 +3146,17 @@ function scr_initialize_custom() {
 	            veh_race[company,v]=1;
 	            veh_loc[company,v]=home_name;
 	            veh_role[company,v]="Land Speeder";
-	            veh_wep1[company,v]="Heavy Bolter";veh_wep2[company,v]="";veh_wep3[company,v]="";
-	            veh_upgrade[company,v]="";veh_acc[company,v]="";
-	            veh_hp[company,v]=100;
+	            veh_wep1[company,v]="Heavy Bolter";
+				veh_wep2[company,v]="";
+				veh_wep3[company,v]="";
+	            veh_upgrade[company,v]="";
+				veh_acc[company,v]="";
+	            veh_hp[company,v]=300;
 	            veh_chaos[company,v]=0;
 	            veh_pilots[company,v]=0;
 	            veh_lid[company,v]=0;
 	            veh_wid[company,v]=2;
+				veh_experience[company,v]=100;
 	        }
 	        if (company=9) or (global.chapter_name="Iron Hands"){
 	            var predy;predy=5;

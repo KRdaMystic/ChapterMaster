@@ -87,8 +87,10 @@ function scr_drop_fiddle(argument0, argument1, argument2, argument3) {
 	            veh_fighting[comp][i]=0;
 	            if (obj_ini.veh_role[comp][i]="Land Speeder") then speeders-=1;
 	            if (obj_ini.veh_role[comp][i]="Rhino") then rhinos-=1;
+				if (obj_ini.veh_role[comp][i]="Razorback") then razorbacks-=1;
 	            if (obj_ini.veh_role[comp][i]="Whirlwind") then whirls-=1;
 	            if (obj_ini.veh_role[comp][i]="Predator") then predators-=1;
+				if (obj_ini.veh_role[comp][i]="Vindicator") then vindicators-=1;
 	            if (obj_ini.veh_role[comp][i]="Land Raider") then raiders-=1;
 	        }
 	        if (good=1){

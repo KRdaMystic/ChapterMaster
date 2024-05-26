@@ -2,6 +2,8 @@
 function get_vehicle_size_map() {
     var vehicle_size_map = ds_map_create();
     vehicle_size_map[? "Rhino"] = 10;
+	vehicle_size_map[? "Razorback"] = 10; 
+	vehicle_size_map[? "Vindicator"] = 10;
     vehicle_size_map[? "Predator"] = 10;
     vehicle_size_map[? "Land Raider"] = 20;
     vehicle_size_map[? "Land Speeder"] = 5;

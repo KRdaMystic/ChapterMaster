@@ -5,15 +5,15 @@ var add_ground;add_ground=0;        // Local Forces here
 var smin,smax,w;w=-1;smin=0;smax=0;
 
 if (add_ground=1){ships_selected+=1;remove_local=-1;
-    bikes+=l_bikes;rhinos+=l_rhinos;
-    whirls+=l_whirls;predators+=l_predators;
+    bikes+=l_bikes;rhinos+=l_rhinos;razorbacks+=l_razorbacks;
+    whirls+=l_whirls;predators+=l_predators;vindicators+=l_vindicators;
     raiders+=l_raiders;speeders+=l_speeders;
     
     refresh_raid=1;ship_all[500]=1;ship_use[500]=ship_max[500];
 }
 if (add_ground=-1){ships_selected-=1;remove_local=1;
-    bikes-=l_bikes;rhinos-=l_rhinos;
-    whirls-=l_whirls;predators-=l_predators;
+    bikes-=l_bikes;rhinos-=l_rhinos;razorbacks-=l_razorbacks;
+    whirls-=l_whirls;predators-=l_predators;vindicators-=l_vindicators;
     raiders-=l_raiders;speeders-=l_speeders;
     
     refresh_raid=1;ship_all[500]=0;ship_use[500]=0;

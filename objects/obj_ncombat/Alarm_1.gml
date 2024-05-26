@@ -229,8 +229,14 @@ if (dreadnoughts+predators+land_raiders>3){
     if (rhinos=1) then p6+=string(rhinos)+" Rhino, ";
     if (rhinos>1) then p6+=string(rhinos)+" Rhinos, ";
     
+	if (razorbacks=1) then p6+=string(razorbacks)+" Razorback, ";
+    if (razorbacks>1) then p6+=string(razorbacks)+" Razorbacks, ";
+    
     if (predators=1) then p6+=string(predators)+" Predator, ";
     if (predators>1) then p6+=string(predators)+" Predators, ";
+	
+	if (vindicators=1) then p6+=string(vindicators)+" Vindicator, ";
+    if (vindicators>1) then p6+=string(vindicators)+" Vindicators, ";
     
     if (land_raiders=1) then p6+=string(land_raiders)+" Land Raider, ";
     if (land_raiders>1) then p6+=string(land_raiders)+" Land Raiders, ";

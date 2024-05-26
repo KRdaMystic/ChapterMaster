@@ -676,12 +676,33 @@ if (shop = "vehicles") {
     i += 1;
     item[i] = "Rhino";
     item_stocked[i] = scr_vehicle_count(item[i], "");
-    forge_cost[i] = 4000;
+    forge_cost[i] = 3500;
     item_cost[i] = 120;
     if (rene = 1) {
         nobuy[i] = 1;
         item_cost[i] = 0;
     }
+	
+	    i += 1; 
+    item[i] = "Razorback"; 
+    item_stocked[i] = scr_vehicle_count(item[i], ""); 
+	forge_cost[i] = 4000;
+    item_cost[i] = 150; 
+    if (rene = 1) { 
+        nobuy[i] = 1; 
+        item_cost[i] = 0; 
+    } 
+	    i += 1; 
+    item[i] = "Vindcator"; 
+    item_stocked[i] = scr_vehicle_count(item[i], ""); 
+	forge_cost[i] = 4000;
+    item_cost[i] = 200; 
+    if (rene = 1) { 
+        nobuy[i] = 1; 
+        item_cost[i] = 0; 
+    } 
+    i += 1; 
+	
     i += 1;
     item[i] = "Predator";
     item_stocked[i] = scr_vehicle_count(item[i], "");

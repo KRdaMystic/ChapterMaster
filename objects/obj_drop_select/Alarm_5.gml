@@ -11,8 +11,10 @@ if (add_ground==1){
     remove_local=-1;
     bikes+=l_bikes;
     rhinos+=l_rhinos;
+	razorbacks+=l_razorbacks;
     whirls+=l_whirls;
     predators+=l_predators;
+	vindicators+=l_vindicators;
     raiders+=l_raiders;
     speeders+=l_speeders;
     
@@ -25,8 +27,10 @@ if (add_ground==-1){
     remove_local=1;
     bikes-=l_bikes;
     rhinos-=l_rhinos;
+	razorbacks-=l_razorbacks;
     whirls-=l_whirls;
     predators-=l_predators;
+	vindicators-=l_vindicators;
     raiders-=l_raiders;
     speeders-=l_speeders;
     
