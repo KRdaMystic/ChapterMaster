@@ -1,3 +1,4 @@
+
 /*
     Creates all instances and logic for the game, 
     This is the MAIN script to load in the actual game UI and where most if not all MISC Stuff from the game is:
@@ -71,7 +72,7 @@
     
     The Machine God watches over you.
 */
-
+scr_colors_initialize();
 is_test_map=false;
 target_navy_number=5;
 global.sound_playing=0;
@@ -183,7 +184,7 @@ for(var i=100; i<103; i++){
     obj_controller.r_role[i,2]="Honor Guard";
     obj_controller.r_wep1[i,2]="Power Sword";
     obj_controller.r_wep2[i,2]="Bolter";
-    obj_controller.r_armour[i,2]="Power Armour";
+    obj_controller.r_armour[i,2]="Artificer Armour";
     obj_controller.r_mobi[i,2]="";
     obj_controller.r_gear[i,2]="";
     
@@ -206,7 +207,7 @@ for(var i=100; i<103; i++){
     obj_controller.r_wep2[i,5]="Bolt Pistol";
     obj_controller.r_armour[i,5]="Power Armour";
     obj_controller.r_mobi[i,5]="";
-    obj_controller.r_gear[i,5]="";
+    obj_controller.r_gear[i,5]="Iron Halo";
     
     obj_controller.r_role[i,6]="Dreadnought";
     obj_controller.r_wep1[i,6]="Close Combat Weapon";
@@ -229,7 +230,7 @@ for(var i=100; i<103; i++){
     obj_controller.r_mobi[i,8]="";
     obj_controller.r_gear[i,8]="";
     
-    obj_controller.r_role[i,9]="Devastator";
+    obj_controller.r_role[i,9]="Devastator Marine";
     obj_controller.r_wep1[i,9]="Heavy Ranged";
     obj_controller.r_wep2[i,9]="Combat Knife";
     obj_controller.r_armour[i,9]="Power Armour";
@@ -272,7 +273,7 @@ for(var i=100; i<103; i++){
     obj_controller.r_mobi[i,16]="";
     
     obj_controller.r_role[i,17]="Librarian";
-    obj_controller.r_wep1[i,17]="Force Weapon";
+    obj_controller.r_wep1[i,17]="Force Staff";
     obj_controller.r_wep2[i,17]="Storm Bolter";
     obj_controller.r_armour[i,17]="Power Armour";
     obj_controller.r_gear[i,17]="Psychic Hood";
@@ -418,6 +419,7 @@ tooltip_other="";
 
 // ** For weapon display in management **
 unit_profile=false;
+unit_bio=false;
 view_squad=false;
 company_report=false;
 company_data = {};
@@ -461,11 +463,17 @@ ship_max=0;
 ship_see=0;
 man_sel[0]=0;
 man_size=0;
+man_count = 0;
+squad_sel_action=-1;
+squad_sel_count=0;
+squad_sel=-1
 selecting_location="";
 selecting_types="";
 selecting_dudes="";
 sel_all="";
 sel_promoting=0;
+drag_square=[];
+rectangle_action = -1;
 sel_loading=0;
 sel_uid=0;
 
@@ -573,18 +581,18 @@ production_research_pathways ={
     melta : [["Atomic Chamber Construction"],{}],
     chasis : [[],{}],
     chain :[["Adamantine Links"],{}],
-    power_fields:[["Power Field Cooling"],{}],
+    power_fields:[["Power Field Cooling", "Mono-molecular Edge Sheathing"],{}],
     las : [["Light Condensement Chamber"],{}],
     armour : 
         [
-            ["Ceramite Casting Chambers", "Lightened Ceramite Compound"],
+            ["Ceramite Casting Chambers", "Enhanced Nerve Interfacing"],
             {
                 stealth : [["Advanced Servo Motors"],{}],
-                armour : [["Advanced Ceramite Bonding", "Enhanced Nerve Interfacing"],{}],
+                armour : [["Advanced Ceramite Bonding", "Lightened Ceramite Compound","Ceremite Void Hardening"],{}],
             }
         ]
 }
-// ** STC values **
+// ** STC values **, 
 stc_wargear=0;
 stc_vehicles=0;
 stc_ships=0;
@@ -986,8 +994,16 @@ enum eFACTION {
 	Tyranids,
 	Chaos,
 	Heretics,
+    Genestealer,
 	Necrons = 13
 }
+
+imperial_factions = [
+    eFACTION.Imperium,
+    eFACTION.Mechanicus,
+    eFACTION.Inquisition,
+    eFACTION.Ecclesiarchy,
+]
 faction[0]="";
 disposition[0]=0;
 faction[eFACTION.Player]="Player";
@@ -1308,6 +1324,13 @@ if (instance_exists(obj_ini)){
         debugl("New Game");
     }
 }
+//Set player colour
+try{
+    global.star_name_colors[1] = make_color_rgb(body_colour_replace[0],body_colour_replace[1],body_colour_replace[2]);
+}
+catch(_exception){
+    global.star_name_colors[1] = make_color_rgb(col_r[1],col_g[1],col_b[1]);
+}
 // ** Loads the game **
 if (global.load>0){
     load_game=global.load;
@@ -1325,7 +1348,7 @@ if (global.load>0){
     exit;
 }
 
-var xx,yy,me,dist,go,plan;
+var xx,yy,me,dist,go,planet;
 global.custom=1;
 
 // ** Sets up base training level and trainees at game start **
@@ -1353,16 +1376,16 @@ if (instance_exists(obj_ini)){
 // 11: apothecary       12: chaplain        13: librarium       14: armamentarium
 // ** Sets the star for the chapter ? **
 instance_create(irandom(room_width-400),irandom(room_height-400),obj_star);
-plan=floor(random(5))+19;
-plan=30*1.5;
-plan=70;
-if (is_test_map=true) then plan=20;
+planet=floor(random(5))+19;
+planet=30*1.5;
+planet=100;
+if (is_test_map=true) then planet=20;
 
 
 mask_index = spr_star
-while(instance_number(obj_star)<plan) {
-    xx = irandom(room_width-400)
-    yy = irandom(room_height-400)
+while(instance_number(obj_star)<planet) {
+    xx = irandom(room_width-200) // dictates how far away from the edge stars spawn
+    yy = irandom(room_height-200)
 	
 	if !place_meeting(xx, yy, obj_star) {
 		instance_create(xx,yy,obj_star);
@@ -1377,7 +1400,7 @@ if (obj_ini.fleet_type==3) then fleet_type="Crusade";
 star_names="";
 // ** Sets up the number of enemy factions to appear **
 tau=1; 
-tyranids=0;
+tyranids=1;
 ork=1;
 eldar=1;
 // if tau = 1 then tau spawn. also does eldar 
@@ -1392,7 +1415,7 @@ loyalty=100;
 loyalty_hidden=100;// Updated when inquisitors do an inspection
 // ** Sets up gene seed **
 gene_seed=20;
-if (string_count("Sieged",obj_ini.strin2)>0) then gene_seed=floor(random_range(300,500));
+if (string_count("Sieged",obj_ini.strin2)>0) then gene_seed=floor(random_range(250,400));
 if (global.chapter_name=="Lamenters") then gene_seed=30;
 if (global.chapter_name=="Soul Drinkers") then gene_seed=60;
 
@@ -1403,6 +1426,10 @@ squads = false;
 
 // **sets up starting forge_points
 calculate_research_points()
+
+//** sets up marine_by_location view
+location_viewer = new scr_unit_quick_find_pane();
+
 // ** Sets up the number of marines per company **
 marines=0;
 marines=obj_ini.specials+obj_ini.firsts+obj_ini.seconds+obj_ini.thirds+obj_ini.fourths+obj_ini.fifths;

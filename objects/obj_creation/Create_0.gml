@@ -27,6 +27,12 @@ global.load=0;
 skip=false;
 premades=true;
 
+complex_livery=false;
+complex_selection = "sgt";
+complex_depth_selection = 0;
+//TODO probably make this array based at some point ot match other unit data
+complex_livery_data = complex_livery_default();
+test_sprite = 0;
 fade_in=50;
 slate1=80;
 slate2=0;
@@ -48,6 +54,7 @@ name_bad=0;
 heheh=0;
 icons_top=1;
 icons_max=0;
+turn_selection_change=false;
 
 scrollbar_engaged=0;
 
@@ -101,8 +108,21 @@ hapothecary=global.name_generator.generate_space_marine_name();
 hchaplain=global.name_generator.generate_space_marine_name();
 clibrarian=global.name_generator.generate_space_marine_name();
 fmaster=global.name_generator.generate_space_marine_name();
-recruiter=global.name_generator.generate_space_marine_name();
-admiral=global.name_generator.generate_space_marine_name();
+honorcapt=global.name_generator.generate_space_marine_name();		//1st
+watchmaster=global.name_generator.generate_space_marine_name();		//2nd
+arsenalmaster=global.name_generator.generate_space_marine_name();	//3rd
+admiral=global.name_generator.generate_space_marine_name();			//4th
+marchmaster=global.name_generator.generate_space_marine_name();		//5th
+ritesmaster=global.name_generator.generate_space_marine_name();		//6th
+victualler=global.name_generator.generate_space_marine_name();		//7th
+lordexec=global.name_generator.generate_space_marine_name();		//8th
+relmaster=global.name_generator.generate_space_marine_name();		//9th
+recruiter=global.name_generator.generate_space_marine_name();		//10th
+
+
+
+
+
 
 equal_specialists=0;
 load_to_ships=[2,0,0];
@@ -234,6 +254,7 @@ if((file_exists("chaptersave#1.ini")=true) and (chapter_made=1)){
 		recruiting_exists21= ini_read_real("Save","recruiting_exists",recruiting_exists);
 		homeworld_rule21= ini_read_real("Save","home_world_rule",homeworld_rule);
 		aspirant_trial21=ini_read_string("Save","aspirant_trial",aspirant_trial);
+		discipline21=ini_read_string("Save","discipline",discipline);
 		
 		color_to_main21= ini_read_string("Controller","main_color","Red");
 	    color_to_secondary21= ini_read_string("Controller","secondary_color","Red");
@@ -404,7 +425,7 @@ color_to_pauldron21="Red";
     role_21[i,2]="Honor Guard";
     wep1_21[i,2]="Power Sword";
     wep2_21[i,2]="Bolter";
-    armour_21[i,2]="Power Armour";
+    armour_21[i,2]="Artificer Armour";
 	gear_21[i,2]=""
 	mobi_21[i,2]="";
 	
@@ -458,7 +479,7 @@ color_to_pauldron21="Red";
 	mobi_21[i,8]="";
 
     race_21[i,9]=1;
-    role_21[i,9]="Devastator";
+    role_21[i,9]="Devastator Marine";
     wep1_21[i,9]="Heavy Ranged";
     wep2_21[i,9]="Combat Knife";
     armour_21[i,9]="Power Armour";
@@ -505,7 +526,7 @@ color_to_pauldron21="Red";
 
     race_21[i,17]=1;
     role_21[i,17]="Librarian";
-    wep1_21[i,17]="Force Weapon";
+    wep1_21[i,17]="Force Staff";
     wep2_21[i,17]="Storm Bolter";
     armour_21[i,17]="Power Armour";
     gear_21[i,17]="Psychic Hood";
@@ -535,30 +556,54 @@ i=-1;
 repeat(61){i+=1;advantage[i]="";advantage_tooltip[i]="";disadvantage[i]="";dis_tooltip[i]="";}
 
 i=1;
-advantage[i]="Ambushers";advantage_tooltip[i]="Your chapter is especially trained with ambushing foes; they have a bonus to attack during the start of a battle.";i+=1;
-advantage[i]="Battle Cousins";advantage_tooltip[i]="NOT IMPLEMENTED YET.";i+=1;
-advantage[i]="Boarders";advantage_tooltip[i]="Boarding other ships is routine for the chapter.  Your infantry have a bonus to attack when boarding ships.";i+=1;
-advantage[i]="Bolter Drilling";advantage_tooltip[i]="Bolter drills are sacred to your chapter; all marines have increased attack with Bolter weaponry.";i+=1;
-advantage[i]="Brothers, All";advantage_tooltip[i]="Your chapter places great emphasis on camradery and loyalty.  You start with a well-equip Honor Guard.";i+=1;
-advantage[i]="Comrades in Arms";advantage_tooltip[i]="NOT IMPLEMENTED YET.";i+=1;
-advantage[i]="Crafters";advantage_tooltip[i]="Your chapter views artifacts as sacred; you start with better gear and maintain all equipment with more ease.";i+=1;
-advantage[i]="Daemon Binders";advantage_tooltip[i]="Powers are replaced with a more powerful Witchfire variant.  Perils are also less likely to occur but are more disasterous when they do.";i+=1;
-advantage[i]="Enemy: Eldar";advantage_tooltip[i]="Eldar are particularly hated by your chapter.  When fighting Eldar damage is increased.";i+=1;
-advantage[i]="Enemy: Fallen";advantage_tooltip[i]="Chaos Marines are particularly hated by your chapter.  When fighting the traitors damage is increased.";i+=1;
-advantage[i]="Enemy: Necrons";advantage_tooltip[i]="NOT IMPLEMENTED YET.";i+=1;
-advantage[i]="Enemy: Orks";advantage_tooltip[i]="Orks are particularly hated by your chapter.  When fighting Orks damage is increased.";i+=1;
-advantage[i]="Enemy: Tau";advantage_tooltip[i]="Tau are particularly hated by your chapter.  When fighting Tau damage is increased.";i+=1;
-advantage[i]="Enemy: Tyranids";advantage_tooltip[i]="Tyranids are particularly hated by your chapter.  When fighting Tyranids damage is increased.";i+=1;
-advantage[i]="Kings of Space";advantage_tooltip[i]="Veterans of naval combat, your ships have bonus offense, defense, and may always be controlled regardless of whether or not the Chapter Master is present.";i+=1;
-advantage[i]="Lightning Warriors";advantage_tooltip[i]="Your marines' only concern in battle is dealing the maximum amount of damage.  Infantry have boosted attack but less defense.";i+=1;
-advantage[i]="Paragon";advantage_tooltip[i]="You are a pale shadow of the primarchs.  Larger, stronger, faster, your Chapter Master is on a higher level than most, gaining additional health and combat effectiveness.";i+=1;
-advantage[i]="Psyker Abundance";advantage_tooltip[i]="The Psyker mutation runs rampant in your chapter.  Librarians train in 60% the normal time and recieve bonus experience.";i+=1;
-advantage[i]="Reverent Guardians";advantage_tooltip[i]="Your chapter places great faith in the Imperial Cult; you start with more Chaplains and any Ecclesiarchy disposition increases are enhanced.";i+=1;
-advantage[i]="Tech-Brothers";advantage_tooltip[i]="Your chapter has better ties to the mechanicus; you have more techmarines and higher mechanicus disposition.";i+=1;
-advantage[i]="Scavengers";advantage_tooltip[i]="Your Astartes have a knack for finding what has been lost.  Items and wargear are periodically found and added to the Armamentarium.";i+=1;
-advantage[i]="Siege Masters";advantage_tooltip[i]="Your chapter is familiar with the ins-and-outs of fortresses.  They are better at defending and attacking fortifications.";i+=1;
-advantage[i]="Slow and Purposeful";advantage_tooltip[i]="Careful and steady is your chapters doctrine; all infantry have slightly less attack but boosted defenses.";i+=1;
-advantage[i]="Melee Enthusiasts";advantage_tooltip[i]="Rip and tear! Each Company has an additional Assault Squad.  Your marines and dreadnoughts also have boosted attack with melee weapons.";i+=1;
+advantage[i]="Ambushers";
+advantage_tooltip[i]="Your chapter is especially trained with ambushing foes; they have a bonus to attack during the start of a battle.";i+=1;
+advantage[i]="Battle Cousins";
+advantage_tooltip[i]="NOT IMPLEMENTED YET.";i+=1;
+advantage[i]="Boarders";
+advantage_tooltip[i]="Boarding other ships is routine for the chapter.  Your infantry have a bonus to attack when boarding ships.";i+=1;
+advantage[i]="Bolter Drilling";
+advantage_tooltip[i]="Bolter drills are sacred to your chapter; all marines have increased attack with Bolter weaponry.";i+=1;
+advantage[i]="Brothers, All";
+advantage_tooltip[i]="Your chapter places great emphasis on camradery and loyalty.  You start with a well-equip Honor Guard.";i+=1;
+advantage[i]="Comrades in Arms";
+advantage_tooltip[i]="NOT IMPLEMENTED YET.";i+=1;
+advantage[i]="Crafters";
+advantage_tooltip[i]="Your chapter views artifacts as sacred; you start with better gear and maintain all equipment with more ease.";i+=1;
+advantage[i]="Daemon Binders";
+advantage_tooltip[i]="Powers are replaced with a more powerful Witchfire variant.  Perils are also less likely to occur but are more disasterous when they do.";i+=1;
+advantage[i]="Enemy: Eldar";
+advantage_tooltip[i]="Eldar are particularly hated by your chapter.  When fighting Eldar damage is increased.";i+=1;
+advantage[i]="Enemy: Fallen";
+advantage_tooltip[i]="Chaos Marines are particularly hated by your chapter.  When fighting the traitors damage is increased.";i+=1;
+advantage[i]="Enemy: Necrons";
+advantage_tooltip[i]="NOT IMPLEMENTED YET.";i+=1;
+advantage[i]="Enemy: Orks";
+advantage_tooltip[i]="Orks are particularly hated by your chapter.  When fighting Orks damage is increased.";i+=1;
+advantage[i]="Enemy: Tau";
+advantage_tooltip[i]="Tau are particularly hated by your chapter.  When fighting Tau damage is increased.";i+=1;
+advantage[i]="Enemy: Tyranids";
+advantage_tooltip[i]="Tyranids are particularly hated by your chapter.  When fighting Tyranids damage is increased.";i+=1;
+advantage[i]="Kings of Space";
+advantage_tooltip[i]="Veterans of naval combat, your ships have bonus offense, defense, and may always be controlled regardless of whether or not the Chapter Master is present.";i+=1;
+advantage[i]="Lightning Warriors";
+advantage_tooltip[i]="Your marines' only concern in battle is dealing the maximum amount of damage.  Infantry have boosted attack but less defense.";i+=1;
+advantage[i]="Paragon";
+advantage_tooltip[i]="You are a pale shadow of the primarchs.  Larger, stronger, faster, your Chapter Master is on a higher level than most, gaining additional health and combat effectiveness.";i+=1;
+advantage[i]="Psyker Abundance";
+advantage_tooltip[i]="The Psyker mutation runs rampant in your chapter.  Librarians train in 60% the normal time and recieve bonus experience.";i+=1;
+advantage[i]="Reverent Guardians";
+advantage_tooltip[i]="Your chapter places great faith in the Imperial Cult; you start with more Chaplains and any Ecclesiarchy disposition increases are enhanced.";i+=1;
+advantage[i]="Tech-Brothers";
+advantage_tooltip[i]="Your chapter has better ties to the mechanicus; you have more techmarines and higher mechanicus disposition.";i+=1;
+advantage[i]="Scavengers";
+advantage_tooltip[i]="Your Astartes have a knack for finding what has been lost.  Items and wargear are periodically found and added to the Armamentarium.";i+=1;
+advantage[i]="Siege Masters";
+advantage_tooltip[i]="Your chapter is familiar with the ins-and-outs of fortresses.  They are better at defending and attacking fortifications.";i+=1;
+advantage[i]="Slow and Purposeful";
+advantage_tooltip[i]="Careful and steady is your chapters doctrine; all infantry have slightly less attack but boosted defenses.";i+=1;
+advantage[i]="Melee Enthusiasts";
+advantage_tooltip[i]="Rip and tear! Each Company has an additional Assault Squad.  Your marines and dreadnoughts also have boosted attack with melee weapons.";i+=1;
 i+=1;
 advantage[i]="Cancel";advantage_tooltip[i]="";
 
@@ -637,7 +682,7 @@ repeat(3){i+=1;// First is for the correct slot, second is for default
     role[i,2]="Honor Guard";
     wep1[i,2]="Power Sword";
     wep2[i,2]="Bolter";
-    armour[i,2]="Power Armour";
+    armour[i,2]="Artificer Armour";
 
     race[i,3]=1;
     role[i,3]="Veteran";
@@ -656,8 +701,8 @@ repeat(3){i+=1;// First is for the correct slot, second is for default
     wep1[i,5]="Power Fist";
     wep2[i,5]="Bolt Pistol";
     armour[i,5]="Power Armour";
+    gear[i,5]="Iron Halo";
 
-    gear[i,5]="";
     race[i,6]=1;
     role[i,6]="Dreadnought";
     wep1[i,6]="Close Combat Weapon";
@@ -677,7 +722,7 @@ repeat(3){i+=1;// First is for the correct slot, second is for default
     armour[i,8]="Power Armour";
 
     race[i,9]=1;
-    role[i,9]="Devastator";
+    role[i,9]="Devastator Marine";
     wep1[i,9]="Heavy Ranged";
     wep2[i,9]="Combat Knife";
     armour[i,9]="Power Armour";
@@ -719,7 +764,7 @@ repeat(3){i+=1;// First is for the correct slot, second is for default
 
     race[i,17]=1;
     role[i,17]="Librarian";
-    wep1[i,17]="Force Weapon";
+    wep1[i,17]="Force Staff";
     wep2[i,17]="Storm Bolter";
     armour[i,17]="Power Armour";
     gear[i,17]="Psychic Hood";
@@ -800,70 +845,78 @@ if (skip=true){
 scr_colors_initialize();
 
 
-colour_to_find1 = shader_get_uniform(sReplaceColor, "f_Colour1");
-colour_to_set1 = shader_get_uniform(sReplaceColor, "f_Replace1");
-sourceR1 = 0/255;
-sourceG1 = 0/255;
-sourceB1 = 255/255;
-targetR1 = col_r[main_color]/255;
-targetG1 = col_g[main_color]/255;
-targetB1 = col_b[main_color]/255;
 
-colour_to_find2 = shader_get_uniform(sReplaceColor, "f_Colour2");
-colour_to_set2 = shader_get_uniform(sReplaceColor, "f_Replace2");
-sourceR2 = 255/255;
-sourceG2 = 0/255;
-sourceB2 = 0/255;
-targetR2 = col_r[secondary_color]/255;
-targetG2 = col_g[secondary_color]/255;
-targetB2 = col_b[secondary_color]/255;
+	colour_to_find1 = shader_get_uniform(sReplaceColor, "f_Colour1");
+	colour_to_set1 = shader_get_uniform(sReplaceColor, "f_Replace1");
+	body_colour_find=[0/255,0/255,255/255];
+	body_colour_replace=[
+		col_r[main_color]/255,
+		col_g[main_color]/255,
+		col_b[main_color]/255,
 
-colour_to_find3 = shader_get_uniform(sReplaceColor, "f_Colour3");
-colour_to_set3 = shader_get_uniform(sReplaceColor, "f_Replace3");
-sourceR3 = 255/255;
-sourceG3 = 255/255;
-sourceB3 = 0/255;
-targetR3 = col_r[pauldron_color]/255;
-targetG3 = col_g[pauldron_color]/255;
-targetB3 = col_b[pauldron_color]/255;
+	]
 
-colour_to_find4 = shader_get_uniform(sReplaceColor, "f_Colour4");
-colour_to_set4 = shader_get_uniform(sReplaceColor, "f_Replace4");
-sourceR4 = 0/255;
-sourceG4 = 255/255;
-sourceB4 = 0/255;
-targetR4 = col_r[lens_color]/255;
-targetG4 = col_g[lens_color]/255;
-targetB4 = col_b[lens_color]/255;
+	colour_to_find2 = shader_get_uniform(sReplaceColor, "f_Colour2");
+	colour_to_set2 = shader_get_uniform(sReplaceColor, "f_Replace2");
+	secondary_colour_find=[255/255,0/255,0/255];
+	secondary_colour_replace=[
+		col_r[secondary_color]/255,
+		col_g[secondary_color]/255,
+		col_b[secondary_color]/255,
 
-colour_to_find5 = shader_get_uniform(sReplaceColor, "f_Colour5");
-colour_to_set5 = shader_get_uniform(sReplaceColor, "f_Replace5");
-sourceR5 = 255/255;
-sourceG5 = 0/255;
-sourceB5 = 255/255;
-targetR5 = col_r[trim_color]/255;
-targetG5 = col_g[trim_color]/255;
-targetB5 = col_b[trim_color]/255;
+	];
 
-colour_to_find6 = shader_get_uniform(sReplaceColor, "f_Colour6");
-colour_to_set6 = shader_get_uniform(sReplaceColor, "f_Replace6");
-sourceR6 = 250/255;
-sourceG6 = 250/255;
-sourceB6 = 250/255;
-targetR6 = col_r[pauldron2_color]/255;
-targetG6 = col_g[pauldron2_color]/255;
-targetB6 = col_b[pauldron2_color]/255;
+	colour_to_find3 = shader_get_uniform(sReplaceColor, "f_Colour3");
+	colour_to_set3 = shader_get_uniform(sReplaceColor, "f_Replace3");
 
-colour_to_find7 = shader_get_uniform(sReplaceColor, "f_Colour7");
-colour_to_set7 = shader_get_uniform(sReplaceColor, "f_Replace7");
-sourceR7 = 0/255;
-sourceG7 = 255/255;
-sourceB7 = 255/255;
-targetR7 = col_r[weapon_color]/255;
-targetG7 = col_g[weapon_color]/255;
-targetB7 = col_b[weapon_color]/255;
+	pauldron_colour_find=[255/255,255/255,0/255];
+	pauldron_colour_replace=[
+		col_r[pauldron_color]/255,
+		col_g[pauldron_color]/255,
+		col_b[pauldron_color]/255,
 
+	];
+
+	colour_to_find4 = shader_get_uniform(sReplaceColor, "f_Colour4");
+	colour_to_set4 = shader_get_uniform(sReplaceColor, "f_Replace4");
+	lens_colour_find=[0/255,255/255,0/255];
+	lens_colour_replace=[
+		col_r[lens_color]/255,
+		col_g[lens_color]/255,
+		col_b[lens_color]/255,
+
+	];
+
+	colour_to_find5 = shader_get_uniform(sReplaceColor, "f_Colour5");
+	colour_to_set5 = shader_get_uniform(sReplaceColor, "f_Replace5");
+	trim_colour_find=[255/255,0/255,255/255];
+	trim_colour_replace=[
+		col_r[trim_color]/255,
+		col_g[trim_color]/255,
+		col_b[trim_color]/255,
+	];
+
+	colour_to_find6 = shader_get_uniform(sReplaceColor, "f_Colour6");
+	colour_to_set6 = shader_get_uniform(sReplaceColor, "f_Replace6");
+	pauldron2_colour_find=[250/255,250/255,250/255];
+	pauldron2_colour_replace=[
+		col_r[pauldron2_color]/255,
+		col_g[pauldron2_color]/255,
+		col_b[pauldron2_color]/255,
+
+	];
+
+	colour_to_find7 = shader_get_uniform(sReplaceColor, "f_Colour7");
+	colour_to_set7 = shader_get_uniform(sReplaceColor, "f_Replace7");
+
+	weapon_colour_find=[0/255,255/255,255/255];
+	weapon_colour_replace=[
+		col_r[weapon_color]/255,
+		col_g[weapon_color]/255,
+		col_b[weapon_color]/255,
+	];
 /* */
 action_set_alarm(30, 1);
 /*  */
+
 	

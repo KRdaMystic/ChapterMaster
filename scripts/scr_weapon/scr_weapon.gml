@@ -20,7 +20,7 @@ global.weapons={
     },
     "melee_hands": 1,
     "range": 1,
-    "spli": 1, 
+    "spli": 3, 
     "tags":["axe"]
   },
   "Snazzgun": {
@@ -33,7 +33,7 @@ global.weapons={
     "ranged_hands": 2,
     "ammo": 20,
     "range": 3.1,
-    "spli": 1,
+    "spli": 3,
     "arp": 0,
     "tags":["rifle"]
   },
@@ -48,7 +48,7 @@ global.weapons={
     "ranged_hands": 0,
     "ammo": 6,
     "range": 2.1,
-    "spli": 1,
+    "spli": 3,
     "arp": 0,
     "tags":["pistol"]
   },
@@ -99,7 +99,7 @@ global.weapons={
     },
     "ammo": 10,
     "range": 6.1,
-    "spli": 1,
+    "spli": 3,
     "arp": 0,
     "tags":[],
     "ranged_hands":2,
@@ -116,7 +116,7 @@ global.weapons={
     },
     "ammo": 10,
     "range": 6.1,
-    "spli": 1,
+    "spli": 3,
     "arp": 0,
     "tags":["rifle","arcane"],
     "ranged_hands":2,    
@@ -145,12 +145,12 @@ global.weapons={
             "master_crafted": 30,
             "artifact": 35
         },
-        "description": "More of a sword than a knife proper, this tough and thick blade becomes a deadly weapon in the hand of an Astartes.",
+        "description": "More of a sword than a knife, this tough and thick blade becomes a deadly weapon in the hand of an Astartes.",
         "melee_hands": 0,
         "ranged_hands": 0,
         "ammo": 0,
         "range": 1,
-        "spli": 0,
+        "spli": 1,
         "arp": 0,
         "tags":["knife"],
     },
@@ -166,7 +166,7 @@ global.weapons={
         "ranged_hands": 0,
         "ammo": 0,
         "range": 1,
-        "spli": 1,
+        "spli": 2,
         "arp": 0
     },
     "Chainsword": {
@@ -176,12 +176,12 @@ global.weapons={
             "master_crafted": 60,
             "artifact": 70
         },
-        "description": "A standard Chainsword. It is popular among Assault Marines due to the raw power, even with multiple opponents.",
+        "description": "A standard Chainsword. It is popular among Assault Marines due to their raw power while maintaining speed.",
         "melee_hands": 1,
         "ranged_hands": 0,
         "ammo": 0,
         "range": 1,
-        "spli": 1,
+        "spli": 4,
         "arp": 0,
         "tags":["chain", "sword"],
     },
@@ -197,19 +197,19 @@ global.weapons={
             "master_crafted": 10,
             "artifact": 15
         },
-        "description": "Able to be dual-wielded. A weapon most frequently seen in the hands of Chaos, this Chainaxe uses motorized chainsaw teeth to maim and tear.",
+        "description": "A weapon most frequently seen in the hands of Traitor Astartes, the Chainaxe uses motorized chainsaw teeth to maim and tear. Astartes often duel-wield them to increase frequency of attacks.",
         "melee_hands": 1,
         "ranged_hands": 0,
         "ammo": 0,
         "range": 1,
-        "spli": 1,
+        "spli": 6,
         "arp": 0,
         "tags":["chain", "axe"],
     },
     "Company Standard": {
        "abbreviation": "CmpStnd",
-      "special_description": "Boosts morale",
-      "description": "A banner that represents the honor of a particular company and will bolster the morale abilities of nearby Space Marines.",
+      "special_properties": ["Morale Boost"],
+      "description": "A banner that represents the honor of a particular company and will bolster the morale of nearby Astartes.",
         "attack": {
             "standard": 45,
             "master_crafted": 60,
@@ -243,7 +243,7 @@ global.weapons={
         "ranged_hands": 1,
         "ammo": 0,
         "range": 1,
-        "spli": 1,
+        "spli": 3,
         "arp": 1,
         "tags":["chain", "sword"],
     },
@@ -259,20 +259,20 @@ global.weapons={
             "master_crafted": 1.1,
             "artifact": 1.1
         },
-        "description": "A preeminent type of Power Weapon. When active, the blade becomes sheathed in a lethal haze of disruptive energy.",
+        "description": "The most common kind of Power Weapon. When active, the blade becomes sheathed in a lethal haze of disruptive energy that seamlessly cuts through ceramite and flesh.",
         "melee_hands": 1,
         "ranged_hands": 0,
         "ammo": 0,
         "range": 1,
-        "spli": 1,
+        "spli": 4,
         "arp": 1,
-        "special_description": "Parry",
+        "special_properties": ["Parry"],
         "tags":["power", "sword"],
     },
     "Power Spear": {
          "abbreviation": "PwrSpear",
         "attack": {
-            "standard": 200,
+            "standard": 220,
             "master_crafted": 250,
             "artifact": 300
         },
@@ -281,18 +281,18 @@ global.weapons={
             "master_crafted": 1.1,
             "artifact": 1.1
         },
-        "description": "This power weapon requires great skill to wield. When active, the blade becomes sheathed in a lethal haze of disruptive energy.",
+        "description": "A rare kind of Power Weapon requires great skill to wield. When active, the spearhead becomes sheathed in a lethal haze of disruptive energy.",
         "melee_hands": 2,
-        "ranged_hands": 0,
+        "ranged_hands": 1,
         "ammo": 0,
         "range": 1,
-        "spli": 0,
+        "spli": 2,
         "arp": 1,
-        "special_description": "Parry",
+        "special_properties": ["Parry"],
         "tags":["power", "spear"],
     },
     "Chainfist": {
-     "abbreviation": "ChFist",
+     "abbreviation": "ChFst",
         "attack": {
             "standard": 300,
             "master_crafted": 325,
@@ -307,7 +307,7 @@ global.weapons={
         "tags":["power", "chain", "fist", "siege"],
     },
     "Lascutter": {
-       "abbreviation": "Lascttr",
+       "abbreviation": "Lasct",
         "attack": {
             "standard": 100,
             "master_crafted": 150,
@@ -336,9 +336,9 @@ global.weapons={
         "ranged_hands": 0,
         "ammo": 0,
         "range": 1,
-        "spli": 1,
+        "spli": 3,
         "arp": 1,
-        "special_description": "Parry",
+        "special_properties": ["Parry"],
         "tags":["power", "sword","elder","xenos"],
     },
     "Power Weapon": {
@@ -353,12 +353,12 @@ global.weapons={
             "master_crafted": 1.1,
             "artifact": 1.1
         },
-        "description": "Often the signature weapons of elite warriors, power swords are perhaps the most dangerous of melee weapons in the galaxy.",
+        "description": "An makeshift power weapon made by Astartes during long term deployment behind enemy lines or when cut from supply lines for long periods of time.",
         "melee_hands": 1.1,
         "ranged_hands": 0,
         "ammo": 0,
         "range": 1,
-        "spli": 1,
+        "spli": 3,
         "arp": 1,
         "tags":["power"],
     },
@@ -374,12 +374,12 @@ global.weapons={
             "master_crafted": 1,
             "artifact": 1
         },
-        "description": "Similar to the Power Sword. Able to be dual-wielded. This weapon can be activated to sheathe the axe-head in a lethal haze of disruptive energy.",
+        "description": "This weapon's power systems can be activated with the press of a button to sheathe the axe-head in a lethal haze of disruptive energy. Those fortunate enough to get their hands on two tend to duel-wield them.",
         "melee_hands": 1,
         "ranged_hands": 0,
         "ammo": 0,
         "range": 1,
-        "spli": 0,
+        "spli": 5,
         "arp": 1,
         "tags":["power", "axe", "dual"],
     },
@@ -395,17 +395,17 @@ global.weapons={
             "master_crafted": 15,
             "artifact": 20
         },
-        "description": "A heavy two-handed power axe named after the Executioner chapter.",
+        "description": "A heavy two-handed power axe used to rend armor and tear through multiple infantry at once.",
         "melee_hands": 2.5,
         "ranged_hands": 2,
         "ammo": 0,
         "range": 1,
-        "spli": 1,
+        "spli": 2,
         "arp": 1,
         "tags":["power", "axe"],
     },    
     "Power Fist": {
-       "abbreviation": "PwrFist",       
+       "abbreviation": "PwrFst",       
         "attack": {
             "standard": 450,
             "master_crafted": 500,
@@ -416,33 +416,33 @@ global.weapons={
             "master_crafted": 1,
             "artifact": 1
         },
-        "description": "A large, metal gauntlet surrounded by an energy field. Though large and slow, it dishes out tremendous damage.",
+        "description": "A large, ceramite clad gauntlet surrounded by an power energy field. Though cumbersome to use, it dishes out tremendous damage to enemies, leaving very little behind.",
         "melee_hands": 1.1,
         "ranged_hands": 1,
         "ammo": 0,
         "range": 1,
-        "spli": 1,
+        "spli": 2,
         "arp": 1,
         "tags":["power","fist"],
     },
     "Lightning Claw": {
-    "abbreviation": "LghtClaw",             
+    "abbreviation": "LghtClw",             
         "attack": {
             "standard": 130,
             "master_crafted": 160,
             "artifact": 190
         },
-        "description": "Lightning claws are specialized close combat weapons with built-in disruptor fields. These fields disrupt matter on a molecular level, tearing through armor and flesh with ease.",
+        "description": "Lightning claws are specialized close combat weapons with built-in disruptor fields. These lethal claws rip into infantry like butter, bringing terror to the foe.",
         "melee_hands": 1.1,
         "ranged_hands": 1,
         "ammo": 0,
         "range": 1,
-        "spli": 1,
+        "spli": 5,
         "arp": 1,
         "tags":["power","dual","fist"],
     },
     "Dreadnought Lightning Claw": {
-    "abbreviation": "LghtClaw",             
+    "abbreviation": "LghtClw",             
         "attack": {
             "standard": 300,
             "master_crafted": 400,
@@ -458,7 +458,7 @@ global.weapons={
         "ranged_hands": 0,
         "ammo": 0,
         "range": 1,
-        "spli": 1,
+        "spli": 10,
         "arp": 0,
         "tags":["power", "vehicle","dual","fist"],
     },
@@ -474,15 +474,37 @@ global.weapons={
             "master_crafted": 1.3,
             "artifact": 1.3
         },
-        "description": "This weapon unleashes a massive, disruptive field on impact. Only experienced marines can use Thunder Hammers.",
+        "description": "A Thunder hamer is a weapon with a long pole and a double headed hammer on the top. This weapon unleashes a massive, devastating disruption field on impact. Only experienced Astartes can use Thunder Hammers, typically Terminators.",
         "melee_hands": 2.25,
         "ranged_hands": 2,
         "ammo": 0,
         "range": 1,
-        "spli": 1,
+        "spli": 10,
         "arp": 1,
         "tags":["power", "hammer", "siege"],
-        "req_exp":90,
+        "req_exp":140,
+    },
+    "Power Mace": {
+        "abbreviation": "PwrMace",                
+        "attack": {
+            "standard": 700,
+            "master_crafted": 800,
+            "artifact": 950
+        },
+        "melee_mod": {
+            "standard": 1.3,
+            "master_crafted": 1.3,
+            "artifact": 1.3
+        },
+        "description": "Wreathed in glowing smoke, these massive weapons are as sinister in aspect as they are lethal in application, and are capable of obliterating even the mightiest heretics in a blaze of killing light.",
+        "melee_hands": 2.25,
+        "ranged_hands": 2,
+        "ammo": 0,
+        "range": 1,
+        "spli": 10,
+        "arp": 1,
+        "tags":["power", "mace", "siege", "pious"],
+        "req_exp":200,
     },
     "Tome":{
         "abbreviation": "Tome",                
@@ -496,7 +518,7 @@ global.weapons={
             "master_crafted":  1.0,
             "artifact": 1.0
         },
-        "description": "Ancient Blades of various origins either through arcane forging or lost technique thes blades are beyond deadly.",
+        "description": "Ancient Blades of various origins smited through arcane forging or lost techniques, these blades are deadly beyond belief. These peerless blades slice through ceramite and flesh with ease.",
         "melee_hands": 1,
         "ranged_hands": 1,
         "ammo": 0,
@@ -504,6 +526,27 @@ global.weapons={
         "spli": 0,
         "arp": 0,
         "tags":["arcane"],
+    },
+	 "Crozius Arcanum": {
+       "abbreviation": "Crzus",       
+        "attack": {
+            "standard": 220,
+            "master_crafted": 250,
+            "artifact": 300
+        },
+        "melee_mod": {
+            "standard": 1,
+            "master_crafted": 1,
+            "artifact": 1
+        },
+        "description": "The Crozius Arcanum serves as both a sacred staff of office and a close combat weapon for Astartes Chaplains.",
+        "melee_hands": 1,
+        "ranged_hands": 0,
+        "ammo": 0,
+        "range": 1,
+        "spli": 4,
+        "arp": 1,
+        "tags":["power", "mace", "pious"],
     },
     "Relic Blade": {
       "abbreviation": "RlcBld",               
@@ -517,12 +560,12 @@ global.weapons={
             "master_crafted": 1.3,
             "artifact": 1.3
         },
-        "description": "Ancient Blades of various origins either through arcane forging or lost technique these blades are beyond deadly.",
+        "description": "Ancient Blades of various origins smited through arcane forging or lost techniques, these blades are deadly beyond belief. These peerless blades slice through ceramite and flesh with ease.",
         "melee_hands": 1,
         "ranged_hands": 0,
         "ammo": 0,
         "range": 1,
-        "spli": 1,
+        "spli": 3,
         "arp": 1,
          "tags":["arcane", "sword"],
     },
@@ -533,12 +576,12 @@ global.weapons={
             "master_crafted": 35,
             "artifact": 40
         },
-        "description": "A smaller, more compact version of the venerable Boltgun. Standard Godwyn pattern.",
+        "description": "A smaller, more compact version of the venerable Boltgun. This model is produced in the standard Godwyn pattern.",
         "melee_hands": 0,
         "ranged_hands": 1,
         "ammo": 18,
         "range": 3.1,
-        "spli": 0,
+        "spli": 1,
         "arp": 0,
         "tags":["bolt", "pistol"],
     },
@@ -565,12 +608,12 @@ global.weapons={
             "master_crafted": 70,
             "artifact": 80
         },
-        "description": "A compact, secondary Bolter weapon often attached under the barrel of a larger firearm. It allows for rapid fire in close quarters.",
+        "description": "A compact, secondary Bolter weapon often attached under the barrel of a larger firearm. It allows for rapid fire in close quarters combat.",
         "melee_hands": 0,
         "ranged_hands": 1,
         "ammo": 0,
         "range": 10,
-        "spli": 1,
+        "spli": 2,
         "arp": 0,
          "tags":["bolt", "attached"]
     },
@@ -597,12 +640,12 @@ global.weapons={
             "master_crafted": 55,
             "artifact": 60
         },
-        "description": "A standard Bolter, a 2-handed firearm that launches bolts of explosive material. It's a versatile and iconic weapon of Space Marines.",
+        "description": "A standard Bolter, a two-handed firearm that launches rocket propelled projectiles that detonate after penetrating the target. It is a versatile and iconic weapon of Adeptus Astartes, their resounding detonations carry the Emperor's Wrath.",
         "melee_hands": 1,
         "ranged_hands": 2,
         "ammo": 16,
         "range": 12,
-        "spli": 1,
+        "spli": 3,
         "arp": 0,
         "tags":["bolt"]
     },
@@ -613,12 +656,12 @@ global.weapons={
             "master_crafted": 550,
             "artifact": 600
         },
-        "description": "A much larger and bulkier flamer. Few armies carry them on hand, instead choosing to mount them to vehicles.",
+        "description": "A significantly heavier flamer typically utilized on vehicle mounts. To carry them on foot requires Power Armor.",
         "melee_hands": 1,
         "ranged_hands": 2.25,
         "ammo": 8,
         "range": 2,
-        "spli": 1,
+        "spli": 5,
         "arp": -1,
         "tags":["flame","heavy_ranged"]
     },
@@ -629,26 +672,26 @@ global.weapons={
             "master_crafted": 275,
             "artifact": 300
         },
-        "description": "A powerful close combat weapon integrated with a flamer. It's capable of dealing both flame damage and melee attacks.",
+        "description": "A powerful close combat weapon integrated with a flamer. Enemeies rarely expect a dreadnough claw to spew promethium.",
         "melee_hands": 1,
         "ranged_hands": 0,
         "ammo": 6,
         "range": 2.1,
-        "spli": 1,
+        "spli": 5,
         "arp": -1,
         "tags":["dreadnought","flame"]
     },
     "Dreadnought Power Claw":{
-      "abbreviation": "PwrClaw",              
+      "abbreviation": "PwrClw",              
         "attack": {
             "standard": 400,
             "master_crafted": 600,
             "artifact": 800
         },
-        "description": "A brutal crushing claw capable of tearing open armour and felsh with ease.",
+        "description": "A brutal crushing claw capable of tearing open armor and flesh with ease utilizing disruptor fields.",
         "melee_hands": 5, 
         "range": 1,
-        "spli": 1,
+        "spli": 10,
         "arp": 1,
         "tags":["dreadnought"]  
     },
@@ -659,10 +702,10 @@ global.weapons={
             "master_crafted": 450,
             "artifact": 550
         },
-        "description": "While a variety of melee weapons are used by dreadnoughts, this power fist with flamer is the most common.",
+        "description": "While a variety of melee weapons are used by dreadnoughts, this power fist with an integrated flamer is the most common.",
         "melee_hands": 5, 
         "range": 1,
-        "spli": 1,
+        "spli": 10,
         "arp": 1,
         "tags":["dreadnought","fist"]
     },       
@@ -673,12 +716,12 @@ global.weapons={
             "master_crafted": 440,
             "artifact": 480
         },
-        "description": "A huge, vehicle-mounted flame weapon that fires with explosive force. The reservoir is liable to explode.",
+        "description": "A huge vehicle-mounted flame weapon that fires with explosive force. The reservoir is liable to explode.",
         "melee_hands": 0,
         "ranged_hands": 2.25,
         "ammo": 0,
         "range": 3.1,
-        "spli": 1,
+        "spli": 20,
         "arp": -1,
         "tags":["vehicle","flame","dreadnought"]
     },
@@ -689,12 +732,12 @@ global.weapons={
             "master_crafted": 275,
             "artifact": 300
         },
-        "description": "A relatively quiet weapon, this gun vaporizes flesh and armor alike. Due to heat dissipation, it has only a short range.",
+        "description": "A loud weapon that roars with fury, this gun vaporizes flesh and armor alike. Due to heat dissipation, it has only a short range.",
         "melee_hands": 1,
         "ranged_hands": 2,
         "ammo": 4,
         "range": 2.1,
-        "spli": 0,
+        "spli": 1,
         "arp": 1,
         "tags":["melta"]
     },
@@ -705,7 +748,7 @@ global.weapons={
             "master_crafted": 550,
             "artifact": 600
         },
-        "description": "Though bearing longer range than the Meltagun, this weapon's great size usually restricts it to vehicles.",
+        "description": "Though bearing longer range than the Meltagun, this weapon's great size usually restricts it to vehicles though those with Power Armor can carry this cumbersome weapon into battle.",
         "melee_hands": 1,
         "ranged_hands": 2.25,
         "ammo": 8,
@@ -721,12 +764,12 @@ global.weapons={
             "master_crafted": 130,
             "artifact": 150
         },
-        "description": "A smaller version of the plasma gun, this dangerous-to-use weapon has exceptional armor-piercing capabilities.",
+        "description": "A pistol variant of the plasma gun, this dangerous-to-use weapon has exceptional armor-piercing capabilities.",
         "melee_hands": 0,
         "ranged_hands": 1,
         "ammo": 0,
         "range": 3.1,
-        "spli": 0,
+        "spli": 1,
         "arp": 1,
         "tags":["plasma","pistol"]
     },
@@ -737,12 +780,12 @@ global.weapons={
             "master_crafted": 110,
             "artifact": 120
         },
-        "description": "The Infernus Pistol is a compact and portable flamethrower-style weapon. It unleashes a torrent of fiery promethium, which engulfs its targets in flames.",
+        "description": "The Infernus Pistol is a compact pistol varient of the melta gun. A brutal blast of heat to burn away the The Emperor's foes.",
         "melee_hands": 1,
         "ranged_hands": 1,
         "ammo": 4,
         "range": 2.1,
-        "spli": 0,
+        "spli": 3,
         "arp": 1,
         "tags":["flame","pistol"]
     },
@@ -753,14 +796,30 @@ global.weapons={
             "master_crafted": 275,
             "artifact": 300
         },
-        "description": "A 2-handed firearm that launches bolts of plasma. They are considered both sacred and dangerous, occasionally overheating.",
+        "description": "A two-handed weapon that launches blobs of plasma at the target. They are considered both sacred and dangerous, overheating through rapid firing of the weapon. Overheating can result in detonation of the weapon, killing the wielder.",
         "melee_hands": 0,
         "ranged_hands": 2,
         "ammo": 16,
         "range": 12,
-        "spli": 1,
+        "spli": 3,
         "arp": 1,
         "tags":["plasma"]
+    },
+    "Plasma Cannon": {
+        "abbreviation": "PlsmCan",
+        "attack": {
+            "standard": 500,
+            "master_crafted": 600,
+            "artifact": 750
+        },
+        "description": "A heavy variant of the plasma gun, its power output is significantly higher and its damage capability shows. However, it maintains the overheating risk of the Plasma Gun",
+        "melee_hands": 1,
+        "ranged_hands": 3,
+        "ammo": 16,
+        "range": 14,
+        "spli": 2,
+        "arp": 1,
+        "tags":["plasma", "heavy_weapon", "dreadnought"]
     },
     "Sniper Rifle": {
         "abbreviation": "SnprRfl",        
@@ -769,7 +828,7 @@ global.weapons={
             "master_crafted": 88,
             "artifact": 96
         },
-        "description": "Fires a solid shell and boasts powerful telescopic sights, allowing the user to target enemy weak points and distant foes.",
+        "description": "The Sniper Rifle fires a solid shell over long range and boasts powerful telescopic sights to assist, allowing the user to target enemy weak points and distant foes.",
         "melee_hands": 1,
         "ranged_hands": 2,
         "ammo": 20,
@@ -785,12 +844,12 @@ global.weapons={
             "master_crafted": 264,
             "artifact": 288
         },
-        "description": "A heavy, rotary auto-cannon frequently used by Dreadnoughts and Terminators. Has an incredible rate of fire.",
+        "description": "A heavy rotary autocannon with a devastating fire rate that can be counted in the hundreds per minute. It is incredibly effective against infantry and lightly armored targets.",
         "melee_hands": 2.1,
         "ranged_hands": 2.25,
         "ammo": 5,
         "range": 12,
-        "spli": 1,
+        "spli": 20,
         "arp": 0,
         "tags":["heavy_ranged","dreadnought"]
     },
@@ -801,12 +860,12 @@ global.weapons={
             "master_crafted": 198,
             "artifact": 216
         },
-        "description": "A rapid-firing weapon able to use a wide variety of ammunition, from mass-reactive explosive to solid shells.",
+        "description": "A rapid-firing weapon able to use a wide variety of ammunition, from mass-reactive explosive to solid shells. It has been found to be incredibly effective against large groups of targets and even Traitor Astartes to an extent.",
         "melee_hands": 0,
         "ranged_hands": 2.25,
         "ammo": 25,
         "range": 18,
-        "spli": 1,
+        "spli": 15,
         "arp": 0,
         "tags":["heavy_ranged","dreadnought"]
     },
@@ -817,28 +876,28 @@ global.weapons={
             "master_crafted": 275,
             "artifact": 300
         },
-        "description": "This heavy weapon is capable of firing either armor-piercing or fragmentation rockets. Has a low ammunition count.",
+        "description": "This shoulder mounted weapon is capable of firing either armor-piercing or fragmentation rockets. It's ammunition is limited by what the bearer has carried with them.",
         "melee_hands": 1,
         "ranged_hands": 2.25,
         "ammo": 6,
         "range": 24,
-        "spli": 1,
+        "spli": 3,
         "arp": 0,
         "tags":["heavy_ranged","dreadnought"]
     },
     "Lascannon": {
        "abbreviation": "Lascnn",           
         "attack": {
-            "standard": 200,
-            "master_crafted": 220,
-            "artifact": 240
+            "standard": 600,
+            "master_crafted": 700,
+            "artifact": 900
         },
-        "description": "A formidable laser weapon, this lascannon can pierce most vehicle or power armor from a tremendous range.",
+        "description": "A formidable laser weapon, the lascannon can pierce most vehicles or power armored targets from a tremendous range. The weapon is known for its reliability in combat.",
         "melee_hands": 1,
         "ranged_hands": 2.25,
         "ammo": 8,
         "range": 24,
-        "spli": 0,
+        "spli": 1,
         "arp": 1,
          "tags":["heavy_ranged"]
     },
@@ -849,12 +908,12 @@ global.weapons={
             "master_crafted": 550,
             "artifact": 600
         },
-        "description": "The Conversion Beam Projector is a heavy energy weapon that harnesses advanced technology to project a concentrated beam of destructive energy. It is capable of cutting through armor, vehicles, and even heavily fortified structures.",
+        "description": "The Conversion Beam Projector is a heavy energy weapon that harnesses advanced technology to project a concentrated beam of destructive energy. Armor detonates as the matter that comproises it is transformed into pure energy.",
         "melee_hands": 0,
         "ranged_hands": 1,
         "ammo": 1,
         "range": 20,
-        "spli": 1,
+        "spli": 3,
         "arp": 1
     },
     "Integrated Bolters": {
@@ -869,7 +928,7 @@ global.weapons={
         "ranged_hands": 0,
         "ammo": 20,
         "range": 8.1,
-        "spli": 1,
+        "spli": 3,
         "arp": 1,
         "tags":["bolt"]
     },
@@ -885,12 +944,12 @@ global.weapons={
             "master_crafted": 1,
             "artifact": 1
         },
-        "description": "Powerfist but with built in bolters for close combat and ranged firepower",
+        "description": "This is a Power Fist weapon with bolters integrated into them to give the user ranged capabilities.",
         "melee_hands": 1.1,
         "ranged_hands": 1,
         "ammo": 0,
         "range": 1,
-        "spli": 1,
+        "spli": 3,
         "arp": 1,
         "second_profiles":["Integrated Bolters"],
         "tags":["power","fist"],
@@ -907,7 +966,7 @@ global.weapons={
         "ranged_hands": 0,
         "ammo": 0,
         "range": 1,
-        "spli": 1,
+        "spli": 3,
         "arp": 0
     },
     "Twin Linked Heavy Bolter": {
@@ -922,7 +981,7 @@ global.weapons={
         "ranged_hands": 0,
         "ammo": 20,
         "range": 16,
-        "spli": 1,
+        "spli": 8,
         "arp": 1,
         "tags":["heavy_ranged","vehicle","dreadnought"]
     },
@@ -933,12 +992,12 @@ global.weapons={
             "master_crafted": 275,
             "artifact": 300
         },
-        "description": "Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armor.",
+        "description": "The Twin-Linked Lascannons is a powerful anti-armour weapons that fire highly focused and devastating duel energy beams capable of penetrating even the toughest armor.",
         "melee_hands": 0,
         "ranged_hands": 0,
         "ammo": 10,
         "range": 20,
-        "spli": 0,
+        "spli": 2,
         "arp": 1,
         "tags":["heavy_ranged","vehicle","dreadnought"]
     },
@@ -954,7 +1013,7 @@ global.weapons={
         "ranged_hands": 2.25,
         "ammo": 5,
         "range": 20,
-        "spli": 0,
+        "spli": 2,
         "arp": 1,
         "tags":["heavy_ranged","vehicle","dreadnought"]
     },
@@ -970,7 +1029,7 @@ global.weapons={
         "ranged_hands": 2.25,
         "ammo": 10,
         "range": 16,
-        "spli": 1,
+        "spli": 6,
         "arp": 1,
         "tags":["heavy_ranged"]
     },
@@ -986,7 +1045,7 @@ global.weapons={
         "ranged_hands": 0,
         "ammo": 6,
         "range": 20,
-        "spli": 1,
+        "spli": 25,
         "arp": 1
     },
     "HK Missile": {
@@ -999,13 +1058,13 @@ global.weapons={
             "master_crafted": 264,
             "artifact": 288
         },
-        "description": "Twin-linked Heavy Bolters are an upgraded version of the standard Heavy Bolter weapon, which is known for its high rate of fire and effectiveness against infantry and light vehicles.",
+        "description": "The Twin-linked Heavy Bolters are an upgraded version of the standard Heavy Bolter weapon. They are mounted onto vehicles to create effective fire support platforms.",
         "abbreviation": "TwnHvyBltr", 
         "melee_hands": 0,
         "ranged_hands": 0,
         "ammo": 20,
         "range": 16,
-        "spli": 1,
+        "spli": 3,
         "arp": 0
     },
     "Twin Linked Lascannon Mount": {
@@ -1014,13 +1073,13 @@ global.weapons={
             "master_crafted": 275,
             "artifact": 300
         },
-        "description": "Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armour.",
+        "description": "The Twin-Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armour. This version is mounted onto vehicles to incease anti-armor capabilities.",
         "abbreviation": "TwnLascnn", 
         "melee_hands": 0,
         "ranged_hands": 0,
         "ammo": 10,
         "range": 20,
-        "spli": 1,
+        "spli": 3,
         "arp": 1
     },
     "Twin Linked Assault Cannon Mount": {
@@ -1029,14 +1088,15 @@ global.weapons={
             "master_crafted": 396,
             "artifact": 432
         },
-        "description": "A twin mount of rotary autocannons, boasting an incredible rate of fire.",
+        "description": "A twin mount of rotary autocannons, boasting an incredible rate of fire numbering in the hundreds of shots fired per second.",
         "abbreviation": "TwnAssCnn", 
         "melee_hands": 0,
         "ranged_hands": 0,
         "ammo": 5,
         "range": 12,
-        "spli": 1,
-        "arp": 0
+        "spli": 3,
+        "arp": 0,
+        "tags":["vehicle","pintle"]
     },
     "Reaper Autocannon Mount": {
         "attack": {
@@ -1044,14 +1104,15 @@ global.weapons={
             "master_crafted": 275,
             "artifact": 300
         },
-        "description": "An archaic twin-linked autocannon design dating back to the Great Crusade. Effective against a variety of targets.",
+        "description": "An archaic twin-linked autocannon design dating back to the Great Crusade. The Reaper Autocannon is effective against infantry and armored targets. This version is mounted onto vehicles.",
         "abbreviation": "RprAtcnn", 
         "melee_hands": 0,
         "ranged_hands": 0,
         "ammo": 25,
         "range": 15,
-        "spli": 1,
-        "arp": 0
+        "spli": 3,
+        "arp": 0,
+        "tags":["vehicle","pintle"]
     },
     "Quad Linked Heavy Bolter Sponsons": {
         "attack": {
@@ -1065,8 +1126,9 @@ global.weapons={
         "ranged_hands": 0,
         "ammo": 10,
         "range": 16,
-        "spli": 1,
-        "arp": 1
+        "spli": 3,
+        "arp": 1,
+        "tags":["bolt", "vehicle","sponson"]
     },
     "Twin Linked Lascannon Sponsons": {
         "attack": {
@@ -1074,14 +1136,15 @@ global.weapons={
             "master_crafted": 412.5,
             "artifact": 450
         },
-        "description": "Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armour.",
+        "description": "The Twin-Linked Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armour. This version is mounted onto the sides of vehicles.",
         "abbreviation": "TwnLascnns", 
         "melee_hands": 0,
         "ranged_hands": 0,
         "ammo": 5,
         "range": 20,
-        "spli": 1,
-        "arp": 1
+        "spli": 4,
+        "arp": 1,
+        "tags":["las", "vehicle","sponson", "twin_linked"]
     },
     "Lascannon Sponsons": {
         "attack": {
@@ -1089,14 +1152,15 @@ global.weapons={
             "master_crafted": 300,
             "artifact": 350
         },
-        "description": "Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armour.",
+        "description": "Lascannons are powerful anti-armour weapons that fire highly focused and devastating energy beams capable of penetrating even the toughest armour. This version is mounted onto the sides of vehicles.",
         "abbreviation": "Lscnns", 
         "melee_hands": 0,
         "ranged_hands": 0,
         "ammo": 5,
         "range": 20,
-        "spli": 1,
-        "arp": 1
+        "spli": 2,
+        "arp": 1,
+        "tags":["las", "vehicle","sponson"]
     },    
     "Hurricane Bolter Sponsons": {
         "attack": {
@@ -1104,14 +1168,15 @@ global.weapons={
             "master_crafted": 445.5,
             "artifact": 486
         },
-        "description": "Hurricane Bolters are large hex-mount bolter arrays that are able to deliver a withering hail of anti-infantry fire at short ranges.",
-        "abbreviation": "HrrcnBltrs", 
+        "description": "Hurricane Bolters are large hex-mount bolter arrays that are able to deliver a withering hail of anti-infantry fire at short ranges. This version is mounted onto the sides of vehicles.",
+        "abbreviation": "HrcBltrs", 
         "melee_hands": 0,
         "ranged_hands": 0,
         "ammo": 20,
         "range": 12,
-        "spli": 1,
-        "arp": 0
+        "spli": 3,
+        "arp": 0,
+        "tags":["bolt", "vehicle","sponson"]
     },
     "Flamestorm Cannon Sponsons": {
         "attack": {
@@ -1119,14 +1184,15 @@ global.weapons={
             "master_crafted": 660,
             "artifact": 720
         },
-        "description": "A huge vehicle-mounted flamethrower, the heat produced by this terrifying weapon can crack even armoured ceramite.",
-        "abbreviation": "FlmstrmCnns", 
+        "description": "A huge vehicle-mounted flamethrower cannon, the heat produced by this terrifying weapon can melt armoured ceramite.",
+        "abbreviation": "FlmstCnns", 
         "melee_hands": 0,
         "ranged_hands": 0,
         "ammo": 6,
         "range": 3,
-        "spli": 1,
-        "arp": 1
+        "spli": 3,
+        "arp": 1,
+        "tags":["flame", "vehicle","sponson"]
     },
     "Twin Linked Heavy Flamer Sponsons": {
         "attack": {
@@ -1134,13 +1200,13 @@ global.weapons={
             "master_crafted": 605,
             "artifact": 660
         },
-        "description": "A much larger and bulkier flamer. Few armies carry them on hand, instead choosing to mount them to vehicles.",
+        "description": "A twin-linked significantly heavier flamer attached to the sponsons on a vehicle.",
         "abbreviation": "TwnHvyFlmrs", 
         "melee_hands": 0,
         "ranged_hands": 0,
         "ammo": 12,
         "range": 2.1,
-        "spli": 1,
+        "spli": 3,
         "arp": -1,
         "tags":["flame", "vehicle","sponson"]
     },
@@ -1150,13 +1216,13 @@ global.weapons={
             "master_crafted": 140,
             "artifact": 180
         },
-        "description": "A Twin-linked Bolter consists of two Bolter weapons mounted side by side, typically on a vehicle or a special weapon platform.",
+        "description": "A Twin-linked Bolter consists of two Bolter weapons mounted side by side, typically on a vehicle or a dedicated weapons platform.",
         "abbreviation": "TwnBltrs", 
         "melee_hands": 1,
         "ranged_hands": 2,
         "ammo": 30,
         "range": 12,
-        "spli": 1,
+        "spli": 6,
     },        
     "Twin Linked Multi-Melta Sponsons": {
         "abbreviation": "TwnMltMelts", 
@@ -1165,12 +1231,12 @@ global.weapons={
             "master_crafted": 495,
             "artifact": 540
         },
-        "description": "Though bearing longer range than the Meltagun, this weapon's great size usually restricts it to vehicles.",
+        "description": "Though bearing longer range than the Meltagun, this weapon's great size usually restricts it to vehicles. In this case it is mounted to the sponsons on a vehicle.",
         "melee_hands": 0,
         "ranged_hands": 0,
         "ammo": 6,
         "range": 4.1,
-        "spli": 1,
+        "spli": 3,
         "arp": 1,
         "tags":["vehicle", "Sponson", "melta"]
     },
@@ -1196,12 +1262,12 @@ global.weapons={
             "master_crafted": 528,
             "artifact": 576
         },
-        "description": "An advanced thermal weapon from a bygone era, Volkite Culverins are able to ignite entire formations of enemy forces.",
+        "description": "An advanced thermal weapon from a bygone era, Volkite Culverins are able to ignite entire formations of enemy forces. In this case it is mounted to the sponsons on a vehicle.",
         "melee_hands": 0,
         "ranged_hands": 0,
         "ammo": 25,
         "range": 18,
-        "spli": 1,
+        "spli": 3,
         "arp": 0,
         "tags":["vehicle", "Sponson", "volkite"]
     },
@@ -1224,12 +1290,12 @@ global.weapons={
             "master_crafted": 528,
             "artifact": 576
         },
-        "description": "A Predator-compatible turret mounting a reliable all-purpose autocannon. ",
+        "description": "A Predator-compatible turret mounting a reliable all-purpose autocannon capable of doing effective damage to infantry and lightly armored targets.",
         "melee_hands": 0,
         "ranged_hands": 0,
         "ammo": 50,
         "range": 18,
-        "spli": 1,
+        "spli": 3,
         "arp": 0,
         "tags":["vehicle", "turrent"]
     },     
@@ -1240,12 +1306,12 @@ global.weapons={
             "master_crafted": 88,
             "artifact": 96
         },
-        "description": "Compact, and double-barreled, this bolt weapon is inaccurate but grants an enormous amount of firepower.",
+        "description": "Compact and double-barreled, this bolt weapon is inaccurate but grants an enormous amount of firepower. Its psychological effect on the enemy should not be understated.",
         "melee_hands": 1.1,
         "ranged_hands": 1.1,
         "ammo": 10,
         "range": 10,
-        "spli": 1,
+        "spli": 6,
         "arp": 0,
         "tags":["bolt"]
     },
@@ -1266,7 +1332,7 @@ global.weapons={
         "ranged_hands": 1,
         "ammo": 4,
         "range": 2.1,
-        "spli": 1,
+        "spli": 3,
         "arp": -1,
         "tags":["flame"]
     },
@@ -1282,7 +1348,7 @@ global.weapons={
         "ranged_hands": 0,
         "ammo": 4,
         "range": 2.1,
-        "spli": 1,
+        "spli": 3,
         "arp": 0,
         "tags":["flame"]
     },
@@ -1293,12 +1359,12 @@ global.weapons={
             "master_crafted": 130,
             "artifact": 160
         },
-        "description": "A standard bolter with a single shot flamer attached for tactical use",
+        "description": "A standard Bolter with an underbarrel flamer for expanded tactical utility.",
         "melee_hands": 1,
         "ranged_hands": 1.5,
         "ammo": 15,
         "range": 10,
-        "spli": 1,
+        "spli": 3,
         "arp": 0,
         "second_profiles":["Flamer"],
         "tags":["combi", "bolt"]
@@ -1309,31 +1375,81 @@ global.weapons={
             "master_crafted": 220,
             "artifact": 240
         },
-        "description": "This flamer weapon includes special promethium and sacred oils. It is particularly effective against Daemons and their ilk.",
+        "description": "This flamer weapon utilizes psychically-charged promethium and blessed oils concoction to create an azure flame that bypasses psychich protections. It is particularly effective against Daemons and their ilk.",
         "abbreviation": "Incnrtr", 
         "melee_hands": 1,
         "ranged_hands": 1,
         "ammo": 4,
         "range": 2.1,
-        "spli": 1,
+        "spli": 3,
         "arp": -1,
         "tags":["flame"]
     },
-    "Force Weapon": {
+    "Force Staff": {
         "attack": {
-            "standard": 50,
-            "master_crafted": 100,
-            "artifact": 150
+            "standard": 150,
+            "master_crafted": 200,
+            "artifact": 240
         },
-        "abbreviation": "FrcWpn", 
+		"melee_mod": {
+            "standard": 1,
+            "master_crafted": 1,
+            "artifact": 1
+        },
+        "abbreviation": "FrcStff", 
         "description": "An advanced, psychically-attuned close combat weapon that is only fully effective in the hands of a psyker.",
         "melee_hands": 1,
         "ranged_hands": 1,
         "range": 1,
-        "spli": 0,
-        "arp": 0,
-        "tags":["psi"]
+        "spli": 30,
+        "arp": 1,
+		"special_description": "Spell Damage +100%",
+        "tags":["psy",]
     },
+	    "Force Sword": {
+         "abbreviation": "FrcSwrd",
+        "attack": {
+            "standard": 300,
+            "master_crafted": 350,
+            "artifact": 400
+        },
+        "melee_mod": {
+            "standard": 1.3,
+            "master_crafted": 1.5,
+            "artifact": 2
+        },
+        "description": "The Force Sword is a psychically-attuned close combat weapon that is only fully effective in the hands of a psyker.",
+        "melee_hands": 1,
+        "ranged_hands": 0,
+        "ammo": 0,
+        "range": 1,
+        "spli": 1,
+        "arp": 1,
+        "special_description": "Parry, Spell damage +25%",
+        "tags":["psy", "sword"],
+	},
+	"Force Axe": {
+         "abbreviation": "FrcAxe",
+        "attack": {
+            "standard": 190,
+            "master_crafted": 180,
+            "artifact": 225
+        },
+        "melee_mod": {
+            "standard": 1.3,
+            "master_crafted": 1.5,
+            "artifact": 2
+        },
+        "description": "The Force Axe is a psychically-attuned close combat weapon that is only fully effective in the hands of a psyker.",
+        "melee_hands": 1,
+        "ranged_hands": 0,
+        "ammo": 0,
+        "range": 1,
+        "spli": 1,
+        "arp": 1,
+		"special_description":  "Able to be dual-wielded, Spell damage +25%",
+        "tags":["psy", "axe", "dual"],
+	},
      "Twin Linked Lascannon Turret": {
         "attack": {
             "standard": 250,
@@ -1341,12 +1457,13 @@ global.weapons={
             "artifact": 350
         },
         "abbreviation": "TwnLscnn", 
-        "description": "A Predator-compatible turret mounting a pair of anti-armour lascannons.",
+        "description": "A Predator-compatible turret mounting a twin-linked lascannon.",
         "range": 1,
         "spli": 0,
         "arp": 1,
         "range":20,
-        "amm":10,
+        "ammo":10,
+        "spli": 2,
         "tags":["las", "twin_linked", "vehicle","turret"]
     },
     "Twin Linked Assault Cannon Turret": {
@@ -1354,7 +1471,7 @@ global.weapons={
         "description": "",
     },  
     "Flamestorm Cannon Turret": {
-        "abbreviation": "FlmstrmCnn", 
+        "abbreviation": "FlmstCnn", 
         "description": "",
     },  
     "Magna-Melta Turret": {
@@ -1377,6 +1494,7 @@ global.weapons={
         "abbreviation": "VlkSkr", 
         "description": "",
     },
+				
 }
 
 global.gear = {
@@ -1418,7 +1536,7 @@ global.gear = {
         "master_crafted": 15,
         "artifact": 20
       },
-      "description": "Heavily modified by the chapter artificers, and decorated without compare, this ancient Power Armour is beyond priceless.",
+      "description": "A custom suit of power armored created by master artificiers and decorated without compare, this ancient Power Armour is beyond priceless. This suit's history is ancient and its users many.",
       "tags":["power_armour"],
     },
     "Terminator Armour": {
@@ -1440,7 +1558,7 @@ global.gear = {
       },
       "melee_hands":2,
       "ranged_hands":2,
-      "description": "The toughest and most powerful armour designed by humanity. Only the most veteran of Astartes are allowed to wear these.",
+      "description": "Terminator Armour is the strongest and most powerful armour designed by humanity, available only to the veterans of the Adeptus Astartes. The Indomitus Pattern is the most widespread and versatile pattern as of M41.",
       "tags":["terminator"],
       "req_exp":90,
     },
@@ -1463,7 +1581,7 @@ global.gear = {
       },
       "melee_hands":8,
       "ranged_hands":8,      
-      "description": "A massive war-machine that can be piloted by an honored Space Marine, who otherwise would have fallen in combat."
+      "description": "A massive war-machine that can be piloted by an honored Astarte, who otherwise would have fallen in combat. Some of the Astartes consider this a fate worse than death"
     },
     "Tartaros": {
         "abbreviation": "Tartrs", 
@@ -1484,7 +1602,7 @@ global.gear = {
       },
       "melee_hands":2,
       "ranged_hands":2,      
-      "description": "Even more advanced than the Indomitus Terminator Armour, this upgraded armour offers greater mobility at no cost to protection.",
+      "description": "This pattern is possibly considered the most advanced form of Terminator Armour, providing greater mobility for the wearer compared to the Indomitus with no loss in durability. In the M41 considered to be incredibly rare with wars being fought to secure more suits.",
       "tags":["terminator"],
       "req_exp":90,
     },
@@ -1507,7 +1625,7 @@ global.gear = {
     },
       "melee_hands":2,
       "ranged_hands":2,      
-      "description": "Among the first issued to the Space Marine Legions, it is functionally distinct from other patterns, bearing additional plating and shield generators installed within the shoulder pads",
+      "description": "Among the first issued to the Space Marine Legions. Having additional plating and shield generators installed within the shoulder pads resulted in severe straining of the suit's exoskeleton and reduced the wearer's maneuverability, leading to its decline among some legions.",
       "tags":["terminator"],
       "req_exp":90,
     },
@@ -1566,7 +1684,7 @@ global.gear = {
         "master_crafted": 5, // Augmented
         "artifact": 10 // Augmented
       },
-      "description": "An ancient set of Armorum Ferrum. Has thicker armour plating but the added weight slows down the wearer.",
+      "description": "An ancient set of Power Armor dating back to the early Great Crusade. The Mark III has heavier armor plating but is far heavier then its contemporaries.",
        "tags":["power_armour"],
     },
     "MK4 Maximus": {
@@ -1586,7 +1704,7 @@ global.gear = {
         "master_crafted": 10, // Augmented
         "artifact": 15 // Augmented
       },
-      "description": "Armour dating to the end of the Great Crusade. Often considered the ultimate Space Marine armour. The components are no longer reproducible.",
+      "description": "Power Armor dating back to the end of the Great Crusade. It is considered the pinnacle of Power Armor by some Astartes. However, the components are no longer reproducible, the knowledge having been lost to time.",
       "tags":["power_armour"],
     },
     "MK5 Heresy": {
@@ -1606,7 +1724,7 @@ global.gear = {
         "master_crafted": 0,
         "artifact": 0
       },
-      "description": "A hastily assembled Power armour during the Horus Heresy to act as a stopgap. Excels at melee, alongside some downsides.",
+      "description": "A hastily assembled Power Armor that first started appearing during the Horus Heresy to act as a stopgap while new suits were produced and sent to loyalist legions. It excels in close combat but it has limited sensors for ranged combat.",
       "tags":["power_armour"],
     },
     "MK6 Corvus": {
@@ -1626,7 +1744,7 @@ global.gear = {
         "master_crafted": 5, // Augmented
         "artifact": 10 // Augmented
       },
-      "description": "Relatively old beakie armour, sleek as can be. Boosted olfactory and auditory sensors increase the ranged accuracy of the wearer. Making it more fragile.",
+      "description": "A suit dating back to the Horus Heresy, first tested by the Raven Guard. It contains boosted olfactory and auditory sensors that increase the ranged accuracy of the wearer. This however makes it more fragile to an extent.",
       "tags":["power_armour"],
     },
     "MK7 Aquila": {
@@ -1646,7 +1764,7 @@ global.gear = {
         "master_crafted": 5, // Augmented
         "artifact": 10 // Augmented
       },
-      "description": "The staple power armour of the adeptus astartes and the only power armour still widely manufactured.",
+      "description": "The most common power armour of the Adeptus Astartes and the only power armour still widely manufactured by the Imperium.",
       "tags":["power_armour"],
     },
     "MK8 Errant": {
@@ -1666,7 +1784,7 @@ global.gear = {
         "master_crafted": 5, // Augmented
         "artifact": 10 // Augmented
       },
-    "description": "The newest and most advanced of the standard mark power armours as such production has not yet reached maximum capacity creating a supply shortage.",
+    "description": "The newest and most advanced of the standard mark power armours as such production has not yet reached maximum capacity creating a supply shortage while chapters rush to get access to them.",
     "tags":["power_armour"],
     },
     "MK10 Tacticus": {
@@ -1686,7 +1804,7 @@ global.gear = {
         "master_crafted": 5, // Augmented
         "artifact": 10 // Augmented
       },
-      "description": "The MK10 Tacticus is the most advanced pattern of power armour available to the Space Marines, featuring advanced materials and systems.",
+      "description": "The MKX Tacticus is the most advanced pattern of power armour available to the Adeptus Astartes, featuring advanced armor composites and systems. It was developed by Belisarius Cawl during the development of the Primaris Astartes program.",
       "tags":["power_armour"],
     }, 
     "Skitarii Armour":{
@@ -1700,7 +1818,7 @@ global.gear = {
     },
     "Dragon Scales":{
         "abbreviation": "DrgnArm",
-        "description": "advanced armour used by tech priests it is  remarkably lightweight for the protection it affords and is often greatly modified by it's wearer",
+        "description": "Dragon Scales are an dvanced armour ulitized by tech priests, it is remarkably lightweight for the protection it affords and is often greatly modified by it's wearer while also being designed to directly interface with the user's cybernetic body.",
          "armour_value": {
             "standard": 12,
             "master_crafted": 14, // Augmented
@@ -1709,7 +1827,7 @@ global.gear = {
     },    
     "Armoured Ceramite":{
         "abbreviation": "ArmCrmt",
-        "description": "Supplemental ceramite armour packages provide protection far beyond stock configurations",
+        "description": "Supplemental ceramite armour packages provide protection far beyond stock configurations while also adding significant weight to the chassis.",
          "armour_value": {
             "standard": 20,
             "master_crafted": 24, 
@@ -1729,7 +1847,7 @@ global.gear = {
     },
     "Artificer Hull":{
         "abbreviation": "ArtHll",
-        "description": "Replacing numerous structural members and armour plates with thrice-blessed replacements, the vehicle’s hull is upgraded to be a rare work of mechanical art.",
+        "description": "Replacing numerous structural components and armour plates with thrice-blessed replacements, the vehicle’s hull is upgraded to be a rare work of mechanical art by master artificers.",
          "armour_value": {
             "standard": 10,
             "master_crafted": 12, 
@@ -1739,10 +1857,13 @@ global.gear = {
     }                
 } , 
   "gear": {
+    "Sororitas Medkit":{
+        "abbreviation": "SorMed",
+        "description": "A multi-purpose medkit designed to deal with basic battlefield ailments until further medical assistance can be sought.",
+    },
     "Bionics": {
         "abbreviation": "Bncs",
-      "special_description": "Restores critical health",
-      "description": "Bionics may be given to wounded marines to quickly get them back into combat-ready status, replacing damaged flesh.",
+      "description": "Bionics may be given to wounded Astartes to quickly get them back into a combat-ready state, replacing damaged flesh. This is utilized when a Astarte enters a critical state.",
       "hp_mod": {
         "standard": 30, // Adjusted
         "master_crafted": 50, // Adjusted
@@ -1751,20 +1872,19 @@ global.gear = {
     },    
     "Narthecium": {
     "abbreviation": "Nrthcm",
-      "special_description": "Heals Allies",
-      "description": "An advanced medical field kit, these allow Space Marines to heal or recover Gene-Seed from fallen marines.",
+      "special_properties": ["Medkit"],
+      "description": "An advanced medical field kit these allow Apothecaries to heal wounds or recover Gene-Seed from fallen Astartes.",
         "melee_hands": -0.5,
         "ranged_hands": -0.5,       
     },
     "Psychic Hood": {
     "abbreviation": "PsyHd",
-      "special_description": "-50% chance of perils*",
-      "description": "An arcane hood that protects Psykers from enemy psychic powers and enhances their control.",
+      "special_properties": ["Perils Protection 50"],
+      "description": "An arcane hood that protects Psykers from enemy psychic powers and enhances control of their psychic abilities.",
     },
     "Rosarius": {
         "abbreviation": "Rsrius",
-      "special_description": "",
-      "description": "Also called the 'Soul's Armour', this amulet has a built-in, powerful shield generator. They are an icon of the Imperial Creed.",
+      "description": "Also called the 'Soul's Armour', this amulet has a powerful built-in shield generator. They are an icon of the Imperial Creed and the Emperor's Protection.",
       "damage_resistance_mod": {
         "standard": 15, // Adjusted
         "master_crafted": 20, // Adjusted
@@ -1778,8 +1898,7 @@ global.gear = {
     },
     "Iron Halo": {
         "abbreviation": "IrnHalo",
-      "special_description": "",
-      "description": "An ancient artifact, these powerful conversion field generators are granted to high ranking battle brothers or heroes. Bearers are often looked to for guidance.",
+      "description": "An ancient artifact, these powerful conversion field generators are granted to high ranking battle brothers or heroes of the chapter. Bearers are often looked to for guidance by their fellow Astartes.",
       "damage_resistance_mod": {
         "standard": 10, // Adjusted
         "master_crafted": 15, // Adjusted
@@ -1793,56 +1912,54 @@ global.gear = {
     },
     "Plasma Bomb": {
     "abbreviation": "PlBomb",
-      "special_description": "Destroys destructibles",
+      "special_properties": ["Structure Destroyer"],
       "description": "A special plasma charge, this bomb can be used to seal underground caves or destroy enemy structures.",
     },
     "Exterminatus": {
         "abbreviation": "Extrmnts",
-      "special_description": "Destroys planets",
+      "special_properties": ["Planet Destroyer"],
       "description": "A weapon of the Emperor, and His divine judgment, this weapon can be placed upon a planet to obliterate it entirely.",
     },
     "Servo Arms": {
     "abbreviation": "SrvArms",
-      "special_description": "Integrated Flamer, Repairs Vehicles",
-      "description": "A pair of powerful, mechanical arms. They include several tools that allow trained marines to repair vehicles rapidly.",
+      "special_properties": ["Integrated Flamer, Repairs Vehicles"],
+      "description": "A pair of powerful mechanical arms. They include several tools that allow trained Astartes to repair vehicles rapidly alongside an integrated flamer to beat back the Emperor's foes.",
         "melee_hands": 0.25,
         "ranged_hands": 0.25,  
     },
     "Master Servo Arms": {
     "abbreviation": "MsSrvArms",
-      "special_description": "Integrated Flamer, Repairs Vehicles",
+      "special_properties": ["Integrated Flamer, Repairs Vehicles"],
       "description": "This master servo harness includes additional mechanical arms and tools, allowing a greater capacity and rate of repairs.",
         "melee_hands": 0.25,
         "ranged_hands": 0.25,  
     },
     "Smoke Launchers": {
-      "special_description": "",
-      "description": "Useful for providing concealment in open terrain, these launchers project wide-spectrum concealing smoke to prevent accurate targeting of the vehicle. ",
+      "description": "Useful for providing concealment in open terrain, these launchers project wide-spectrum concealing smoke to prevent accurate targeting of the vehicle.",
       "abbreviation": "SmkLnchrs",
-      "tags":["smoke","conceal"]
+      "tags":["smoke","conceal", "vehicle"]
     },
     "Dozer Blades": {
-      "special_description": "",
       "description": "An attachment for the front of vehicles, useful for clearing difficult terrain and can be used as an improvised weapon. ",
       "abbreviation": "DzrBlds",
-      "tags":[]
+       "tags":["vehicle"],              
     },
     "Searchlight": {
-      "special_description": "",
-      "description": "A simple solution for fighting in dark environments, searchlights serve to illuminate enemies for easier targeting. ",
+      "description": "A simple solution for fighting in dark environments, searchlights serve to illuminate enemies for ease of targeting.",
       "abbreviation": "SrchLght",
-      "tags":[]
+       "tags":["vehicle"],              
     },
     "Frag Assault Launchers": {
         "abbreviation": "FrgAssLnchrs", 
         "description": "",
+         "tags":["vehicle"],              
     },             
   },
   "mobility":{
    "Bike": {
     "abbreviation": "Bike",
-      "special_description": "Integrated Twin Linked-Bolters",
-      "description": "A robust bike that can propel a marine at very high speeds. Boasts highly responsive controls and Twin Linked Bolters.",
+      "special_properties": ["Integrated Twin Linked-Bolters"],
+      "description": "A robust bike that can propel an Astartes at very high speeds. Boasts highly responsive controls that allow for fluid movement on the battlefield and and respectable Twin-Linked Bolters for offensive action.",
       "hp_mod": {
         "standard": 25,
         "master_crafted": 25,
@@ -1859,8 +1976,7 @@ global.gear = {
 
     "Jump Pack": {
     "abbreviation": "JmpPck",
-      "special_description": "",
-      "description": "A back-mounted device containing turbines or jets powerful enough to lift even a user in Power Armour.",
+      "description": "A back-mounted device containing jets powerful enough to lift an Astartes in Power Armor over great distances. Utilizing these, Assault Marines bring devastation to the foe.",
       "hp_mod": {
         "standard": 5,
         "master_crafted": 5,
@@ -1875,7 +1991,7 @@ global.gear = {
     },
     "Heavy Weapons Pack": {
     "abbreviation": "HvyWpPck",
-      "description": "A heavy ammunition backpack commonly used by devastators in conjunction with a heavy ranged weapon.",
+      "description": "A heavy ammunition backpack commonly used by devastators in conjunction with a heavy support weapon.",
       "ranged_mod": {
         "standard": 5,
         "master_crafted": 10,
@@ -1890,8 +2006,8 @@ global.gear = {
 
 function equipment_struct(item_data, core_type,quality="none") constructor{ 
     //This could be done with 2d arrays [[],[]]
-    var names = ["hp_mod", "description","damage_resistance_mod", "ranged_mod", "melee_mod","armour_value" ,"attack","melee_hands","ranged_hands","ammo","range","spli","arp","special_description","abbreviation","tags","name","second_profiles","req_exp"];
-    var defaults = [0,"",0,0,0,0,0,0,0,0,0,0,0,"","",[],"",[],0];
+    var names = ["hp_mod", "description","damage_resistance_mod", "ranged_mod", "melee_mod","armour_value" ,"attack","melee_hands","ranged_hands","ammo","range","spli","arp","special_description", "special_properties", "abbreviation","tags","name","second_profiles","req_exp"];
+    var defaults = [0,"",0,0,0,0,0,0,0,0,0,0,0,"",[],"",[],"",[],0];
     type = core_type;
     for (var i=0;i<array_length(names);i++){
         if (struct_exists(item_data,names[i])){
@@ -1909,49 +2025,50 @@ function equipment_struct(item_data, core_type,quality="none") constructor{
             self[$names[i]]=defaults[i];
         }
     }
+    variable_struct_set(self, "quality", quality=="none"?"standard":quality);
 
     static item_tooltip_desc_gen = function(){
-        item_desc_tooltip = ""
+        item_desc_tooltip = "";
         var stat_order;
         var item_type = type;
         if (type==""){
             if struct_exists(global.gear[$ "armour"],name){
-                item_type = "armour"
+                item_type = "armour";
             }
             else if struct_exists(global.gear[$ "mobility"],name){
-                item_type = "mobility"
+                item_type = "mobility";
             }
             else if struct_exists(global.gear[$ "gear"],name){
-                item_type = "gear"
+                item_type = "gear";
             }
             else if struct_exists(global.weapons,name){
-                item_type = "weapon"
+                item_type = "weapon";
             }
             else{
-                item_desc_tooltip = "Error: Item not found!"
-                return item_desc_tooltip
+                item_desc_tooltip = "Error: Item not found!";
+                return item_desc_tooltip;
             }
         }
         switch (item_type) {
-            case "armour":
-                stat_order = ["description", "armour_value", "damage_resistance_mod", "hp_mod", "attack", "ranged_mod", "melee_mod", "ammo", "range", "melee_hands", "ranged_hands", "arp", "spli", "special_description", "req_exp", "tags"];
-                break;
-            case "mobility":
-                stat_order = ["description", "special_description", "armour_value", "hp_mod", "damage_resistance_mod", "attack", "ranged_mod", "melee_mod", "ammo", "range", "melee_hands", "ranged_hands", "arp", "spli", "req_exp", "tags"];
-                break;
-            case "gear":
-                stat_order = ["description", "special_description", "armour_value", "hp_mod", "damage_resistance_mod", "attack", "ranged_mod", "melee_mod", "ammo", "range", "melee_hands", "ranged_hands", "arp", "spli", "req_exp", "tags"];
+            default:
+                stat_order = ["description", "special_description", "quality", "armour_value", "damage_resistance_mod", "hp_mod", "ranged_mod", "melee_mod", "attack", "spli", "range", "ammo", "melee_hands", "ranged_hands", "special_properties", "req_exp", "tags"];
                 break;
             case "weapon":
-                stat_order = ["description", "attack", "ranged_mod", "melee_mod", "ammo", "range", "armour_value", "hp_mod", "damage_resistance_mod", "melee_hands", "ranged_hands", "arp", "spli", "special_description", "req_exp", "tags"];
+                stat_order = ["description", "special_description", "quality", "attack", "spli", "range", "ammo", "ranged_mod", "melee_mod", "armour_value", "hp_mod", "damage_resistance_mod", "melee_hands", "ranged_hands", "special_properties", "req_exp", "tags"];
                 break;
             }
+			
         for (var i = 0; i < array_length(stat_order); i++) {
             var stat = stat_order[i];
             switch (stat) {
                 case "description":
                     if (description!=""){
                         item_desc_tooltip += $"{description}##"
+                    }
+                    break;
+                case "quality":
+                    if (quality!=""){
+                        item_desc_tooltip += $"Quality: {quality_string_conversion(quality)}##"
                     }
                     break;
                 case "armour_value":
@@ -1977,6 +2094,11 @@ function equipment_struct(item_data, core_type,quality="none") constructor{
                 case "attack":
                     if (attack!=0){
                         item_desc_tooltip += $"Damage: {attack}#"
+                    }
+                    break;
+                case "spli":
+                    if (spli>0){
+                        item_desc_tooltip += $"Attack Count: {spli}#"
                     }
                     break;
                 case "ranged_mod":
@@ -2005,7 +2127,7 @@ function equipment_struct(item_data, core_type,quality="none") constructor{
                             item_desc_tooltip += $"Melee Burden: {melee_hands}#"
                         }
                         else{
-                            item_desc_tooltip += $"Melee Cap: {format_number_with_sign(melee_hands)}#"
+                            item_desc_tooltip += $"Melee Burden Cap: {format_number_with_sign(melee_hands)}#"
                         }
                     }
                     break;
@@ -2015,34 +2137,54 @@ function equipment_struct(item_data, core_type,quality="none") constructor{
                             item_desc_tooltip += $"Ranged Burden: {ranged_hands}#"
                         }
                         else{
-                            item_desc_tooltip += $"Ranged Cap: {format_number_with_sign(ranged_hands)}#"
+                            item_desc_tooltip += $"Ranged Burden Cap: {format_number_with_sign(ranged_hands)}#"
                         }
                     }
                     break;
-                case "arp":
+                case "special_properties":
+                    var special_properties_array = [];
+                    if (array_length(special_properties)>0){
+                        for (var k = 0; k < array_length(special_properties); k++) {
+                            array_push(special_properties_array, special_properties[k]);
+                        }
+                    }
                     if (arp>0){
-                        item_desc_tooltip += $"Armour Piercing#"
-                    } else if (arp<0){
-                        item_desc_tooltip += $"Low Penetration#"
+                        array_push(special_properties_array, "Armour Piercing")
+                    } 
+                    else if (arp<0){
+                        array_push(special_properties_array, "Low Penetration")
                     }
-                    break;
-                case "spli":
-                    if (spli!=0){
-                        if (range>1.1){
-                            item_desc_tooltip += $"Ranged, Rapid Fire#"
-                        } else {
-                            item_desc_tooltip += $"Melee, Splash#"
+                    if (array_length(second_profiles)>0){
+                        for (var h = 0; h < array_length(second_profiles); h++) {
+                            if (string_pos("Integrated", second_profiles[h]) == 0) {
+                                var integrated_member = "Integrated " + second_profiles[h];
+                                array_push(special_properties_array, integrated_member);
+                            }
+                            else{
+                                array_push(special_properties_array, second_profiles[h]);
+                            }
                         }
+                        //item_desc_tooltip += $"#Properties:#{special_properties_string}#"
+                    }
+                    if (array_length(special_properties_array)>0){
+                        var special_properties_string = ""
+                        for (var j = 0; j < array_length(special_properties_array); j++) {
+                            special_properties_string += special_properties_array[j]
+                            if (j < array_length(special_properties_array) - 1) {
+                                special_properties_string += ", "
+                            }
+                        }
+                        item_desc_tooltip += $"#Properties:#{special_properties_string}#"
                     }
                     break;
                 case "special_description":
                     if (special_description!=""){
-                        item_desc_tooltip += $"{special_description}#"
+                        item_desc_tooltip += $"#{special_description}#"
                     }
                     break;
                 case "req_exp":
                     if (req_exp>0){
-                        item_desc_tooltip += $"Requires {req_exp} XP#"
+                        item_desc_tooltip += $"#Requires {req_exp} EXP#"
                     }
                     break;
                 case "tags":
@@ -2189,16 +2331,36 @@ function gear_weapon_data(search_area="any",item,wanted_data="all", sub_class=fa
 }
 
 function quality_string_conversion(quality){
-    if (quality=="standard") then return "";
-    var qaulity_conversions = {
-        master_crafted:"Master Crafted ",
-        artificer:"Articifer ",
-        artifact:"Artifact ",
-        exemplary:"Exemplary "
+    var quality_conversions = {
+        standard:"Normal",
+        master_crafted:"Master Crafted",
+        artificer:"Articifer",
+        artifact:"Artifact",
+        exemplary:"Exemplary"
     }
-    if (struct_exists(qaulity_conversions, quality)){
-        return qaulity_conversions[$ quality]
+    if (struct_exists(quality_conversions, quality)){
+        return quality_conversions[$ quality]
     } else {return "";}
+}
+
+function quality_color(_item_quality){
+    switch(_item_quality){
+        case "standard":
+            return(draw_get_color())
+            break;
+        case "master_crafted":
+            return(#bf9340);
+            break;
+        case "artificer":
+            return(#bf4040);
+            break;
+        case "artifact":
+            return(#40bfbf);
+            break;
+        case "exemplary":
+            return(#80bf40);
+            break;
+    }
 }
 
 function format_number_with_sign(number){

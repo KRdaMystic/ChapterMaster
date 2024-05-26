@@ -29,6 +29,7 @@ draw_text_transformed(xx+1490,yy+76,string_hash_to_newline("Ships"),0.6,0.6,0);
 
 
 
+
 if (obj_controller.cooldown<=0){
     repeat(39){
         i+=1;y2+=20;
@@ -67,6 +68,7 @@ if (obj_controller.cooldown<=0){
         }
     }
 }
+
 
 
 

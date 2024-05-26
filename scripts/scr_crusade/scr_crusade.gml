@@ -37,9 +37,10 @@ function scr_crusade() {
 	for (co=0;co<=10;co++){
 	    for (i=0;i<=500;i++){
         	good=0;dead=false;
-        	if (obj_ini.name[co][i]=="" || obj_ini.lid==0) then continue;
-        
-            if (array_contains(total_ship_id,obj_ini.lid[co][i])){
+        	if (obj_ini.name[co][i]=="") then continue;
+        		unit=fetch_unit([co, i]);
+        		if (unit.ship_location==0) then continue;
+            if (array_contains(total_ship_id,unit.ship_location)){
             	unit=obj_ini.TTRPG[co][i];
                 death_determination=floor(random(100))+1;
                 //specialist trait greatly reduces death risk
@@ -76,7 +77,7 @@ function scr_crusade() {
 	           	}
                 if (dead){               	
                     var man_size=0;
-                    obj_ini.ship_carrying[obj_ini.lid[co][i]]-=unit.get_unit_size();
+                    obj_ini.ship_carrying[unit.ship_location]-=unit.get_unit_size();
                 	if (unit.IsSpecialist("standard",true)){
                 		obj_controller.command--;
                 	} else {
@@ -168,15 +169,9 @@ function launch_crusade(){
 	}
 	else{
 		var assigned_crusade = false;
-		for(var i = 1; i <= star_id.planets && !assigned_crusade;i++){
-			for(var j = 1; j <= 4 && !assigned_crusade;  j++){
-				if(star_id.p_problem[i][j] == ""){
-					star_id.p_problem[i][j] = "great_crusade";
-					star_id.p_timer[i][j] = 36;
-					assigned_crusade = true;
-					break;
-				}
-			}
+		for(var i = 1; i <= star_id.planets;i++){
+			assigned_crusade = add_new_problem(i, "great_crusade", 36,star_id);
+			if (assigned_crusade>0) then break;
 		}
 		if(!assigned_crusade){
 			debugl("RE: Crusade, couldn't assign a crusade at the system");
@@ -188,7 +183,7 @@ function launch_crusade(){
 			var star_alert = instance_create(star_id.x+16,star_id.y-24,obj_star_event);
 			star_alert.image_alpha=1;
 			star_alert.image_speed=1;
-			scr_event_log("","A Crusade is called; our forces are expected at "+string(star_id.name)+" in 36 months.");
+			scr_event_log("","A Crusade is called; our forces are expected at "+string(star_id.name)+" in 36 months.", star_id.name);
 			return true;	
 		}
 	}

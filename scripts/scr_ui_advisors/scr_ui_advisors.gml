@@ -1170,7 +1170,7 @@ function scr_ui_advisors() {
             draw_set_halign(fa_left);
 
             var t_eta = 0;
-            for (var qp = 1, n = 0; qp <= 300 && n < 36; qp++) {
+            for (var qp = 0, n = 0; qp <= 300 && n < 36; qp++) {
                 if (recruit_name[qp] != "") {
                     n++;
                     draw_rectangle(xx + 947, yy + 100 + ((n - 1) * 20), xx + 1577, yy + 100 + (n * 20), 1);
@@ -1331,9 +1331,9 @@ function scr_ui_advisors() {
 
 
         draw_text_ext(xx + 222, yy + 216, string_hash_to_newline(string(tot_ki)), -1, 396);
-
-        if (obj_ini.lid[0, 1] = 0) then draw_text(xx + 222, yy + 380, string_hash_to_newline("Current Location: " + string(obj_ini.loc[0, 1]) + " " + string(obj_ini.TTRPG[0, 1].planet_location) + "#Health: " + string(obj_ini.hp[0, 1]) + "%"));
-        if (obj_ini.lid[0, 1] > 0) then draw_text(xx + 222, yy + 380, string_hash_to_newline("Current Location: Onboard " + string(obj_ini.ship[obj_ini.lid[0, 1]]) + "#Health: " + string(obj_ini.hp[0, 1]) + "%"));
+        var unit = fetch_unit([0,1]);
+        if (unit.ship_location = 0) then draw_text(xx + 222, yy + 380, string_hash_to_newline("Current Location: " + string(obj_ini.loc[0, 1]) + " " + string(unit.planet_location) + "#Health: " + unit.hp() + "%"));
+        if (unit.ship_location > 0) then draw_text(xx + 222, yy + 380, string_hash_to_newline("Current Location: Onboard " + string(obj_ini.ship[unit.ship_location]) + "#Health: " + string(obj_ini.hp[0, 1]) + "%"));
         draw_text(xx + 222.5, yy + 380.5, string_hash_to_newline("Current Location:#Health:"));
 
         draw_sprite(spr_arrow, 0, xx + 217, yy + 32);

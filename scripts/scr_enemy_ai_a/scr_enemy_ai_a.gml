@@ -1,6 +1,6 @@
 
 function scr_enemy_ai_a() {
-
+	system_garrison = [];
 	// guardsmen hop from planet to planet
 	if (p_guardsmen[1]+p_guardsmen[2]+p_guardsmen[3]+p_guardsmen[4]>0) and (present_fleet[2]>0){
 	    var o=0,mx=0,cr=0,tr=0;
@@ -38,9 +38,9 @@ function scr_enemy_ai_a() {
 	    var chapter_asset_discovery,o=0,yep=0,stop=false,shitty=false;
     
 	    chapter_asset_discovery=floor(random(200))+1;
-	    repeat(planets){
-	    	o+=1;
-	    	if (array_contains(obj_ini.dis,"Shitty Luck")) then shitty=true;}
+
+	    if (array_contains(obj_ini.dis,"Shitty Luck")) then shitty=true;
+
 	    if (shitty=true) then chapter_asset_discovery=floor(random(50))+1;
     
 	    if (present_fleet[1]=0){
@@ -51,15 +51,17 @@ function scr_enemy_ai_a() {
 	    // 137 ; chapter_asset_discovery=floor(random(20))+1;
     
 	    o=0;
-	    repeat(planets){
-	    	o+=1;
-	        if (p_first[o]=1) and (p_owner[o]=2) then p_owner[o]=1;
-	        if (p_type[o]="Dead") and (array_length(p_upgrades[o])>0){
-	            if (planet_feature_bool(p_feature[o], P_features.Secret_Base)==0) /*and (string_count(".0|",p_upgrades[o])>0)*/{
-	                if (chapter_asset_discovery<=2) then yep=o;
-	            }
-	        }
-	    }
+	    if (chapter_asset_discovery<=5){
+		    repeat(planets){
+		    	o+=1;
+		        if (p_first[o]=1) and (p_owner[o]=2) then p_owner[o]=1;
+		        if (p_type[o]=="Dead") and (array_length(p_upgrades[o])>0){
+		            if (planet_feature_bool(p_feature[o], [P_features.Secret_Base,P_features.Arsenal,P_features.Gene_Vault])==0) /*and (string_count(".0|",p_upgrades[o])>0)*/{
+		                yep=o;
+		            }
+		        }
+		    }
+		}
     	
     	//if an inquis wants to check out a dead world with chapter assets
 	    if (yep>0){
@@ -67,10 +69,10 @@ function scr_enemy_ai_a() {
 	        with(obj_en_fleet){
 	        	//checks if there is already an inquis ship investigating planet
 	            if (owner=4){
-	                if (point_distance(action_x,action_y,planet_coords[0],planet_coords[1])<2 && 
+	                if (point_distance(action_x,action_y,planet_coords[0],planet_coords[1])<30 && 
 	                	string_count("investigate_dead",trade_goods)>0){
-	                		stop=true;
-	            		}
+	                	stop=true;
+	            	}
 	            }
 	        }
         	
@@ -79,30 +81,15 @@ function scr_enemy_ai_a() {
 	            var plap=0,old_x=x,old_y=y,flee=0;
             	var _current_planet_name = name;
             	var launch_planet, launch_point_found=false;
-            	with (obj_star){
-            		if (name!=_current_planet_name && (owner=eFACTION.Imperium || owner=eFACTION.Mechanicus)){
-            			if (point_in_rectangle(x,y, old_x-1000, old_y-1000,old_x+1000, old_y+1000)){
-            				launch_planet=self;
-            				launch_point_found=true;
-            				break;
-            			}
-            		}
-            	}
-            	if (launch_point_found){
+            	launch_planet = nearest_star_with_ownership(x,y, [owner=eFACTION.Imperium || owner=eFACTION.Mechanicus]);
+
+            	if (instance_exists(launch_planet)){
 		            flee=instance_create(launch_planet.x,launch_planet.y-24,obj_en_fleet);
-		            flee.owner=4;
-		            flee.frigate_number=1;
+		            with (flee){
+		            	base_inquis_fleet();
+		            }
 		            flee.action_x=x;
 		            flee.action_y=y;
-		            flee.sprite_index=spr_fleet_inquisition;
-		            flee.image_index=0;
-	            
-		            var roll=floor(random(100))+1;
-		            if (roll<=60) then flee.trade_goods="Inqis1";
-		            if (roll<=70) and (roll>60) then flee.trade_goods="Inqis2";
-		            if (roll<=80) and (roll>70) then flee.trade_goods="Inqis3";
-		            if (roll<=90) and (roll>80) then flee.trade_goods="Inqis4";
-		            if (roll<=100) and (roll>90) then flee.trade_goods="Inqis5";
 		            flee.trade_goods+="|investigate_dead|";
 		            flee.alarm[4]=1;
             	}
@@ -113,12 +100,13 @@ function scr_enemy_ai_a() {
 
 	var run=0, stop;
 	var rand=0;
-    var garrison_force=false, garrisons=[], total_garrison=0;
+    var garrison_force=false, total_garrison=0;
 	for (run =1;run<5;run++){
 		garrison_force=false;
 		if (run>planets){break;}
-	     garrison = new garrison_force(p_operatives[run]);
+	     garrison = new garrison_force(p_operatives[run], true);
 	     garrison_force = garrison.garrison_force;
+	     array_push(system_garrison, garrison);
 
 		stop=0;
 	    if (p_eldar[run]<0) then p_eldar[run]=0;
@@ -216,7 +204,12 @@ function scr_enemy_ai_a() {
 	        if (p_tyranids[run]>=5) then tyranids_score=7;
 	    }
     
-    
+     	var pdf_with_player=false;
+    	var pdf_loss_reduction=p_fortified[run]*0.001;//redues man loss from battle loss if higher defences
+    	if (p_owner[run]!=8) && (p_owner[run]=1 ||obj_controller.faction_status[2]!="War") && (garrison_force){
+    		pdf_with_player = true;
+        	pdf_loss_reduction+=garrison.viable_garrison*0.0005;
+    	}   
     
 	    if (p_guardsmen[run]>0) and (stop!=1){
 	       if (p_guardsmen[run] < 500) {
@@ -258,41 +251,15 @@ function scr_enemy_ai_a() {
 	        // Tend to prioritize traitors > Orks > Tau
 	        // Eldar don't get into pitched battles so nyuck nyuck nyuck
 	    }
-    	var pdf_with_player=false;
-    	var pdf_loss_reduction=p_defenses[run]*0.001;//redues man loss from battle loss if higher defences
-    	if (p_owner[run]!=8) && (p_owner[run]=1 ||obj_controller.faction_status[2]!="War") && (garrison_force){
-    		pdf_with_player = true;
-        	pdf_loss_reduction+=garrison.total_garrison*0.0005;
-    	}
 	    if (((p_guardsmen[run]=0) or ((guard_score<=0.5))) or (p_owner[run]==8)) or ((p_guardsmen[run]>0) and (obj_controller.faction_status[2]="War")) and (p_pdf[run]>0) and (stop!=1){
 	    	var pdf_mod;
-	    	var defence_mult = p_defenses[run]*0.1;
+	    	var defence_mult = p_fortified[run]*0.1;
+
 	    	if (pdf_with_player){//if player supports give garrison bonus
-		    	var garrison_mult = garrison.total_garrison*(0.008+(0.001*p_defenses[run]))
-		    	garrison.find_leader();
-		    	defence_mult+=garrison_mult
-		    	defence_mult*=(garrison.garrison_leader.wisdom)/40;//modified by how good a commander the garrison leader is
-		    	//makes pdf more effective if planet has defences or marines present
+		    	pdf_score=determine_pdf_defence(p_pdf[run],garrison,p_fortified[run])[0];
+	    	} else{
+	    		pdf_score=determine_pdf_defence(p_pdf[run],,p_fortified[run])[0];
 	    	}
-	    	pdf_mod=p_pdf[run]
-	        if (pdf_mod >= 50000000){
-			    pdf_score = 6;
-			} else if (pdf_mod < 50000000 && pdf_mod >= 15000000) {
-			    pdf_score = 5;
-			} else if (pdf_mod < 15000000 && pdf_mod >= 6000000) {
-			    pdf_score = 4;
-			} else if (pdf_mod< 6000000 && pdf_mod >= 1000000) {
-			    pdf_score = 3;
-			} else if (pdf_mod < 1000000 && pdf_mod >= 100000) {
-			    pdf_score = 2;
-			} else if (pdf_mod < 100000 && pdf_mod >= 2000) {
-			    pdf_score = 1;
-			} else if (pdf_mod < 2000) {
-			    pdf_score = 0.5;
-			} else if (pdf_mod < 500) {
-			    pdf_score = 0.1;
-			}
-			pdf_score*=(1+defence_mult);
 	        // 
 	        // if (p_eldar[run]>0) and (p_owner[run]!=6) then pdf_attack="eldar";
 	        if (p_tyranids[run]>=4) then pdf_attack="tyranids";
@@ -682,12 +649,12 @@ function scr_enemy_ai_a() {
 	        }else if (ork_attack="pdf"){
 	        	var pdf_random = choose(1,2,3,4,5,6);
 	            rand2=(pdf_random*pdf_score);
+	            var active_garrison = pdf_with_player && garrison.viable_garrison>0;
 	            if (rand1>rand2){
-	            	var active_garrison = pdf_with_player && garrison.total_garrison>0;
-	                if (ork_score>=4) and (p_pdf[run]<=30000) {p_pdf[run]=floor(p_pdf[run]*(min(0.95, 0.55+pdf_loss_reduction)));}
-	                else if (ork_score>=4) and (p_pdf[run]<30000){ p_pdf[run]=active_garrison?p_pdf[run]*0.4:0;}
+	                if (ork_score>=4) and (p_pdf[run]>=30000) {p_pdf[run]=floor(p_pdf[run]*(min(0.95, 0.55+pdf_loss_reduction)));}
+	                else if (ork_score>=4 && p_pdf[run]<30000 && p_pdf[run]>=10000){ p_pdf[run]=active_garrison?p_pdf[run]*0.4:0;}
 	                else if (ork_score>=3) and (p_pdf[run]<10000){ p_pdf[run]=active_garrison?p_pdf[run]*0.4:0;}
-	                else if (ork_score<=3 && p_pdf[run]>30000){
+	                else if (ork_score<3 && p_pdf[run]>30000){
 	                	p_pdf[run]=floor(p_pdf[run]*(min(0.95, 0.7+pdf_loss_reduction)));
 	                }
 	                else if (ork_score>=2) and (p_pdf[run]<2000){ p_pdf[run]=0;}
@@ -695,15 +662,19 @@ function scr_enemy_ai_a() {
 
 	                if (active_garrison){
 	                	var tixt = $"Chapter Forces led by {garrison.garrison_leader.name_role()} on {name} {scr_roman_numerals()[run-1]} were unable to secure PDF victory chapter support requested";
+	                	if (garrison.garrison_sustain_damages("loose")>0){
+	                		tixt += $". {garrison.garrison_sustain_damages()} Marines Lost";
+	                	}
 	                	scr_alert("red","owner",tixt,x,y);
 	                	//garrison.determine_battle(false,rand2-rand1, eFACTION.Ork);
 	                }
-	                for (var i=0;i<array_length(garrisons);i++){
-	                	//garrisons.pdf_support_outcome(ork_score,rand2-rand1,"orks", pdf_score/defence_mult);
-	                }
 	            } else {
-	            	if (pdf_with_player && (pdf_random*(pdf_score/(1+defence_mult)))<rand1){
+	            	if (active_garrison){
+	            		garrison.garrison_sustain_damages();
 	            		var tixt = $"Chapter Forces led by {garrison.garrison_leader.name_role()} on {name} {scr_roman_numerals()[run-1]} secure PDF victory";
+	                	if (garrison.garrison_sustain_damages("win")>0){
+	                		tixt += $". {garrison.garrison_sustain_damages()} Marines Lost";
+	                	}	            		
 	            		scr_alert("green","owner",tixt,x,y);
 	            	}
 	            }
@@ -729,7 +700,7 @@ function scr_enemy_ai_a() {
 					    } // diso[run] is the disposition of the planet. where run refer to the planet that is currently running the code.
 					    if (badd = 2) and(p_tyranids[run] = 0) and(p_necrons[run] = 0) and(p_sisters[run] = 0) {
 					        scr_popup("System Lost", "The " + string(name) + " system has been ovewhelmed by Orks!", "orks", "");
-					        scr_event_log("red", "System " + string(name) + " has been overwhelmed by Orkz.");
+					        scr_event_log("red", "System " + string(name) + " has been overwhelmed by Orkz.", name);
 					        // owner=7;p_owner[1]=7;p_owner[2]=7;p_owner[3]=7;p_owner[4]=7;
 					    }
 					}
@@ -942,7 +913,7 @@ function scr_enemy_ai_a() {
 					
 	                if (badd=2) and (p_tyranids[run]<5) and (p_orks[run]=0) and (p_traitors[run]=0){
 	                    scr_popup("System Lost","The "+string(name)+" system has been ovewhelmed by Necrons!","necron_army","");
-	                    scr_event_log("red","System "+string(name)+" has been overwhelmed by Necrons.");
+	                    scr_event_log("red","System "+string(name)+" has been overwhelmed by Necrons.", name);
 	                }
 	            }
             
@@ -971,106 +942,55 @@ function scr_enemy_ai_a() {
     
 	    // 135;
 	    p_time_since_saved[run] = 0;
-	    if (p_owner[run] = 7) and(p_player[run] + p_raided[run] > 0) and(p_orks[run] = 0) and(p_tyranids[run] < 4) and(p_chaos[run] = 0) and(p_traitors[run] = 0) and(p_necrons[run] = 0) and(p_tau[run] = 0) {
-	        scr_event_log("", "Orks cleansed from " + string(name) + " " + scr_roman(run));
-	        if (p_first[run] = 1) and((obj_controller.turn - p_time_since_saved[run]) >= 5) {
-	            p_owner[run] = 1;
-	            scr_alert("green", "owner", "Orks cleansed from " + string(name) + " " + scr_roman(run) + ".", x, y);
-	            dispo[run] += 10;
-	            p_time_since_saved[run] = obj_controller.turn;
-	            obj_controller.disposition[5] += 5;
-	        } // 10 Disposition increase for returning control to the governor Planet disposition
-	        if (p_first[run] = 2) and((obj_controller.turn - p_time_since_saved[run]) >= 5) {
-	            p_owner[run] = 2;
-	            scr_alert("green", "owner", "Orks cleansed from " + string(name) + " " + scr_roman(run) + ".  Control returned to the governor.", x, y);
-	            dispo[run] += 10;
-	            p_time_since_saved[run] = obj_controller.turn;
-	        } // 10 Disposition increase for returning control to the governor Planet disposition
-	        if (p_first[run] = 3) and((obj_controller.turn - p_time_since_saved[run]) >= 5) {
-	            p_owner[run] = 3;
-	            scr_alert("green", "owner", "Orks cleansed from " + string(name) + " " + scr_roman(run) + ".  Control returned to Mechanicus.", x, y);
-	            obj_controller.disposition[3] += 10;
-	            dispo[run] += 10;
-	            p_time_since_saved[run] = obj_controller.turn;
-	        } // 10 Disposition increase for returning control to the governor Planet disposition
-	        if (dispo[run] = 101) then p_owner[run] = 1;
+	    var planet_saved =  ((p_player[run] + p_raided[run]) > 0 && p_orks[run] = 0 && p_tyranids[run] < 4 && p_chaos[run] = 0 && p_traitors[run] = 0 && p_necrons[run] = 0 && p_tau[run] = 0);
+
+	    if (planet_saved){
+	    	var who_cleansed="";
+	    	var who_return="";
+	    	var make_alert = false;
+	    	var planet_string = $"{name} {scr_roman(run)}";
+			if (p_owner[run] = 7) {
+				who_cleansed="Orks"
+				make_alert=true;
+			}else if (p_owner[run] = 8 && p_pdf[run] = 0) {
+				who_cleansed="Tau"
+				make_alert=true;				
+			}else if (p_owner[run] = 13) {
+				who_cleansed="Necrons"
+				make_alert=true;				
+			}else if (p_owner[run] = 10) {
+				who_cleansed="Chaos"
+				make_alert=true;				
+			} else if (planet_feature_bool(p_feature[run], P_features.Gene_Stealer_Cult) && p_tyranids[run] <= 0){
+				who_cleansed="Gene Stealer Cult"
+				make_alert=true;
+				delete_features(p_feature[run], P_features.Gene_Stealer_Cult)
+			}
+			 if (make_alert){
+				 if (p_first[run] = 1){
+				 	p_owner[run] = eFACTION.Player;
+				 	who_return = "your";
+				 } else if (p_first[run] = 3 || p_type[run]=="Forge"){
+				 	who_return="mechanicus";
+				 	obj_controller.disposition[3] += 10;
+				 	p_owner[run] = eFACTION.Mechanicus
+				 }else  if (p_type[run]!="Dead"){
+				 	who_return="the governor";
+				 	if (who_cleansed=="tau"){
+				 		who_return="a more suitable governer"
+				 	}
+				 	p_owner[run] = eFACTION.Imperium;
+				 }			 	
+			 	dispo[run] += 10;
+			 	scr_event_log("", $"{who_cleansed} cleansed from {planet_string}", name);
+			 	scr_alert("green", "owner", $"{who_cleansed} cleansed from {planet_string}. Control returned to {who_return}", x, y);
+			 	if (dispo[run] >= 101) then p_owner[run] = 1;
+			 }
+   	
 	    }
-	    if (p_owner[run] = 8) and(p_player[run] + p_raided[run] > 0) and(p_orks[run] = 0) and(p_tyranids[run] < 4) and(p_chaos[run] = 0) and(p_traitors[run] = 0) and(p_necrons[run] = 0) and(p_tau[run] = 0) and(p_pdf[run] = 0) {
-	        scr_event_log("", "Tau cleansed from " + string(name) + " " + scr_roman(run));
-	        if (p_first[run] = 1) and((obj_controller.turn - p_time_since_saved[run]) >= 5) {
-	            p_owner[run] = 1;
-	            scr_alert("green", "owner", "Tau cleansed from " + string(name) + " " + scr_roman(run) + ".", x, y);
-	            dispo[run] += 10;
-	            p_time_since_saved[run] = obj_controller.turn;
-	            obj_controller.disposition[5] += 5;
-	        } // 10 Disposition increase for returning control to the governor Planet disposition
-	        if (p_first[run] = 2) and((obj_controller.turn - p_time_since_saved[run]) >= 5) {
-	            p_owner[run] = 2;
-	            scr_alert("green", "owner", "Tau cleansed from " + string(name) + " " + scr_roman(run) + ".  Control given to new governor.", x, y);
-	            dispo[run] += 10;
-	            p_time_since_saved[run] = obj_controller.turn
-	        } // 10 Disposition increase for returning control to the governor Planet disposition
-	        if (p_first[run] = 3) and((obj_controller.turn - p_time_since_saved[run]) >= 5) {
-	            p_owner[run] = 3;
-	            scr_alert("green", "owner", "Tau cleansed from " + string(name) + " " + scr_roman(run) + ".  Control returned to Mechanicus.", x, y);
-	            obj_controller.disposition[3] += 10;
-	            dispo[run] += 10;
-	            p_time_since_saved[run] = obj_controller.turn
-	        } // 10 Disposition increase for returning control to the governor Planet disposition
-	        if (dispo[run] = 101) then p_owner[run] = 1;
-	    }
-	    if (p_owner[run] = 10) and(p_player[run] + p_raided[run] > 0) and(p_orks[run] = 0) and(p_tyranids[run] < 4) and(p_chaos[run] = 0) and(p_traitors[run] = 0) and(p_necrons[run] = 0) and(p_tau[run] = 0) {
-	        scr_event_log("", "Chaos cleansed from " + string(name) + " " + scr_roman(run));
-	        if (p_first[run] = 1) and((obj_controller.turn - p_time_since_saved[run]) >= 5) {
-	            p_owner[run] = 1;
-	            scr_alert("green", "owner", "Chaos cleansed from " + string(name) + " " + scr_roman(run) + ".", x, y);
-	            dispo[run] += 10;
-	            p_time_since_saved[run] = obj_controller.turn;
-	            obj_controller.disposition[5] += 5;
-	        } // 10 Disposition increase for returning control to the governor Planet disposition
-	        if (p_first[run] = 2) and((obj_controller.turn - p_time_since_saved[run]) >= 5) {
-	            p_owner[run] = 2;
-	            scr_alert("green", "owner", "Chaos cleansed from " + string(name) + " " + scr_roman(run) + ".  Control returned to the governor.", x, y);
-	            dispo[run] += 10;
-	            p_time_since_saved[run] = obj_controller.turn
-	        } // 10 Disposition increase for returning control to the governor Planet disposition
-	        if (p_first[run] = 3) and((obj_controller.turn - p_time_since_saved[run]) >= 5) {
-	            p_owner[run] = 3;
-	            scr_alert("green", "owner", "Chaos cleansed from " + string(name) + " " + scr_roman(run) + ".  Control returned to Mechanicus.", x, y);
-	            obj_controller.disposition[3] += 10;
-	            dispo[run] += 10;
-	            p_time_since_saved[run] = obj_controller.turn
-	        } // 10 Disposition increase for returning control to the governor Planet disposition
-	        if (dispo[run] = 101) then p_owner[run] = 1;
-	    }
-	    if (p_owner[run] = 13) and(p_player[run] + p_raided[run] > 0) and(p_orks[run] = 0) and(p_tyranids[run] < 4) and(p_chaos[run] = 0) and(p_traitors[run] = 0) and(p_necrons[run] = 0) and(p_tau[run] = 0) {
-	        if (awake_tomb_world(p_feature[run]) != 1) {
-	            scr_event_log("", "Necrons cleansed from " + string(name) + " " + scr_roman(run));
-	            if (p_first[run] = 1) and((obj_controller.turn - p_time_since_saved[run]) >= 5) {
-	                p_owner[run] = 1;
-	                scr_alert("green", "owner", "Necrons cleansed from " + string(name) + " " + scr_roman(run) + ".", x, y);
-	                dispo[run] += 10;
-	                p_time_since_save[run] = obj_controller.turn;
-	                obj_controller.disposition[5] += 5;
-	            } // 10 Disposition increase for returning control to the governor Planet disposition
-	            if (p_first[run] = 2) and((obj_controller.turn - p_time_since_saved[run]) >= 5) {
-	                p_owner[run] = 2;
-	                scr_alert("green", "owner", "Necrons cleansed from " + string(name) + " " + scr_roman(run) + ".  Control returned to the governor.", x, y);
-	                dispo[run] += 10;
-	                p_time_since_saved[run] = obj_controller.turn
-	            } // 10 Disposition increase for returning control to the governor Planet disposition
-	            if (p_first[run] = 3) and((obj_controller.turn - p_time_since_saved[run]) >= 5) {
-	                p_owner[run] = 3;
-	                scr_alert("green", "owner", "Necrons cleansed from " + string(name) + " " + scr_roman(run) + ".  Control returned to Mechanicus.", x, y);
-	                obj_controller.disposition[3] += 10;
-	                dispo[run] += 10;
-	                p_time_since_saved[run] = obj_controller.turn
-	            } // 10 Disposition increase for returning control to the governor Planet disposition
-	            if (dispo[run] = 101) then p_owner[run] = 1;
-	        }
-	    }
+	    
 	    if (p_raided[run] > 0) then p_raided[run] = 0;
-	    } // end repeat here
+	} // end repeat here
 
 
 	    // quene player battles here

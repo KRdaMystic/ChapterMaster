@@ -1,7 +1,11 @@
-
+var equip = false;
 tooltip="";tooltip2="";
-
-if (type>0){
+col_shift =  (is_string(type));
+if (!col_shift){
+    col_shift=type>0;
+    var equip = type>20;
+}
+if (col_shift){
     draw_set_color(0);
     draw_rectangle(430,536,845,748,0);
     draw_set_color(38144);
@@ -10,8 +14,7 @@ if (type>0){
     draw_rectangle(431,537,846,747,1);
     
     
-    
-    if (type<=20){
+    if (!equip){
         draw_set_font(fnt_40k_30b);
         if (type=1) then draw_text_transformed(444,550,string_hash_to_newline("Primary Color"),0.6,0.6,0);
         if (type=2) then draw_text_transformed(444,550,string_hash_to_newline("Secondary Color"),0.6,0.6,0);
@@ -20,58 +23,84 @@ if (type>0){
         if (type=5) then draw_text_transformed(444,550,string_hash_to_newline("Trim Color"),0.6,0.6,0);
         if (type=6) then draw_text_transformed(444,550,string_hash_to_newline("Lens Color"),0.6,0.6,0);
         if (type=7) then draw_text_transformed(444,550,string_hash_to_newline("Weapon Color"),0.6,0.6,0);
-    
-        rows=floor(obj_creation.colors)+1;
-        var coli,cu,tot;cu=0;coli=0;tot=0;
-        repeat(rows){coli+=1;cu=0;
-            repeat(10){cu+=1;tot+=1;
-                if (tot<=obj_creation.colors){
-                    draw_set_color(make_color_rgb(obj_creation.col_r[tot],obj_creation.col_g[tot],obj_creation.col_b[tot]));
-                    
-                    var x1,x2,y1,y2;
-                    x1=395+(cu*40);y1=541+(coli*40);
-                    x2=435+(cu*40);y2=581+(coli*40);
-                    
-                    draw_rectangle(x1,y1,x2,y2,0);
+        if (type="sgt_helm_primary") then draw_text_transformed(444,550,string_hash_to_newline("Sgt Helm"),0.6,0.6,0);
+        if (type="sgt_helm_secondary") then draw_text_transformed(444,550,string_hash_to_newline("Sgt Helm"),0.6,0.6,0);
+        rows = 4;
+        columns = 10;
+        var column;
+        var current_color = 0;
+        var row = 0;
+        repeat(rows) {
+            row += 1;
+            column = 0;
+            repeat(columns) {
+                column += 1;
+                if (current_color < global.colors_count) {
+                    draw_set_color(make_color_rgb(obj_creation.col_r[current_color], obj_creation.col_g[current_color], obj_creation.col_b[current_color]));
+                    var x1, x2, y1, y2;
+                    x1 = 396 + (column * 40);
+                    y1 = 541 + (row * 40);
+                    x2 = 436 + (column * 40);
+                    y2 = 581 + (row * 40);
+                    draw_rectangle(x1, y1, x2, y2, 0);
                     draw_set_color(38144);
-                    draw_rectangle(x1,y1,x2,y2,1);
-                    
-                    if (scr_hit(x1,y1,x2,y2)=true){
-                        draw_set_color(c_white);draw_set_alpha(0.2);
-                        draw_rectangle(x1,y1,x2,y2,0);draw_set_alpha(1);
-                        
-                        if (obj_creation.mouse_left=1) and (obj_creation.cooldown<=0){
-                            if (type=1) then obj_creation.main_color=tot;
-                            if (type=2) then obj_creation.secondary_color=tot;
-                            if (type=3) then obj_creation.pauldron2_color=tot;
-                            if (type=4) then obj_creation.pauldron_color=tot;
-                            if (type=5) then obj_creation.trim_color=tot;
-                            if (type=6) then obj_creation.lens_color=tot;
-                            if (type=7) then obj_creation.weapon_color=tot;
-                            with(obj_creation){shader_reset();}
-                            obj_creation.alarm[0]=1;obj_creation.cooldown=8000;
+                    draw_rectangle(x1, y1, x2, y2, 1);
+                    if (scr_hit(x1, y1, x2, y2) = true) {
+                        draw_set_color(c_white);
+                        draw_set_alpha(0.2);
+                        draw_rectangle(x1, y1, x2, y2, 0);
+                        draw_set_alpha(1);
+                        if (obj_creation.mouse_left = 1) and(obj_creation.cooldown <= 0) {
+                            if (type = 1) then obj_creation.main_color = current_color;
+                            if (type = 2) then obj_creation.secondary_color = current_color;
+                            if (type = 3) then obj_creation.pauldron2_color = current_color;
+                            if (type = 4) then obj_creation.pauldron_color = current_color;
+                            if (type = 5) then obj_creation.trim_color = current_color;
+                            if (type = 6) then obj_creation.lens_color = current_color;
+                            if (type = 7) then obj_creation.weapon_color = current_color;
+                            if (is_string(type)){
+                                obj_creation.complex_livery_data[$ role][$ type] = current_color;
+                            }
+                            with(obj_creation) {
+                                shader_reset();
+                            }
+                            obj_creation.alarm[0] = 1;
+                            obj_creation.cooldown = 8000;
                             instance_destroy();
                         }
                     }
+                    current_color += 1;
                 }
             }
         }
         
-        draw_set_halign(fa_center);draw_set_font(fnt_40k_14b);
-        draw_set_color(38144);draw_rectangle(634-(string_width(string_hash_to_newline("CANCEL"))/2),722,634+(string_width(string_hash_to_newline("CANCEL"))/2),742,0);
-        draw_set_color(0);draw_text(634,723,string_hash_to_newline("CANCEL"));
-        if (scr_hit(634-(string_width(string_hash_to_newline("CANCEL"))/2),722,634+(string_width(string_hash_to_newline("CANCEL"))/2),742)=true){
-            draw_set_color(c_white);draw_set_alpha(0.2);
-            draw_rectangle(634-(string_width(string_hash_to_newline("CANCEL"))/2),722,634+(string_width(string_hash_to_newline("CANCEL"))/2),742,0);draw_set_alpha(1);
-            if (obj_creation.mouse_left=1){obj_creation.cooldown=8000;instance_destroy();}
-        }draw_set_alpha(1);
-        
-        
+        draw_set_halign(fa_center);
+        draw_set_font(fnt_40k_14b);
+        draw_set_color(38144);
+        draw_rectangle(634 - (string_width(string_hash_to_newline("CANCEL")) / 2), 722, 634 + (string_width(string_hash_to_newline("CANCEL")) / 2), 742, 0);
+        draw_set_color(0);
+        draw_text(634, 723, string_hash_to_newline("CANCEL"));
+        if (scr_hit(634 - (string_width(string_hash_to_newline("CANCEL")) / 2), 722, 634 + (string_width(string_hash_to_newline("CANCEL")) / 2), 742) = true) {
+            draw_set_color(c_white);
+            draw_set_alpha(0.2);
+            draw_rectangle(634 - (string_width(string_hash_to_newline("CANCEL")) / 2), 722, 634 + (string_width(string_hash_to_newline("CANCEL")) / 2), 742, 0);
+            draw_set_alpha(1);
+            if (obj_creation.mouse_left = 1) {
+                obj_creation.cooldown = 8000;
+                instance_destroy();
+            }
+        }
+
+        if (!scr_hit(430,536,845,748) && mouse_check_button_pressed(mb_left) &&  obj_creation.cooldown == 0) {
+            obj_creation.cooldown = 8000;
+            instance_destroy();
+        }
+        draw_set_alpha(1);
     }
     
     
     
-    if (type>=100){
+    if (equip){
         var co=100,ide=type-100;
         
         draw_set_font(fnt_40k_30b);

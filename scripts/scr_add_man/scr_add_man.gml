@@ -14,7 +14,7 @@ function scr_add_man(man_role, target_company, choice_armour, choice_weapons, ch
 	var i,good, wep1, wep2, gear, mobi, arm, e, missing, unit;
 	i=0;e=0;good=0;wep1="";wep2="";gear="";mobi="";arm="";missing=0;
 
-	repeat(300){
+	repeat(500){
 	    i+=1;
 	    if (good=0){
 	        if (obj_ini.name[target_company,i]="") or (obj_ini.role[target_company,i]="") then good=i;
@@ -24,7 +24,6 @@ function scr_add_man(man_role, target_company, choice_armour, choice_weapons, ch
 
 	if (good!=0){
 	    obj_ini.race[target_company][good]=1;
-	    obj_ini.lid[target_company][good]=0;
 	    obj_ini.role[target_company][good]=man_role;
 	    obj_ini.wep1[target_company][good]="";
 	    obj_ini.wep2[target_company][good]="";
@@ -61,27 +60,36 @@ function scr_add_man(man_role, target_company, choice_armour, choice_weapons, ch
 				unit = new TTRPG_stats("mechanicus", target_company, good, "skitarii_ranger");
 				break;
 	         case "Crusader":
-	            obj_ini.wep1[target_company][good]="Power Sword";obj_ini.armuor[target_company][good]="Power Armour";
-	            obj_ini.gear[target_company][good]="Storm Shield";obj_ini.experience[target_company][good]=10;
+	            obj_ini.wep1[target_company][good]="Power Sword";
+	            obj_ini.armuor[target_company][good]="Power Armour";
+	            obj_ini.gear[target_company][good]="Storm Shield";
+	            obj_ini.experience[target_company][good]=10;
 	            obj_ini.race[target_company][good]=4;
 				unit = new TTRPG_stats("inquisition", target_company, good, "inquisition_crusader");				
 				break;
 	        case "Sister of Battle":
-	            obj_ini.wep1[target_company][good]="Bolter";obj_ini.wep2[target_company][good]="Sarissa";
-	            obj_ini.armour[target_company][good]="Power Armour";obj_ini.experience[target_company][good]=60;
+	            obj_ini.wep1[target_company][good]="Bolter";
+	            obj_ini.wep2[target_company][good]="Sarissa";
+	            obj_ini.armour[target_company][good]="Power Armour";
+	            obj_ini.experience[target_company][good]=60;
 	            obj_ini.race[target_company][good]=5;
 				unit = new TTRPG_stats("adeptus_sororitas", target_company, good, "sister_of_battle");
 				break;
 	        case "Sister Hospitaler":
-	            obj_ini.wep1[target_company][good]="Bolter";obj_ini.wep2[target_company][good]="Sarissa";
-	            obj_ini.armour[target_company][good]="Power Armour";obj_ini.experience[target_company][good]=100;
+	            obj_ini.wep1[target_company][good]="Bolter";
+	            obj_ini.wep2[target_company][good]="Sarissa";
+	            obj_ini.armour[target_company][good]="Power Armour";
+	            obj_ini.experience[target_company][good]=100;
 	            obj_ini.gear[target_company][good]="Sororitas Medkit";
-	            obj_ini.hp[target_company][good]=40;obj_ini.race[target_company][good]=5;
+	            obj_ini.hp[target_company][good]=40;
+	            obj_ini.race[target_company][good]=5;
 				unit = new TTRPG_stats("adeptus_sororitas", target_company, good, "sister_hospitaler");
 				break;
 	        case "Ork Sniper":
-	            obj_ini.wep1[target_company][good]="Sniper Rifle";obj_ini.wep2[target_company][good]="Choppa";
-	            obj_ini.armour[target_company][good]="";obj_ini.experience[target_company][good]=20;
+	            obj_ini.wep1[target_company][good]="Sniper Rifle";
+	            obj_ini.wep2[target_company][good]="Choppa";
+	            obj_ini.armour[target_company][good]="";
+	            obj_ini.experience[target_company][good]=20;
 	            obj_ini.hp[target_company][good]=45;
 	            obj_ini.race[target_company][good]=7;
 				unit = new TTRPG_stats("ork", target_company, good, "ork_Sniper");
@@ -89,8 +97,10 @@ function scr_add_man(man_role, target_company, choice_armour, choice_weapons, ch
 				break;
 	        
 	        case "Flash Git":
-	            obj_ini.wep1[target_company][good]="Snazzgun";obj_ini.wep2[target_company][good]="Choppa";
-	            obj_ini.armour[target_company][good]="Ork Armour";obj_ini.experience[target_company][good]=40;
+	            obj_ini.wep1[target_company][good]="Snazzgun";
+	            obj_ini.wep2[target_company][good]="Choppa";
+	            obj_ini.armour[target_company][good]="Ork Armour";
+	            obj_ini.experience[target_company][good]=40;
 	            obj_ini.hp[target_company][good]=65;
 	            obj_ini.race[target_company][good]=7;
 				unit = new TTRPG_stats("ork", target_company, good, "flash_git");
@@ -193,72 +203,14 @@ function scr_add_man(man_role, target_company, choice_armour, choice_weapons, ch
 	        }
 	    }
     
-    if (!array_contains(non_marine_roles,man_role)){
-		unit= new TTRPG_stats("chapter", target_company, good);
-		unit.corruption=corruption
-		marines+=1;
+	    if (!array_contains(non_marine_roles,man_role)){
+			unit= new TTRPG_stats("chapter", target_company, good);
+			unit.corruption=corruption
+			marines+=1;
 		} 
 		obj_ini.TTRPG[target_company][good] = unit;
- 	if ((home_spot="home") or (home_spot="default")) and (obj_ini.fleet_type=1){
-	        var bst=0;
-	        bst=instance_nearest(x,y,obj_star);
-        
-	        obj_ini.loc[target_company][good]=obj_ini.home_name;
-	        for (i=1;i<=bst.planets;i++){
-	        	if (bst.p_owner[i]==1) then unit.planet_location = i;
-	        }
-	    }
-    
-	    if (string_count("ship",home_spot)>0) or ((obj_ini.fleet_type!=1) and (home_spot="default")){
-	        var wop,loaded;loaded=0;
-        
-	        instance_activate_object(obj_p_fleet);
-	        wop=instance_nearest(x,y,obj_p_fleet);
-        
-	        if (wop.capital_number>0) and (loaded=0){
-	            var i,f;i=0;f=0;
-	            repeat(wop.capital_number){
-	                i+=1;
-	                if (loaded=0){
-	                    f=wop.capital_num[i];
-	                    if (obj_ini.ship_capacity[f]>obj_ini.ship_carrying[f]){
-	                        obj_ini.ship_carrying[f]+=1;obj_ini.lid[target_company][good]=f;loaded=1;
-	                        unit.planet_location=0;
-	                        obj_ini.loc[target_company][good]=obj_ini.ship_location[f];
-	                    }
-	                }
-	            }
-	        }
-	        if (wop.frigate_number>0) and (loaded=0){
-	            var i,f;i=0;f=0;
-	            repeat(wop.frigate_number){
-	                i+=1;
-	                if (loaded=0){
-	                    f=wop.frigate_num[i];
-	                    if (obj_ini.ship_capacity[f]>obj_ini.ship_carrying[f]){
-	                        obj_ini.ship_carrying[f]+=1;obj_ini.lid[target_company][good]=f;loaded=1;
-	                        unit.planet_location=0;
-	                        obj_ini.loc[target_company][good]=obj_ini.ship_location[f];
-	                    }
-	                }
-	            }
-	        }
-	        if (wop.escort_number>0) and (loaded=0){
-	            var i,f;i=0;f=0;
-	            repeat(wop.escort_number){
-	                i+=1;
-	                if (loaded=0){
-	                    f=wop.escort_num[i];
-	                    if (obj_ini.ship_capacity[f]>obj_ini.ship_carrying[f]){
-	                        obj_ini.ship_carrying[f]+=1;
-	                        obj_ini.lid[target_company][good]=f;loaded=1;
-	                        unit.planet_location=0;
-	                        obj_ini.loc[target_company][good]=obj_ini.ship_location[f];
-	                    }
-	                }
-	            }
-	        }
-	    }		
+
+		unit.allocate_unit_to_fresh_spawn(home_spot);
 	    with(obj_ini){scr_company_order(target_company);}
 	}
 

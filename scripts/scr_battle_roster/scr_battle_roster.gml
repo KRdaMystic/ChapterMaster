@@ -93,7 +93,7 @@ function scr_battle_roster(required_location, _target_location, _is_planet) {
                         }
                     } else if (!instance_exists(obj_drop_select)) { // Only when attacked, normal battle
                         if (_is_planet) and(deploying_unit.loc[company][v] == required_location) and(unit.planet_location == _target_location) and(deploying_unit.hp[company][v] > 0) and(deploying_unit.god[company][v] < 10) then okay = 1;
-                        else if (!_is_planet) and(deploying_unit.lid[company][v] == _target_location) and(deploying_unit.hp[company][v] > 0) and(deploying_unit.god[company][v] < 10) then okay = 1;
+                        else if (!_is_planet) and(unit.ship_location == _target_location) and(deploying_unit.hp[company][v] > 0) and(deploying_unit.god[company][v] < 10) then okay = 1;
 
                         if (instance_exists(obj_temp_meeting)) {
                             meeting = true;
@@ -106,10 +106,10 @@ function scr_battle_roster(required_location, _target_location, _is_planet) {
 
                         else if (obj_drop_select.attack == 1) {
                             if (_is_planet) and(deploying_unit.loc[company][v] == required_location) and(unit.planet_location == _target_location) and(deploying_unit.hp[company][v] > 0) and(deploying_unit.god[company][v] < 10) then okay = 1;
-                            else if (!_is_planet) and(deploying_unit.lid[company][v] == _target_location) and(deploying_unit.hp[company][v] > 0) and(deploying_unit.god[company][v] < 10) then okay = 1;
+                            else if (!_is_planet) and(unit.ship_location == _target_location) and(deploying_unit.hp[company][v] > 0) and(deploying_unit.god[company][v] < 10) then okay = 1;
                         } else if (obj_drop_select.attack != 1) {
                             //Related to defensive battles (¿?). Without the above check, it duplicates marines on offensive ones.
-                            if (obj_drop_select.fighting[company][v] == 1) and(deploying_unit.lid[company][v] == _target_location) then okay = 1;
+                            if (obj_drop_select.fighting[company][v] == 1) and(unit.ship_location == _target_location) then okay = 1;
                         }
                     }
                 }
@@ -405,26 +405,27 @@ function scr_battle_roster(required_location, _target_location, _is_planet) {
                         targ.veh_acc[targ.veh] = deploying_unit.veh_acc[company][v];
                         if (vokay = 2) then targ.veh_local[targ.veh] = 1;
 
-						if (deploying_unit.veh_role[company][v] = "Land Speeder"){
-						targ.veh_hp[targ.veh] = deploying_unit.veh_hp[company][v] * 1.25;
-                        targ.veh_hp_multiplier[targ.veh] = 2;
-                        targ.veh_ac[targ.veh] = 25;
-						}
-						
-                        if (deploying_unit.veh_role[company][v] = "Rhino") or(deploying_unit.veh_role[company][v] = "Whirlwind") or(deploying_unit.veh_role[company][v] = "Razorback") {
-                            targ.veh_hp[targ.veh] = deploying_unit.veh_hp[company][v] * 2;
-                            targ.veh_hp_multiplier[targ.veh] = 2;
+
+
+						if (deploying_unit.veh_role[company][v] = "Land Speeder") {
+						targ.veh_hp[targ.veh] = deploying_unit.veh_hp[company][v] * 3;
+                            targ.veh_hp_multiplier[targ.veh] = 3;
                             targ.veh_ac[targ.veh] = 30;
                         }
-                        if (deploying_unit.veh_role[company][v] = "Predator") or (deploying_unit.veh_role[company][v] = "Vindicator") {
-                            targ.veh_hp[targ.veh] = deploying_unit.veh_hp[company][v] * 2;
-                            targ.veh_hp_multiplier[targ.veh] = 2;
-                            targ.veh_ac[targ.veh] = 35;
+                        if (deploying_unit.veh_role[company][v] = "Rhino") or(deploying_unit.veh_role[company][v] = "Whirlwind") or(deploying_unit.veh_role[company][v] = "Razorback") {
+                            targ.veh_hp[targ.veh] = deploying_unit.veh_hp[company][v] * 5;
+                            targ.veh_hp_multiplier[targ.veh] = 5;
+                            targ.veh_ac[targ.veh] = 40;
+                        }
+                        if (deploying_unit.veh_role[company][v] = "Predator") {
+                            targ.veh_hp[targ.veh] = deploying_unit.veh_hp[company][v] * 6;
+                            targ.veh_hp_multiplier[targ.veh] = 6;
+                            targ.veh_ac[targ.veh] = 45;
                         }
                         if (deploying_unit.veh_role[company][v] = "Land Raider") {
-                            targ.veh_hp[targ.veh] = deploying_unit.veh_hp[company][v] * 4;
-                            targ.veh_hp_multiplier[targ.veh] = 4;
-                            targ.veh_ac[targ.veh] = 40;
+                            targ.veh_hp[targ.veh] = deploying_unit.veh_hp[company][v] * 8;
+                            targ.veh_hp_multiplier[targ.veh] = 8;
+                            targ.veh_ac[targ.veh] = 50;
                         }
 
                         // STC Bonuses

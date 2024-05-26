@@ -2,10 +2,10 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_marine_cloth_hood",
-  "bbox_bottom": 51,
-  "bbox_left": 65,
-  "bbox_right": 103,
-  "bbox_top": 16,
+  "bbox_bottom": 46,
+  "bbox_left": 63,
+  "bbox_right": 102,
+  "bbox_top": 11,
   "bboxMode": 0,
   "collisionKind": 1,
   "collisionTolerance": 0,
@@ -26,7 +26,7 @@
   "origin": 0,
   "parent": {
     "name": "decorations",
-    "path": "folders/Sprites/New UI/Marine Viewer/decorations.yy",
+    "path": "folders/Sprites/Marine Viewer/decorations.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

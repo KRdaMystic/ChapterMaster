@@ -93,8 +93,8 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
 	rand2=floor(random(100))+1;good=0;
 	if (string_count("Shit",obj_ini.strin2)>0){rand2=min(rand2+20,100);}
 	if (rand2<=70){t3="";}
-	else if (rand2<=90 && artifact_type!="random_nodemon"){t3="Chaos";}
-	else if (rand2<=100 && artifact_type!="random_nodemon"){t3="Daemonic";}
+	else if (rand2<=90 && artifact_type!="random_nodemon"){t3="chaos";}
+	else if (rand2<=100 && artifact_type!="random_nodemon"){t3="daemonic";}
 
 	if (t1="Weapon"){
 	    // gold, glowing, underslung bolter, underslung flamer
@@ -125,7 +125,7 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
 	    if (t2="Statue") then t5=choose("GOAT","SPE","DYI","JUM","CHE");
 	    // Gold, glowing, preserved flesh, adamantium
 	    if (t2="Tome") then t4=choose("GOLD","GLO","PRE","ADA","SAL","BUR");
-	    if (t4="PRE") and (t3="") then t3=choose("","Chaos","Daemonic");
+	    if (t4="PRE") and (t3="") then t3=choose("","chaos","daemonic");
 	}else if (t1="Device") and (t2="Robot"){// human/robutt/shivarah
 	    t4=choose("HU","RO","SHI");
 	    t5=choose("ADA","JAD","BRO","RUNE");
@@ -135,9 +135,9 @@ function scr_add_artifact(artifact_type, artifact_tags, is_identified, artifact_
 	// if (big=1 || artifact_tags="minor") then t5="";
 	if (artifact_tags="minor"){t4="";t5="";t3+="|mnr";}
 	if (artifact_tags="inquisition") then t3+="|inq";
-	if ((artifact_tags="daemonic"||artifact_tags="Daemonic")) and (t2!="Tome") then t3="Daemonic"+choose("1a","2a","3a","4a");
-	if ((artifact_tags="daemonic" || artifact_tags="Daemonic")) and (t2="Tome") then t3="Daemonic"+choose("2a","3a","4a");
-	if (artifact_type="chaos_gift") then t3="|cgfDaemonic3a";
+	if ((artifact_tags="daemonic"||artifact_tags="daemonic")) and (t2!="Tome") then t3="daemonic"+choose("1a","2a","3a","4a");
+	if ((artifact_tags="daemonic" || artifact_tags="daemonic")) and (t2="Tome") then t3="daemonic"+choose("2a","3a","4a");
+	if (artifact_type="chaos_gift") then t3="daemonic";
 	// show_message(string(t3));
 
 	obj_ini.artifact[last_artifact]=t2;
@@ -195,15 +195,67 @@ function arti_struct(Index)constructor{
 	static has_tag = function(wanted_tag){
 		return array_contains(tags(), wanted_tag);
 	}
+	static has_tags = function(wanted_tags){
+		for (var i=0;i<array_length(wanted_tags);i++){
+			if (array_contains(tags(), wanted_tag)){
+				return true;
+			}
+		}
+		return false;
+	}	
+
+	static inquisition_disprove = function(){
+		var inquis_tags = ["daemonic","chaos_gift", "chaos"];
+		if (has_tag("inquisition")) then return false;
+
+	}
 	static load_json_data = function(data){
 		 var names = variable_struct_get_names(data);
 		 for (var i = 0; i < array_length(names); i++) {
             variable_struct_set(self, names[i], variable_struct_get(data, names[i]))
         }
 	}
+
+	static determine_base_type = function(){
+		var item_type = "";
+	    if struct_exists(global.gear[$ "armour"],type()){
+            item_type = "armour";
+        }
+        else if struct_exists(global.gear[$ "mobility"],type()){
+            item_type = "mobility";
+        }
+        else if struct_exists(global.gear[$ "gear"],type()){
+            item_type = "gear";
+        }
+        else if struct_exists(global.weapons,type()){
+            item_type = "weapon";
+        }
+        return (item_type);
+	};
+
+	static unequip_from_unit = function(){
+		if (equipped() && is_array(bearer)){
+			var b_type = determine_base_type();
+			var unit = fetch_unit(bearer);
+			if (b_type=="weapon"){
+				if (unit.weapon_one(true) == index){
+					unit.update_weapon_one("", false, false);
+				} else if (unit.weapon_two(true) == index){
+					unit.update_weapon_two("", false, false);
+				} 
+			} else if (b_type=="gear"){
+				unit.update_gear("", false, false);
+			} else if (b_type=="armour"){
+				unit.update_armour("", false, false);
+			} else if (b_type=="mobility"){
+				unit.update_mobility_item("", false, false);
+			}
+		}
+	}
 	custom_data = {};
 	name = "";
-	custom_description="";	
+	custom_description="";
+	bearer=false;
 
 	static description = scr_arti_descr;
 }

@@ -2,6 +2,7 @@
 function scr_company_struct(comp) constructor{
 	company = comp;
 	company_squads = [];
+
 	static squad_search = function(){
 		company_squads = [];
 		for (var i=0;i<array_length(obj_ini.squads);i++){
@@ -10,13 +11,36 @@ function scr_company_struct(comp) constructor{
 			}
 		}
 	}
+
 	squad_search();
+
 	cur_squad = 0;
 	exit_period=false;
 	unit_rollover=false;
 	rollover_sequence=0;
 	selected_unit=obj_controller.temp[120];
 	drop_down_open=false;
+	captain = "none";
+	squad_draw_surfaces = array_create(15, []);
+	for (var i=0;i<15;i++){
+		squad_draw_surfaces[i]=[[-1,-1],false];
+	}
+
+	if (company>0 && company<11){
+		var unit;
+		var company_units = obj_controller.display_unit;
+		for (var i=0;i<array_length(company_units);i++){
+			if (is_struct(company_units[i])){
+				unit = company_units[i];
+				if (unit.role() == obj_ini.role[100][Role.CAPTAIN]){
+					captain = unit;
+				}
+			}
+		}
+	}
+	static grab_current_squad = function(){
+		return obj_ini.squads[company_squads[cur_squad]];
+	}
 
 	static draw_squad_view = function(){
 		var xx=__view_get( e__VW.XView, 0 )+0, yy=__view_get( e__VW.YView, 0 )+0;
@@ -60,7 +84,7 @@ function scr_company_struct(comp) constructor{
 			var button = draw_unit_buttons([xx+bound_width[0], yy+bound_height[0]+6], arrow,[1.5,1.5],c_red);
 			if (point_in_rectangle(mouse_x, mouse_y,button[0],button[1],button[2], button[3]) && array_length(company_squads) > 0 && mouse_check_button_pressed(mb_left)){
 				cur_squad = (cur_squad-1<0) ? 0 : cur_squad-1;
-				member = obj_ini.squads[company_squads[cur_squad]].members[0];
+				member = grab_current_squad().members[0];
 				obj_controller.temp[120] = obj_ini.TTRPG[member[0]][member[1]];
 			}
 			arrow="-->";
@@ -68,7 +92,7 @@ function scr_company_struct(comp) constructor{
 			button = draw_unit_buttons([xx+bound_width[1]-44,yy+bound_height[0]+6], arrow,[1.5,1.5],c_red);
 			if (point_in_rectangle(mouse_x, mouse_y,button[0],button[1],button[2], button[3]) && array_length(company_squads) > 0 && mouse_check_button_pressed(mb_left)){
 				cur_squad = cur_squad+1>=array_length(company_squads) ? 0 : cur_squad+1;
-				member = obj_ini.squads[company_squads[cur_squad]].members[0];
+				member = grab_current_squad().members[0];
 				obj_controller.temp[120] = obj_ini.TTRPG[member[0]][member[1]];
 			}						
 			draw_set_color(c_gray);
@@ -96,7 +120,7 @@ function scr_company_struct(comp) constructor{
 				tooltip_text="Guard Duty";
 				if (squad_loc.same_system) and (squad_loc.system!="Warp"){
 					button_row_offset+=string_width(tooltip_text)+6;
-					draw_unit_buttons([xx+bound_width[0]+5, yy+bound_height[0]+150], tooltip_text,[1,1],c_red);
+					button = draw_unit_buttons([xx+bound_width[0]+5, yy+bound_height[0]+150], tooltip_text,[1,1],c_red);
 					if(point_in_rectangle(mouse_x, mouse_y,xx+bound_width[0]+5, yy+bound_height[0]+150, xx+bound_width[0]+5+string_width(tooltip_text), yy+bound_height[0]+150+string_height(tooltip_text))){
 						tooltip_text = "Having squads assigned to Guard Duty will increase relations with a planet over time, it will also bolster planet defence forces in case of attack, and reduce corruption growth.";
 						tooltip_draw(tooltip_text, 150, [xx+bound_width[0]+5, yy+bound_height[0]+200]);
@@ -107,7 +131,7 @@ function scr_company_struct(comp) constructor{
 					}
 					if (array_contains(current_squad.class, "scout")){
 						tooltip_text="Sabotage";
-						draw_unit_buttons([xx+bound_width[0]+5 + button_row_offset, yy+bound_height[0]+150], tooltip_text,[1,1],c_red);
+						button = draw_unit_buttons([button[2] + 4, yy+bound_height[0]+150], tooltip_text,[1,1],c_red);
 						if(point_in_rectangle(mouse_x, mouse_y,xx+bound_width[0]+5+ button_row_offset, yy+bound_height[0]+150, xx+bound_width[0]+5+string_width(tooltip_text)+ button_row_offset, yy+bound_height[0]+150+string_height(tooltip_text))){
 							tooltip_text = "Sabotage missions can reduce enemy growth while avoiding direct enemy contact however they are not without risk.";
 							tooltip_draw(tooltip_text, 150, [xx+bound_width[0]+5+button_row_offset, yy+bound_height[0]+200]);
@@ -121,7 +145,6 @@ function scr_company_struct(comp) constructor{
 				if (send_on_mission){
 					with (obj_star){
 						if (name == squad_loc.system){
-							obj_controller.cooldown=8000;
 							var unload_squad=instance_create(x,y,obj_star_select);
 							unload_squad.target=self;
 							unload_squad.loading=1;
@@ -137,13 +160,12 @@ function scr_company_struct(comp) constructor{
 				bound_height[0] += 180;
 			} else {
 				if (is_struct(current_squad.assignment)){
-					draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+125, $"Assignment : {current_squad.assignment.type}",1,1,0);
-				}
-				var tooltip_text =  "Cancel Assignment"
-				draw_unit_buttons([xx+bound_width[0]+5, yy+bound_height[0]+150],tooltip_text,[1,1],c_red);
-				if(point_in_rectangle(mouse_x, mouse_y,xx+bound_width[0]+5, yy+bound_height[0]+150, xx+bound_width[0]+5+string_width(tooltip_text), yy+bound_height[0]+150+string_height(tooltip_text))){
-					var cancel_system=noone;
-					if (mouse_check_button_pressed(mb_left)){
+					var cur_assignment = current_squad.assignment
+					draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0]+125, $"Assignment : {cur_assignment.type}",1,1,0);
+					var tooltip_text =  "Cancel Assignment"
+					var cancel_but = draw_unit_buttons([xx+bound_width[0]+5, yy+bound_height[0]+150],tooltip_text,[1,1],c_red);
+					if(point_and_click(cancel_but)){
+						var cancel_system=noone;
 						with (obj_star){
 							if (name == squad_loc.system){
 								cancel_system=self;
@@ -161,42 +183,53 @@ function scr_company_struct(comp) constructor{
 						}
 						current_squad.assignment = "none";
 					}
+					bound_height[0] += 180;
+					if (cur_assignment.type == "garrison"){
+						var garrison_but = draw_unit_buttons([cancel_but[2]+10, cancel_but[1]],"View Garrison",[1,1],c_red);
+						if (point_and_click(garrison_but)){
+							var garrrison_star =  star_by_name(cur_assignment.location);
+							if (garrrison_star!="none"){
+								obj_controller.menu=0;
+				                obj_controller.hide_banner=0;
+				                obj_controller.x = garrrison_star.x;
+				                obj_controller.y =garrrison_star.y;
+				                obj_controller.selection_data =  {
+				                	planet:cur_assignment.ident,
+				                	feature:"",
+				                }
+				                garrrison_star.alarm[3] = 4;
+				            }
+						}
+					}
 				}
-				bound_height[0] += 180;
 			}
 			//TODO compartmentalise drop down option logic
+			var deploy_text = "Squad will deploy in the";
 			if (current_squad.formation_place!=""){
-				var deploy_text = "Squad will deploy in the";
 				draw_set_font(fnt_40k_14b)
 				draw_text_transformed(xx+bound_width[0]+5, yy+bound_height[0], deploy_text,1,1,0);
-				draw_unit_buttons([xx+bound_width[0]+5 + string_width(deploy_text), yy+bound_height[0]],current_squad.formation_place,[1,1],c_green);
+				button = draw_unit_buttons([xx+bound_width[0]+5 + string_width(deploy_text), yy+bound_height[0]-2],current_squad.formation_place,[1,1],c_green);
 				draw_set_color(c_red);
 				draw_text_transformed(xx+bound_width[0]+5+ string_width(deploy_text) + string_width(current_squad.formation_place)+9, yy+bound_height[0], "column",1,1,0);
-				if (array_length(current_squad.formation_options)>1){
-					if (point_in_rectangle(
+				draw_set_color(c_gray);
+				var point_in_button = (point_in_rectangle(
 						mouse_x,
 						mouse_y,
-						xx+bound_width[0]+5+ string_width(deploy_text), 
-						yy+bound_height[0], 
-						xx+bound_width[0]+13+ string_width(deploy_text) +string_width(current_squad.formation_place), 
-						yy+bound_height[0]+4+string_height(current_squad.formation_place)
-					)){
+						button [0], 
+						button[1], 
+						button[2], 
+						button[3]
+					));
+				if (array_length(current_squad.formation_options)>1){
+					if (point_in_button){
 						drop_down_open = true;
 					}
 					if (drop_down_open){
-						var roll_down_offset=4+string_height(current_squad.formation_place);
+						var roll_down_offset=8+string_height(current_squad.formation_place);
 						for (var col = 0;col<array_length(current_squad.formation_options);col++){
 							if (current_squad.formation_options[col]==current_squad.formation_place) then continue;
-							draw_unit_buttons([xx+bound_width[0]+5 + string_width(deploy_text), yy+bound_height[0]+roll_down_offset],current_squad.formation_options[col],[1,1],c_red);
-							if (mouse_check_button_pressed(mb_left) && 
-								point_in_rectangle(
-										mouse_x,
-										mouse_y,
-										xx+bound_width[0]+5+string_width(deploy_text), 
-										yy+bound_height[0]+roll_down_offset, 
-										xx+bound_width[0]+13+ string_width(deploy_text) +string_width(current_squad.formation_options[col]), 
-										yy+bound_height[0]+roll_down_offset+string_height(current_squad.formation_options[col])+4									
-									)){
+							button = draw_unit_buttons([button[0], button[3] + 2],current_squad.formation_options[col],[1,1],c_red);
+							if (point_and_click(button)){
 								current_squad.formation_place = current_squad.formation_options[col];
 								drop_down_open = false;
 							}
@@ -216,6 +249,11 @@ function scr_company_struct(comp) constructor{
 						}
 					}
 				}
+				bound_height[0] += button[3] - button[1];
+			}
+			button = draw_unit_buttons([xx+bound_width[0]+30 + string_width(deploy_text), yy+bound_height[0]+10+35],"Reset Squad Loadout",[1,1],c_green);
+			if (point_and_click(button)){
+				current_squad.sort_squad_loadout();
 			}
 			
 			if (unit_rollover){
@@ -230,7 +268,13 @@ function scr_company_struct(comp) constructor{
 			var sprite_draw_delay="none"
 			var unit_sprite_coords=[];
 			for (var i=0;i<array_length(current_squad.members);i++){
-				member = obj_ini.TTRPG[current_squad.members[i][0]][current_squad.members[i][1]];
+				member = fetch_unit(current_squad.members[i]);
+				if (!array_equals(squad_draw_surfaces[i][0], current_squad.members[i])){
+					show_debug_message("non equal arrays {0}, {1}",squad_draw_surfaces[i][0], current_squad.members[i]);
+					squad_draw_surfaces[i][0] = [member.company, member.marine_number];
+					squad_draw_surfaces[i][1] = member.draw_unit_image();
+				}
+				var cur_member_surface = squad_draw_surfaces[i][1];
 				if (member.name()!=""){
 					if (member_width==5){
 						member_width=0;
@@ -239,16 +283,15 @@ function scr_company_struct(comp) constructor{
 						y_mod += 231;
 					}
 					member_width++;
-					unit_sprite_coords = [xx+25+x_mod, yy+144+y_mod, xx+25+x_mod+166, yy+144+y_mod+271];
-					if (point_in_rectangle(mouse_x, mouse_y, unit_sprite_coords[0], unit_sprite_coords[1], unit_sprite_coords[2], unit_sprite_coords[3]-40) && !exit_period && unit_rollover){
-						sprite_draw_delay = [member,unit_sprite_coords];
+					unit_sprite_coords = [xx+25+x_mod, yy+144+y_mod, xx+25+x_mod+166, yy+144+y_mod+231];
+					cur_member_surface.draw_part(unit_sprite_coords[0],unit_sprite_coords[1], 0,0, 166, 231,true);
+					if (point_in_rectangle(mouse_x, mouse_y, unit_sprite_coords[0], unit_sprite_coords[1], unit_sprite_coords[2], unit_sprite_coords[3]) && !exit_period && unit_rollover){
+						sprite_draw_delay = [member,unit_sprite_coords, cur_member_surface];
 						obj_controller.temp[120] = member;									
 					}else {
 						if (obj_controller.temp[120].company==member.company && obj_controller.temp[120].marine_number==member.marine_number && !is_array(sprite_draw_delay)){
-							sprite_draw_delay = [member,unit_sprite_coords];
+							sprite_draw_delay = [member,unit_sprite_coords, cur_member_surface];
 							obj_controller.temp[120] = member;
-						}else{
-							member.draw_unit_image(unit_sprite_coords[0]-xx,unit_sprite_coords[1]-yy);
 						}								
 					}
 					x_mod+=x_overlap_mod;
@@ -257,7 +300,7 @@ function scr_company_struct(comp) constructor{
 			if (is_array(sprite_draw_delay)){
 				member = sprite_draw_delay[0];
 				unit_sprite_coords=sprite_draw_delay[1]
-				member.draw_unit_image(unit_sprite_coords[0]-xx,unit_sprite_coords[1]-yy);
+				sprite_draw_delay[2].draw_part(unit_sprite_coords[0],unit_sprite_coords[1], 0,0, 166, 231, true);
 				draw_set_color(c_red);
 				draw_rectangle(unit_sprite_coords[0], unit_sprite_coords[1], unit_sprite_coords[2], unit_sprite_coords[3], 1);
 				draw_set_color(c_gray);

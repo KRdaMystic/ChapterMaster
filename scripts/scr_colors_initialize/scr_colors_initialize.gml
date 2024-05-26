@@ -1,39 +1,87 @@
+enum Colors {
+    White,
+    Silver,
+    Fenrisian_Grey,
+    Grey,
+    Codex_Grey,
+    Dark_Metal,
+    Dark_Grey,
+    Lighter_Black,
+    Black,
+    Red,
+    Sanguine_Red,
+    Dark_Red,
+    Gold,
+    Orange,
+    Brown,
+    LightBrown,
+    LightestBrown,
+    Deathwing,
+    Bone,
+    Yellow,
+    Dark_Gold,
+    Copper,
+    Lime,
+    Green,
+    Firedrake_Green,
+    Light_Caliban_Green,
+    Caliban_Green,
+    Dark_Green,
+    Cyan,
+    Turqoise,
+    Light_Blue,
+    Blue,
+    Enchanted_Blue,
+    Ultramarine,
+    Purple,
+    Pink,
+}
 function scr_colors_initialize() {
 
-	var i;i=-1;
-	repeat(60){i+=1;
-	    col[i]="";col_r[i]=0;col_g[i]=0;col_b[i]=0;
-	}
+    var colors_array = [
+        ["White", 240, 240, 240],
+        ["Silver", 178, 178, 178],
+        ["Fenrisian Grey", 144, 155, 183],
+        ["Grey", 127, 127, 127],
+        ["Codex Grey", 112, 117, 110],
+        ["Dark Metal", 105, 105, 105],
+        ["Dark Grey", 70, 70, 70],
+        ["Lighter Black", 52, 52, 52],
+        ["Black", 35, 35, 35],
+        ["Red", 201, 0, 0],
+        ["Sanguine Red", 150, 0, 0],
+        ["Dark Red", 124, 0, 0],
+        ["Gold", 229, 162, 22],
+        ["Orange", 255, 156, 0],
+        ["Brown", 112, 66, 0],
+        ["Light Brown", 160,117,75],
+        ["Lightest Brown", 173, 128, 82],
+        ["Deathwing", 238, 204, 163],
+        ["Bone", 245, 236, 205],
+        ["Yellow", 255, 220, 0],
+        ["Dark Gold", 204, 150, 38],
+        ["Copper", 184, 115, 51],
+        ["Lime", 0, 190, 0],
+        ["Green", 0, 160, 0],
+        ["Firedrake Green", 27, 115, 43],
+        ["Light Caliban Green", 30, 102, 59],
+        ["Caliban Green", 6, 63, 43],
+        ["Dark Green", 0, 70, 0],
+        ["Cyan", 0, 228, 255],
+        ["Turqoise", 0, 131, 147],
+        ["Light Blue", 0, 150, 255],
+        ["Blue", 0, 0, 220],
+        ["Enchanted Blue", 58, 110, 158],
+        ["Ultramarine", 4, 78, 168],
+        ["Purple", 117, 0, 217],
+        ["Pink", 255, 0, 198],
+    ];
 
-	i=0;
-	i+=1;col[i]="White";col_r[i]=255;col_g[i]=255;col_b[i]=255;// 1
-	i+=1;col[i]="Silver";col_r[i]=200;col_g[i]=200;col_b[i]=200;
-	i+=1;col[i]="Fenrisian Grey";col_r[i]=144;col_g[i]=155;col_b[i]=183;
-	// i+=1;col[i]="Grey";col_r[i]=150;col_g[i]=150;col_b[i]=150;
-	i+=1;col[i]="Codex Grey";col_r[i]=112;col_g[i]=117;col_b[i]=110;
-	i+=1;col[i]="Dark Grey";col_r[i]=40;col_g[i]=40;col_b[i]=40;// 5
-	i+=1;col[i]="Black";col_r[i]=30;col_g[i]=30;col_b[i]=30;
-	i+=1;col[i]="Red";col_r[i]=200;col_g[i]=0;col_b[i]=0;
-	i+=1;col[i]="Sanguine";col_r[i]=150;col_g[i]=0;col_b[i]=0;
-	i+=1;col[i]="Dark Red";col_r[i]=124;col_g[i]=0;col_b[i]=0;
-	i+=1;col[i]="Orange";col_r[i]=255;col_g[i]=156;col_b[i]=0;// 10
-	i+=1;col[i]="Brown";col_r[i]=112;col_g[i]=66;col_b[i]=0;
-	i+=1;col[i]="Bone";col_r[i]=225;col_g[i]=217;col_b[i]=193;
-	i+=1;col[i]="Yellow";col_r[i]=254;col_g[i]=254;col_b[i]=0;
-	i+=1;col[i]="Gold";col_r[i]=255;col_g[i]=216;col_b[i]=0;
-	i+=1;col[i]="Copper";col_r[i]=166;col_g[i]=129;col_b[i]=0;// 15
-	i+=1;col[i]="Lime";col_r[i]=0;col_g[i]=190;col_b[i]=0;
-	i+=1;col[i]="Green";col_r[i]=0;col_g[i]=160;col_b[i]=0;
-	i+=1;col[i]="Dark Green";col_r[i]=0;col_g[i]=70;col_b[i]=0;
-	i+=1;col[i]="Cyan";col_r[i]=0;col_g[i]=228;col_b[i]=255;
-	i+=1;col[i]="Turqoise";col_r[i]=0;col_g[i]=131;col_b[i]=147;// 20
-	i+=1;col[i]="Light Blue";col_r[i]=0;col_g[i]=150;col_b[i]=255;
-	i+=1;col[i]="Blue";col_r[i]=0;col_g[i]=0;col_b[i]=220;
-	i+=1;col[i]="Enchanted Blue";col_r[i]=58;col_g[i]=110;col_b[i]=158;
-	i+=1;col[i]="Ultramarine";col_r[i]=21;col_g[i]=92;col_b[i]=165;
-	i+=1;col[i]="Purple";col_r[i]=117;col_g[i]=0;col_b[i]=217;// 25
-	i+=1;col[i]="Pink";col_r[i]=255;col_g[i]=0;col_b[i]=198;
-	colors=0;colors=i;
-
-
+	global.colors_count = array_length(colors_array);
+    for (var i = 0; i < global.colors_count; i++) {
+        col[i] = colors_array[i][0];
+        col_r[i] = colors_array[i][1];
+        col_g[i] = colors_array[i][2];
+        col_b[i] = colors_array[i][3];
+    }
 }

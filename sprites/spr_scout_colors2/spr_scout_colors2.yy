@@ -34,7 +34,7 @@
   "origin": 0,
   "parent": {
     "name": "body_types",
-    "path": "folders/Sprites/New UI/Marine Viewer/body_types.yy",
+    "path": "folders/Sprites/Marine Viewer/body_types.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {
@@ -51,7 +51,7 @@
     "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "eventStubScript": null,
     "eventToFunction": {},
-    "length": 10.0,
+    "length": 9.0,
     "lockOrigin": false,
     "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "playback": 1,

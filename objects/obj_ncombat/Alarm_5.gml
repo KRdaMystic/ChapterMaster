@@ -262,7 +262,40 @@ if (defeat=0) and (npowers=true){
 		//(¿?) Ramps up threat/enemy presence in case enemy Type == "Daemon" (¿?)
 		//Does the inverse check/var assignment 10 lines above
         if (part10="Daemon") then new_power=7;
-        if (enemy=9) and (new_power=0) then scr_event_log("","Tyranids cleansed from "+string(battle_object.name)+" "+scr_roman(battle_id));
+        if (enemy=9) and (new_power==0){
+            var battle_planet = battle_id;
+            with (battle_object){
+                var who_cleansed="Tyranids";
+                var who_return="";
+                var make_alert = true;
+                var planet_string = $"{name} {scr_roman(battle_planet)}";
+                if (planet_feature_bool(p_feature[battle_planet], P_features.Gene_Stealer_Cult)==1){
+                    who_cleansed="Gene Stealer Cult"
+                    make_alert=true;
+                    delete_features(p_feature[battle_planet], P_features.Gene_Stealer_Cult);
+                } 
+                if (make_alert){
+                     if (p_first[battle_planet] == 1){
+                        who_return = "your";
+                        p_owner[battle_planet] = eFACTION.Player;
+                     } else if (p_first[battle_planet] == 3 || p_type[battle_planet]=="Forge"){
+                        who_return="mechanicus";
+                        obj_controller.disposition[3] += 10;
+                        p_owner[battle_planet] = eFACTION.Mechanicus
+                     }else  if (p_type[battle_planet]!="Dead"){
+                        who_return="the governor";
+                        if (who_cleansed=="tau"){
+                            who_return="a more suitable governer"
+                        }
+                         p_owner[battle_planet] = eFACTION.Imperium
+                     }              
+                    dispo[battle_planet] += 10;
+                    scr_event_log("", $"{who_cleansed} cleansed from {planet_string}", name);
+                    scr_alert("green", "owner", $"{who_cleansed} cleansed from {planet_string}. Control returned to {who_return}", x, y);
+                    if (dispo[battle_planet] >= 101) then p_owner[battle_planet] = 1;
+                }                               
+            }
+        }
         if (enemy=11) and (en_power!=floor(en_power)) then en_power=floor(en_power);
     }
 
@@ -392,22 +425,8 @@ if (defeat=0) and (enemy=9) and (battle_special="tyranid_org"){
         // thatta=obj_star;
 
         with(obj_star){
-            var u;u=0;
-            repeat(4){u+=1;
-                if (p_problem[u,1]="tyranid_org"){p_problem[u,1]="";p_timer[u,1]=0;}
-                if (p_problem[u,2]="tyranid_org"){p_problem[u,2]="";p_timer[u,2]=0;}
-                if (p_problem[u,3]="tyranid_org"){p_problem[u,3]="";p_timer[u,3]=0;}
-                if (p_problem[u,4]="tyranid_org"){p_problem[u,4]="";p_timer[u,4]=0;}
-            }
+            remove_star_problem("tyranid_org");
         }
-
-        /*var u;u=0;
-        repeat(4){u+=1;
-            if (thatta.p_problem[u,1]="tyranid_org"){thatta.p_problem[u,1]="";thatta.p_timer[u,1]=0;}
-            if (thatta.p_problem[u,2]="tyranid_org"){thatta.p_problem[u,2]="";thatta.p_timer[u,2]=0;}
-            if (thatta.p_problem[u,3]="tyranid_org"){thatta.p_problem[u,3]="";thatta.p_timer[u,3]=0;}
-            if (thatta.p_problem[u,4]="tyranid_org"){thatta.p_problem[u,4]="";thatta.p_timer[u,4]=0;}
-        }*/
     }
 
     scr_event_log("","Inquisition Mission Completed: A Gaunt organism has been captured for the Inquisition.");
@@ -502,11 +521,13 @@ if (obj_ini.omophagea=1){
 
                 var msg,msg2,i,remove;msg="";msg2="";i=0;remove=0;
                 // if (string_count("Inqis",inquisitor_ship.trade_goods)>0) then show_message("B");
-                if (string_count("Inqis1",inquisitor_ship.trade_goods)=1){newline="Inquisitor "+string(obj_controller.inquisitor[1])+" has been eaten!";msg="Inquisitor "+string(obj_controller.inquisitor[1]);remove=1;scr_event_log("red","Your Astartes consume "+string(msg)+".");}
-                if (string_count("Inqis2",inquisitor_ship.trade_goods)=1){newline="Inquisitor "+string(obj_controller.inquisitor[2])+" has been eaten!";msg="Inquisitor "+string(obj_controller.inquisitor[2]);remove=2;scr_event_log("red","Your Astartes consume "+string(msg)+".");}
-                if (string_count("Inqis3",inquisitor_ship.trade_goods)=1){newline="Inquisitor "+string(obj_controller.inquisitor[3])+" has been eaten!";msg="Inquisitor "+string(obj_controller.inquisitor[3]);remove=3;scr_event_log("red","Your Astartes consume "+string(msg)+".");}
-                if (string_count("Inqis4",inquisitor_ship.trade_goods)=1){newline="Inquisitor "+string(obj_controller.inquisitor[4])+" has been eaten!";msg="Inquisitor "+string(obj_controller.inquisitor[4]);remove=4;scr_event_log("red","Your Astartes consume "+string(msg)+".");}
-                if (string_count("Inqis5",inquisitor_ship.trade_goods)=1){newline="Inquisitor "+string(obj_controller.inquisitor[5])+" has been eaten!";msg="Inquisitor "+string(obj_controller.inquisitor[5]);remove=5;scr_event_log("red","Your Astartes consume "+string(msg)+".");}
+                if (inquisitor_ship.inquisitor>0){
+                    var inquis_name = obj_controller.inquisitor[inquisitor_ship.inquisitor];
+                    newline=$"Inquisitor {inquis_name} has been eaten!";
+                    msg=$"Inquisitor {inquis_name}"
+                    remove=obj_controller.inquisitor[inquisitor_ship.inquisitor];
+                    scr_event_log("red",$"Your Astartes consume {msg}.");
+                }
                 newline_color="red";scr_newtext();
                 if (obj_controller.inquisitor_type[remove]="Ordo Hereticus") then scr_loyalty("Inquisitor Killer","+");
 
@@ -575,7 +596,7 @@ if (obj_ini.fleet_type!=1) and (defeat==1) and (dropping==0){
 	    if (obj_controller.und_gene_vaults=0) then newline="Your Fortress Monastery has been raided.  "+string(obj_controller.gene_seed)+" Gene-Seed has been destroyed or stolen.";
 	    if (obj_controller.und_gene_vaults>0) then newline="Your Fortress Monastery has been raided.  "+string(floor(obj_controller.gene_seed/10))+" Gene-Seed has been destroyed or stolen.";
 
-	    scr_event_log("red",string(newline));
+	    scr_event_log("red",string(newline), battle_object.name);
 	    instance_activate_object(obj_event_log);
 	    newline_color="red";scr_newtext();
 

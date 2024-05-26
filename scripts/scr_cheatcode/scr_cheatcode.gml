@@ -22,11 +22,38 @@ function scr_cheatcode(argument0) {
         cheatcode_m_digits = (cheatcode_digits * -1)
 
     if (cheatcode_digits == "") {
+        if (cheatcode_string=="finishforge"){
+            with (obj_controller){
+                forge_points = 1000000;
+                forge_queue_logic();
+            }
+        }
         if (cheatcode_string=="slaughtersong"){
             create_starship_event();
         }
+        if (cheatcode_string=="newapoth"){
+            obj_controller.apothecary_points = 50;
+        }
+        if (cheatcode_string=="newpsyk"){
+            obj_controller.psyker_points = 70;
+        }        
+         if (cheatcode_string=="newtech"){
+            obj_controller.tech_points = 400;
+        }
+        if (cheatcode_string=="newchap"){
+            createobj_controller.chaplain_points = 50;
+        }                      
         if (cheatcode_string=="artifact"){
             scr_add_artifact("random","",0,obj_ini.ship[1],501);
+        }
+        if (cheatcode_string=="inspection"){
+            new_inquisitor_inspection();
+        }        
+        if (cheatcode_string=="sisterhospitaler"){
+            scr_add_man("Sister Hospitaler",0,"","","","","",0,true,"default","");
+        }
+        if (cheatcode_string=="chaosfleetspawn"){
+            spawn_chaos_warlord();
         }
          if (cheatcode_string=="techuprising"){
             var pip = instance_create(0,0,obj_popup);
@@ -47,7 +74,7 @@ function scr_cheatcode(argument0) {
                 }  
             }else {
                 with(obj_controller){
-                    scr_random_event(1);
+                    scr_random_event(false);
                 }
             }
         }
@@ -132,7 +159,7 @@ function scr_cheatcode(argument0) {
     } else if (cheatcode_string == "recruit") {
         var _start_pos = 0
         var length = (array_length(obj_controller.recruit_name) - 1)
-        var i = 1
+        var i = 0;
         while (i < length) {
             if (obj_controller.recruit_name[i] == "") {
                 _start_pos = i
@@ -143,12 +170,12 @@ function scr_cheatcode(argument0) {
             }
         }
 
-        for (i = _start_pos; i < (cheatcode_m_digits + _start_pos); i++) {
-            obj_controller.recruit_name[i] = global.name_generator.generate_space_marine_name()
-            obj_controller.recruit_exp[i] = 20
-            obj_controller.recruit_corruption[i] = 0
-            obj_controller.recruit_distance[i] = 0
-            obj_controller.recruit_training[i] = 1
+        for (i = _start_pos; i < (cheatcode_m_digits + _start_pos); i++){
+            array_insert(obj_controller.recruit_corruption, i, 0);
+            array_insert(obj_controller.recruit_distance , i, 0);
+            array_insert(obj_controller.recruit_training, i, 1);
+            array_insert(obj_controller.recruit_exp, i, 20); 
+            array_insert(obj_controller.recruit_name, i, global.name_generator.generate_space_marine_name());
         }
         scr_alert("green", "recruitment", (string(cheatcode_m_digits) + "has started training."), 0, 0)
     }

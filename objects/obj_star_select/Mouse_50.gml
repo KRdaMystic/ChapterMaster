@@ -30,167 +30,6 @@ if (debug!=0) then exit;
          if (obj_fleet_select.currently_entered) then exit;
     }
 
-
-
-if (obj_controller.selecting_planet>0) and (obj_controller.cooldown<=0){
-    var current_button="";
-    
-    if (button1!="") and (debug=0){
-        if (mouse_x>=xx+348) and (mouse_y>=yy+461) and (mouse_x<xx+348+246) and (mouse_y<yy+461+26){
-            current_button=button1;obj_controller.cooldown=8000;
-        }
-    }
-    if (button2!="") and (debug=0){
-        if (mouse_x>=xx+348) and (mouse_y>=yy+489) and (mouse_x<xx+348+246) and (mouse_y<yy+489+26){
-            current_button=button2;obj_controller.cooldown=8000;
-        }
-    }
-    if (button3!="") and (debug=0){
-        if (mouse_x>=xx+348) and (mouse_y>=yy+517) and (mouse_x<xx+348+246) and (mouse_y<yy+517+26){
-            current_button=button3;obj_controller.cooldown=8000;
-        }
-    }
-    if (button4!="") and (debug=0){
-        if (mouse_x>=xx+348) and (mouse_y>=yy+545) and (mouse_x<xx+348+246) and (mouse_y<yy+545+26){
-            current_button=button4;obj_controller.cooldown=8000;
-        }
-    }
-
-    // These need work?
-    if (array_contains(["Build","Base","Arsenal","Gene-Vault"],current_button)){
-        var building=instance_create(x,y,obj_temp_build);
-        building.target=self.target;
-        building.planet=obj_controller.selecting_planet;
-        if (planet_feature_bool(target.p_upgrades[obj_controller.selecting_planet], P_features.Secret_Base)) then building.lair=1;
-        if (planet_feature_bool(target.p_upgrades[obj_controller.selecting_planet], P_features.Arsenal)) then building.arsenal=1;
-        if (planet_feature_bool(target.p_upgrades[obj_controller.selecting_planet], P_features.Gene_Vault)) then building.gene_vault=1;
-        
-        
-        obj_controller.temp[104]=string(scr_master_loc());
-        obj_controller.cooldown=8000;
-        obj_controller.menu=60;
-        with(obj_star_select){instance_destroy();}
-    }
-    if (current_button="Raid"){
-        instance_create(x,y,obj_drop_select);
-        obj_drop_select.p_target=self.target;
-        obj_drop_select.sh_target=instance_nearest(x+24,y-24,obj_p_fleet);
-        if (instance_nearest(x+24,y-24,obj_p_fleet).acted>1) then with(obj_drop_select){instance_destroy();}
-    }
-    if (current_button="Attack"){
-        instance_create(x,y,obj_drop_select);
-        obj_drop_select.p_target=self.target;obj_drop_select.attack=1;
-        if (target.present_fleet[1]=0) then obj_drop_select.sh_target=-50;
-        if (target.present_fleet[1]>0){
-            obj_drop_select.sh_target=instance_nearest(x+24,y-24,obj_p_fleet);
-            if (instance_nearest(x+24,y-24,obj_p_fleet).acted>=2) then with(obj_drop_select){instance_destroy();}
-        }
-    }
-    if (current_button=="Purge"){
-        instance_create(x,y,obj_drop_select);
-        obj_drop_select.p_target=self.target;
-        obj_drop_select.purge=1;
-        if (target.present_fleet[1]=0) then obj_drop_select.sh_target=-50;
-        if (target.present_fleet[1]>0){
-            obj_drop_select.sh_target=instance_nearest(x+24,y-24,obj_p_fleet);
-            if (instance_nearest(x+24,y-24,obj_p_fleet).acted>0) then with(obj_drop_select){instance_destroy();}
-        }
-    }
-    if (current_button=="Bombard"){
-        instance_create(x,y,obj_bomb_select);
-        if (instance_exists(obj_bomb_select)){
-            obj_bomb_select.p_target=self.target;
-            obj_bomb_select.sh_target=instance_nearest(x+24,y-24,obj_p_fleet);
-            if (instance_nearest(x+24,y-24,obj_p_fleet).acted=0) then instance_create(target.x,target.y,obj_temp3);
-            if (instance_nearest(x+24,y-24,obj_p_fleet).acted>0) then with(obj_bomb_select){instance_destroy();}
-        }
-    }
-    if (current_button="+Recruiting"){
-    if (obj_controller.recruiting_worlds_bought>0) and (target.p_owner[obj_controller.selecting_planet]<=5) and (obj_controller.faction_status[target.p_owner[obj_controller.selecting_planet]]!="War"){
-        if (planet_feature_bool(target.p_feature[obj_controller.selecting_planet],P_features.Recruiting_World)==0){
-            obj_controller.cooldown=8000;
-            obj_controller.recruiting_worlds_bought-=1;
-			array_push(target.p_feature[obj_controller.selecting_planet] ,new new_planet_feature(P_features.Recruiting_World))
-            
-            if (obj_controller.selecting_planet=1) then obj_controller.recruiting_worlds+=string(target.name)+" I|";
-            if (obj_controller.selecting_planet=2) then obj_controller.recruiting_worlds+=string(target.name)+" II|";
-            if (obj_controller.selecting_planet=3) then obj_controller.recruiting_worlds+=string(target.name)+" III|";
-            if (obj_controller.selecting_planet=4) then obj_controller.recruiting_worlds+=string(target.name)+" IV|";
-            
-            obj_controller.income_recruiting=(obj_controller.recruiting*-2)*string_count("|",obj_controller.recruiting_worlds);
-            if (obj_controller.recruiting_worlds_bought=0){
-                if (button1=="+Recruiting") then button1="";
-				if (button2=="+Recruiting") then button2="";
-                if (button3=="+Recruiting") then button3="";
-				if (button4=="+Recruiting") then button4="";
-            }
-            // 135 ; popup?
-        }
-    }}
-    if (current_button=="Cyclonic Torpedo"){
-        obj_controller.cooldown=6000;
-        scr_destroy_planet(2);
-    }    
-}
-
-
-
-
-
-
-if (obj_controller.selecting_planet>0){// Lose focus on no button click
-    if (mouse_x>=__view_get( e__VW.XView, 0 )+348) and (mouse_y>=__view_get( e__VW.YView, 0 )+461) and (mouse_x<__view_get( e__VW.XView, 0 )+348+246) and (mouse_y<__view_get( e__VW.YView, 0 )+461+26){
-        if (instance_exists(obj_star_select)){
-            if (obj_star_select.button1!="") then exit;
-            if (obj_star_select.button1=="") then close=true;
-        }
-    }
-    if (mouse_x>=__view_get( e__VW.XView, 0 )+348) and (mouse_y>=__view_get( e__VW.YView, 0 )+489) and (mouse_x<__view_get( e__VW.XView, 0 )+348+246) and (mouse_y<__view_get( e__VW.YView, 0 )+489+26){
-        if (instance_exists(obj_star_select)){
-            if (obj_star_select.button2!="") then exit;
-            if (obj_star_select.button2=="") then close=true;
-        }
-    }
-    if (mouse_x>=__view_get( e__VW.XView, 0 )+348) and (mouse_y>=__view_get( e__VW.YView, 0 )+517) and (mouse_x<__view_get( e__VW.XView, 0 )+348+246) and (mouse_y<__view_get( e__VW.YView, 0 )+517+26){
-        if (instance_exists(obj_star_select)){
-            if (obj_star_select.button2!="") then exit;
-            if (obj_star_select.button2=="") then close=true;
-        }
-    }
-    if (mouse_x>=__view_get( e__VW.XView, 0 )+348) and (mouse_y>=__view_get( e__VW.YView, 0 )+545) and (mouse_x<__view_get( e__VW.XView, 0 )+348+246) and (mouse_y<__view_get( e__VW.YView, 0 )+545+26){
-        if (instance_exists(obj_star_select)){
-            if (obj_star_select.button2!="") then exit;
-            if (obj_star_select.button2=="") then close=true;
-        }
-    }
-}
-
-
-if (obj_controller.menu=0) and (obj_controller.zoomed=0) and (!instance_exists(obj_bomb_select)) and (!instance_exists(obj_drop_select)) and (obj_controller.cooldown<=0){
-    var closes,sta1,sta2;closes=0;sta1=0;sta2=0;
-    sta1=instance_nearest(mouse_x,mouse_y,obj_star);
-    sta2=point_distance(mouse_x,mouse_y,sta1.x,sta1.y);
-
-    if (sta2>15){
-        if (scr_hit(xx+27,yy+165,xx+27+320,yy+165+294)=false) then closes+=1;
-        if (obj_controller.selecting_planet>0 && feature == ""){
-            if (scr_hit(xx+27+381,yy+165,xx+27+320+381,yy+165+294)=false) then closes+=1;
-        }else if (obj_controller.selecting_planet>0 && feature != ""){
-            if (scr_hit(xx+27+381,yy+165,xx+27+320+381+381,yy+165+294)=false) then closes+=1;
-        }
-        if ((closes=1) and (obj_controller.selecting_planet=0)) or (closes=2){cooldown=0;
-            obj_controller.sel_system_x=0;
-			obj_controller.sel_system_y=0;
-            obj_controller.selecting_planet=0;
-			obj_controller.popup=0;
-            obj_controller.cooldown=0;
-			instance_destroy();
-        }
-    }
-}
-
-
-
 if (loading=0){
     if (instance_exists(target) and (obj_controller.cooldown<=0)){
         if (target.planets>=1){
@@ -199,6 +38,7 @@ if (loading=0){
                 obj_controller.selecting_planet=1;
                 garrison = new garrison_force(target.p_operatives[obj_controller.selecting_planet]);
                 feature="";
+                buttons_selected=false;  
             }
         }
         if (target.planets>=2){
@@ -207,6 +47,7 @@ if (loading=0){
                 obj_controller.selecting_planet=2;
                 feature="";
                 garrison = new garrison_force(target.p_operatives[obj_controller.selecting_planet]);
+                buttons_selected=false; 
             }
         }
         if (target.planets>=3){
@@ -215,6 +56,7 @@ if (loading=0){
                 obj_controller.selecting_planet=3;
                 feature="";
                 garrison = new garrison_force(target.p_operatives[obj_controller.selecting_planet]);
+                buttons_selected=false;  
             }
         }
         if (target.planets>=4){
@@ -223,6 +65,7 @@ if (loading=0){
                 obj_controller.selecting_planet=4;
                 feature="";
                 garrison = new garrison_force(target.p_operatives[obj_controller.selecting_planet]);
+                buttons_selected=false;  
             }
         }
     }
@@ -274,6 +117,7 @@ if (obj_controller.cooldown<=0) and (loading=1){
             type:"squad", 
             reference:squad_index,
             job:mission,
+            task_time : 0
         };
         array_push(target.p_operatives[obj_controller.selecting_planet],operation_data)
     }     
@@ -289,11 +133,9 @@ if (obj_controller.cooldown<=0) and (loading=1){
         // 135 ; SPECIAL PLANET CRAP HERE
         
         // Recon Stuff
-        var recon;recon=0;
-        if (target.p_problem[obj_controller.selecting_planet,1]="recon") then recon=1;
-        if (target.p_problem[obj_controller.selecting_planet,2]="recon") then recon=1;
-        if (target.p_problem[obj_controller.selecting_planet,3]=="recon") then recon=1;
-        if (target.p_problem[obj_controller.selecting_planet,4]=="recon") then recon=1;
+        var recon=0;
+        if (has_problem_planet(obj_controller.selecting_planet, "recon",target)) then recon=1;
+
         if (recon==1){
             var arti=instance_create(target.x,target.y,obj_temp7);// Unloading / artifact crap
             arti.num=obj_controller.selecting_planet;
@@ -304,41 +146,30 @@ if (obj_controller.cooldown<=0) and (loading=1){
             // Right here should pass the man_sel variables
             // var i;i=-1;repeat(150){i+=1;arti.man_sel[i]=obj_controller.man_sel[i];}
             var i=-1;
-            repeat(150){i+=1;
-                arti.man_sel[i]=0;arti.ide[i]=0;arti.man[i]="";
-                if (obj_controller.man_sel[i]!=0){
-                    arti.man_sel[i]=obj_controller.ma_lid[i];
-                    arti.ide[i]=obj_controller.ide[i];
-                    arti.man[i]=obj_controller.man[i];
-                }
+            with (arti){
+                setup_planet_mission_group()
             }
         }
         
         // Artifact Grab
         if (planet_feature_bool(target.p_feature[obj_controller.selecting_planet], P_features.Artifact) == 1) and (recon=0){
 	
-            var arti;arti=instance_create(target.x,target.y,obj_temp4);// Unloading / artifact crap
-            arti.num=obj_controller.selecting_planet;arti.alarm[0]=1;
+            var arti=instance_create(target.x,target.y,obj_temp4);// Unloading / artifact crap
+            arti.num=obj_controller.selecting_planet;
+            arti.alarm[0]=1;
             arti.loc=obj_controller.selecting_location;
             arti.managing=obj_controller.managing;
-            // Right here should pass the man_sel variables
-            // var i;i=-1;repeat(150){i+=1;arti.man_sel[i]=obj_controller.man_sel[i];}
-            var i;i=-1;
-            repeat(150){i+=1;
-                arti.man_sel[i]=0;arti.ide[i]=0;arti.man[i]="";
-                if (obj_controller.man_sel[i]!=0){
-                    arti.man_sel[i]=obj_controller.ma_lid[i];
-                    arti.ide[i]=obj_controller.ide[i];
-                    arti.man[i]=obj_controller.man[i];
-                }
+
+            with (arti){
+                setup_planet_mission_group()
             }
         }
         
         // STC Grab
         if (planet_feature_bool(target.p_feature[obj_controller.selecting_planet], P_features.STC_Fragment) == 1) and (recon=0){
             var i,tch,mch;i=0;tch=0;mch=0;
-            repeat(300){i+=1;
-                if (obj_controller.man[i]!="") and (obj_controller.man_sel[i]=1){
+            for (var i=0;i<array_length(obj_controller.display_unit);i++){
+                if (obj_controller.man[i]!="") and (obj_controller.man_sel[i]==1){
                     if (obj_controller.ma_role[i]=obj_ini.role[100][16]) or ((obj_controller.ma_role[i]="Forge Master")){
                         tch+=1;
                     }
@@ -349,20 +180,16 @@ if (obj_controller.cooldown<=0) and (loading=1){
             }
             if (tch+mch>0){
                 var arti;arti=instance_create(target.x,target.y,obj_temp4);// Unloading / artifact crap
-                arti.num=obj_controller.selecting_planet;arti.alarm[0]=1;
+                arti.num=obj_controller.selecting_planet;
+                arti.alarm[0]=1;
                 arti.loc=obj_controller.selecting_location;
                 arti.managing=obj_controller.managing;
-                arti.tch=tch;arti.mch=mch;
+                arti.tch=tch;
+                arti.mch=mch;
                 // Right here should pass the man_sel variables
                 // var i;i=-1;repeat(150){i+=1;arti.man_sel[i]=obj_controller.man_sel[i];}
-                var i;i=-1;
-                repeat(150){i+=1;
-                    arti.man_sel[i]=0;arti.ide[i]=0;arti.man[i]="";
-                    if (obj_controller.man_sel[i]!=0){
-                        arti.man_sel[i]=obj_controller.ma_lid[i];
-                        arti.ide[i]=obj_controller.ide[i];
-                        arti.man[i]=obj_controller.man[i];
-                    }
+                with (arti){
+                    setup_planet_mission_group();
                 }
             }
         }
@@ -382,47 +209,45 @@ if (obj_controller.cooldown<=0) and (loading=1){
 				obj_controller.current_planet_feature =_explore_ruins;
 				obj_controller.current_planet_feature.star = target;
 				obj_controller.current_planet_feature.planet = obj_controller.selecting_planet;
-            var pip,arti;pip=instance_create(0,0,obj_popup);pip.title="Ancient Ruins";
-			var ruins_size =obj_controller.current_planet_feature.ruins_size
-            
-            var nu;nu=string(target.name);
-            if (obj_controller.selecting_planet=1) then nu+=" I";if (obj_controller.selecting_planet=2) then nu+=" II";
-            if (obj_controller.selecting_planet=3) then nu+=" III";if (obj_controller.selecting_planet=4) then nu+=" IV";
-			 if(_explore_ruins.failed_exploration ==1){ pip.text="The accursed ruins on "+string(nu)+"where your brothers fell still holds many secrets including the remains of your brothers honour demands you avenge them."}else{
-				 pip.text="Located upon "+string(nu)+$" is a {ruins_size} expanse of ancient ruins, dating back to times long since forgotten.  Locals are superstitious about the place- as a result the ruins are hardly explored.  What they might contain, and any potential threats, are unknown.";
-				switch (ruins_size){
-					case "tiny":pip.text += "It's tiny nature means no more than five marines can operate in cohesion without being seperated";
-					break;
-					case "small":pip.text += "As a result of it's narrow corridors and tight spaces a squad of any more than 15 would struggle to operate effectivly";
-					break;
-					case "medium":pip.text += "Half a standard company (55) could easily operate effectivly in the many wide spaces and caverns";
-					break;
-					case "large":pip.text += "A whole company (110) would not be confined in the huge spaces that such a ruin contain";
-					break;
-					case "sprawling":pip.text += "The ruins is of an unprecidented size whole legions of old would not feel uncomfortable in such a space"
-					break;
-				}
-				pip.text += ". What is thy will?"
-			}
-            pip.option1="Explore the ruins.";pip.option2="Do nothing.";pip.option3="Return your marines to the ship.";pip.image="ancient_ruins";
-            
-            arti=instance_create(target.x,target.y,obj_temp4);
-            arti.num=obj_controller.selecting_planet;arti.alarm[0]=1;
-            arti.loc=obj_controller.selecting_location;
-            arti.battle_loc=target.name;
-            arti.manag=obj_controller.managing;
-            arti.obj=target;
-            var i;i=-1;
-            repeat(150){i+=1;
-                arti.man_sel[i]=0;arti.ide[i]=0;arti.man[i]="";
-                if (obj_controller.man_sel[i]!=0){
-                    arti.man_sel[i]=obj_controller.ma_lid[i];
-                    arti.ide[i]=obj_controller.ide[i];
-                    arti.man[i]=obj_controller.man[i];
+                var arti;
+                var pip=instance_create(0,0,obj_popup);
+                pip.title="Ancient Ruins";
+    			var ruins_size =obj_controller.current_planet_feature.ruins_size
+                
+                var nu=string(target.name);
+                if (obj_controller.selecting_planet=1) then nu+=" I";if (obj_controller.selecting_planet=2) then nu+=" II";
+                if (obj_controller.selecting_planet=3) then nu+=" III";if (obj_controller.selecting_planet=4) then nu+=" IV";
+    			 if(_explore_ruins.failed_exploration ==1){ pip.text="The accursed ruins on "+string(nu)+"where your brothers fell still holds many secrets including the remains of your brothers honour demands you avenge them."}else{
+    				 pip.text="Located upon "+string(nu)+$" is a {ruins_size} expanse of ancient ruins, dating back to times long since forgotten.  Locals are superstitious about the place- as a result the ruins are hardly explored.  What they might contain, and any potential threats, are unknown.";
+    				switch (ruins_size){
+    					case "tiny":pip.text += "It's tiny nature means no more than five marines can operate in cohesion without being seperated";
+    					break;
+    					case "small":pip.text += "As a result of it's narrow corridors and tight spaces a squad of any more than 15 would struggle to operate effectivly";
+    					break;
+    					case "medium":pip.text += "Half a standard company (55) could easily operate effectivly in the many wide spaces and caverns";
+    					break;
+    					case "large":pip.text += "A whole company (110) would not be confined in the huge spaces that such a ruin contain";
+    					break;
+    					case "sprawling":pip.text += "The ruins is of an unprecidented size whole legions of old would not feel uncomfortable in such a space"
+    					break;
+    				}
+    				pip.text += ". What is thy will?"
+    			}
+                pip.option1="Explore the ruins.";pip.option2="Do nothing.";pip.option3="Return your marines to the ship.";pip.image="ancient_ruins";
+                
+                arti=instance_create(target.x,target.y,obj_temp4);
+                arti.num=obj_controller.selecting_planet;arti.alarm[0]=1;
+                arti.loc=obj_controller.selecting_location;
+                arti.battle_loc=target.name;
+                arti.manag=obj_controller.managing;
+                arti.obj=target;
+
+                with (arti){
+                    setup_planet_mission_group();
                 }
-            }
-            arti.ship_id=obj_controller.ma_lid[1];
-			obj_controller.current_planet_feature.battle = arti;
+
+                arti.ship_id=obj_controller.ma_lid[1];
+    			obj_controller.current_planet_feature.battle = arti;
 			}
         }
         
@@ -439,7 +264,7 @@ if (obj_controller.cooldown<=0) and (loading=1){
 }
 
 
-attack=0;bombard=0;raid=0;purge=0;button1="";button2="";button3="";
+attack=0;bombard=0;raid=0;purge=0;
 
 if (player_fleet>0) and (imperial_fleet+mechanicus_fleet+inquisitor_fleet+eldar_fleet+ork_fleet+tau_fleet+heretic_fleet>0) and (obj_controller.cooldown<=0){
     var i,x3,y3;i=0;

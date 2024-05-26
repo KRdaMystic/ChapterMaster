@@ -5,7 +5,7 @@
   "bbox_bottom": 224,
   "bbox_left": 60,
   "bbox_right": 104,
-  "bbox_top": 24,
+  "bbox_top": 22,
   "bboxMode": 0,
   "collisionKind": 1,
   "collisionTolerance": 0,
@@ -31,7 +31,7 @@
   "origin": 0,
   "parent": {
     "name": "decorations",
-    "path": "folders/Sprites/New UI/Marine Viewer/decorations.yy",
+    "path": "folders/Sprites/Marine Viewer/decorations.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {
