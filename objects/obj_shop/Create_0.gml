@@ -281,6 +281,7 @@ if (shop = "equipment") {
     i += 1;
     item[i] = "Stalker Pattern Bolter";
     item_stocked[i] = scr_item_count(item[i]);
+    forge_cost[i] = 150;
     item_cost[i] = 80;
     if (research.bolt[0]>0){
         forge_cost[i] = 200;
@@ -316,6 +317,16 @@ if (shop = "equipment") {
         item_cost[i] = 0;
     }
     i += 1;
+    item[i] = "Wrist-mounted Storm Bolter";
+    forge_cost[i] = 400;
+    item_stocked[i] = scr_item_count(item[i]);
+    item_cost[i] = 100;
+    if (research.bolt[0]<2) then forge_cost[i] = 0;
+    if (rene = 1) {
+        nobuy[i] = 1;
+        item_cost[i] = 0;
+    }
+    i += 1;
     item[i] = "Flamer";
     forge_cost[i] = 150;
     if (research.flame[0]<1) then forge_cost[i] = 0;
@@ -339,6 +350,8 @@ if (shop = "equipment") {
     i += 1;
     item[i] = "Integrated Bolters";
     item_stocked[i] = scr_item_count(item[i]);
+    forge_cost[i] = 180;
+    if (research.bolt[0]<2) then forge_cost[i] = 0;
     item_cost[i] = 120;
     i += 1;
     item[i] = "Meltagun";

@@ -282,7 +282,7 @@ function scr_weapons_equip() {
 
 	if (tc=2) and (tb=1) and (dude=53){var i;i=0; // Land Speeder Secondary
 			i+=1;item_name[i]="(None)";
-	    i+=1;item_name[i]="Assault Cannon";
+	   	 i+=1;item_name[i]="Assault Cannon";
 			i+=1;item_name[i]="Heavy Flamer";
 	}
 

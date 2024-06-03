@@ -1901,6 +1901,18 @@ function scr_initialize_custom() {
 			obj_ini.artifact_identified[last_artifact] = 0;
 			chapter_master_equip.wep1=last_artifact;					
 			break;
+			case "Crimson Fists":
+			chapter_master.add_trait("melee_enthusiast");
+			chapter_master.add_trait("zealous_faith");
+			chapter_master.add_trait("old_guard");
+			arti = obj_ini.artifact_struct[last_artifact];
+			arti.name = "Dorn's Arrow";
+			arti.custom_description = "An ancient Storm Bolter named for the primarch of the Imperial Fists";
+			obj_ini.artifact[last_artifact] = "Wrist-mounted Storm Bolter";
+			arti.bearer = [0,1];
+			obj_ini.artifact_identified[last_artifact] = 0;
+			chapter_master_equip.wep1=last_artifact;
+			break;
 		case "Black Templars":
 			chapter_master.add_trait("melee_enthusiast");
 			chapter_master.add_trait("zealous_faith");

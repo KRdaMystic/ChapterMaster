@@ -851,7 +851,7 @@ global.weapons={
         "range": 12,
         "spli": 20,
         "arp": 0,
-        "tags":["heavy_ranged","dreadnought"]
+        "tags":["heavy_ranged","dreadnought","vehicle"]
     },
     "Autocannon": {
         "abbreviation": "Autocnn",       
@@ -1029,7 +1029,7 @@ global.weapons={
         "ranged_hands": 2.25,
         "ammo": 10,
         "range": 16,
-        "spli": 6,
+        "spli": 4,
         "arp": 1,
         "tags":["heavy_ranged"]
     },
@@ -1064,7 +1064,7 @@ global.weapons={
         "ranged_hands": 0,
         "ammo": 20,
         "range": 16,
-        "spli": 3,
+        "spli": 8,
         "arp": 0
     },
     "Twin Linked Lascannon Mount": {
@@ -1094,7 +1094,7 @@ global.weapons={
         "ranged_hands": 0,
         "ammo": 5,
         "range": 12,
-        "spli": 3,
+        "spli": 12,
         "arp": 0,
         "tags":["vehicle","pintle"]
     },
@@ -1126,7 +1126,7 @@ global.weapons={
         "ranged_hands": 0,
         "ammo": 10,
         "range": 16,
-        "spli": 3,
+        "spli": 12,
         "arp": 1,
         "tags":["bolt", "vehicle","sponson"]
     },
@@ -1174,7 +1174,7 @@ global.weapons={
         "ranged_hands": 0,
         "ammo": 20,
         "range": 12,
-        "spli": 3,
+        "spli": 16,
         "arp": 0,
         "tags":["bolt", "vehicle","sponson"]
     },
@@ -1190,7 +1190,7 @@ global.weapons={
         "ranged_hands": 0,
         "ammo": 6,
         "range": 3,
-        "spli": 3,
+        "spli": 24,
         "arp": 1,
         "tags":["flame", "vehicle","sponson"]
     },
@@ -1206,7 +1206,7 @@ global.weapons={
         "ranged_hands": 0,
         "ammo": 12,
         "range": 2.1,
-        "spli": 3,
+        "spli": 24,
         "arp": -1,
         "tags":["flame", "vehicle","sponson"]
     },
@@ -1315,6 +1315,22 @@ global.weapons={
         "arp": 0,
         "tags":["bolt"]
     },
+    "Wrist-mounted Storm Bolter": {
+        "abbreviation": "WrstBltr", 
+        "attack": {
+            "standard": 100,
+            "master_crafted": 120,
+            "artifact": 140
+        },
+        "description": "Compact and double-barreled, this wrist-mounted bolt weapon is more inaccurate than its handheld variant but grants an enormous amount of firepower valued by assault troops.",
+        "melee_hands": 0,
+        "ranged_hands": 0,
+        "ammo": 10,
+        "range": 6,
+        "spli": 6,
+        "arp": 0,
+        "tags":["bolt"]
+    },
     "Flamer": {
         "abbreviation": "Flmr", 
         "attack": {
@@ -1332,7 +1348,7 @@ global.weapons={
         "ranged_hands": 1,
         "ammo": 4,
         "range": 2.1,
-        "spli": 3,
+        "spli": 10,
         "arp": -1,
         "tags":["flame"]
     },
@@ -1348,7 +1364,7 @@ global.weapons={
         "ranged_hands": 0,
         "ammo": 4,
         "range": 2.1,
-        "spli": 3,
+        "spli": 6,
         "arp": 0,
         "tags":["flame"]
     },
@@ -1717,12 +1733,12 @@ global.gear = {
       "ranged_mod": {
         "standard": -5,
         "master_crafted": 0,
-        "artifact": 0
+        "artifact": 5
       },
       "melee_mod": {
         "standard": 20,
-        "master_crafted": 0,
-        "artifact": 0
+        "master_crafted": 25,
+        "artifact": 30
       },
       "description": "A hastily assembled Power Armor that first started appearing during the Horus Heresy to act as a stopgap while new suits were produced and sent to loyalist legions. It excels in close combat but it has limited sensors for ranged combat.",
       "tags":["power_armour"],
