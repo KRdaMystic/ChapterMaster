@@ -909,7 +909,7 @@ function scr_initialize_custom() {
 	if (array_contains(obj_creation.adv,"Siege Masters")){siege=1;}
 	if (array_contains(obj_creation.adv,"Crafters")){techs+=5;terminator+=5;tenth-=10;}
 	if (array_contains(obj_creation.adv,"Psyker Abundance")){tenth-=10;epistolary+=2;codiciery+=3;lexicanum+=5;psyky=1;}
-	if (array_contains(obj_creation.dis,"Psyker Intolerant")){epistolary=0;codiciery=0;lexicanum=0;veteran+=10;tenth+=10;intolerant=1;}
+	if (array_contains(obj_creation.dis,"Psyker Intolerant")){chaap+=10;epistolary=0;codiciery=0;lexicanum=0;veteran+=10;tenth+=10;intolerant=1;}
 	if (array_contains(obj_creation.dis,"Sieged")){
 		techs-=10;
 		epistolary-=3;
@@ -917,10 +917,10 @@ function scr_initialize_custom() {
 		codiciery-=3;
 		lexicanum-=5;
 		terminator-=10;
-		veteran-=50;
-	    second-=30;
-	    third-=30;
-	    fourth-=30;
+		veteran-=30;
+	    second-=35;
+	    third-=35;
+	    fourth-=40;
 	    fifth-=60;
 	    sixth-=60;
 	    seventh-=60;
@@ -2588,6 +2588,8 @@ function scr_initialize_custom() {
 	        if (company=10) then temp1=max(0,tenth-10);
 
 	        company_experience=(16-company)*5;
+			
+			if (array_contains(obj_creation.dis,"Sieged"))then company_experience+=20;
 
 	        // temp1=(100-(assault*devastator))*10;company_experience=(16-company)*5;
 	        // temp1-=1;
