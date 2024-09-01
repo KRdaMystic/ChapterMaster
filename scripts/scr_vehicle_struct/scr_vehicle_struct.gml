@@ -73,7 +73,7 @@ global.vehic_trait_list = {
     }*/
 }
 global.vehic_base_stats = {
-    "land_raider":{
+    "Land Raider":{
         Durability:[40,0],
         Manuverability:[15,3],
         Gunnery:[35,0,],
@@ -83,7 +83,7 @@ global.vehic_base_stats = {
 		veh_type:"tank",
         base_group:"astartes_veh"
     },
-    "predator":{
+    "Predator":{
         Durability:[35,0],
         Manuverability:[25,5],
         Gunnery:[30,5],
@@ -93,7 +93,7 @@ global.vehic_base_stats = {
 		veh_type:"tank",
         base_group:"astartes_veh"
     },
-    "rhino":{
+    "Rhino":{
         Durability:[30,0],
         Manuverability:[30,5],
         Gunnery:[25,5],
@@ -103,7 +103,7 @@ global.vehic_base_stats = {
 		veh_type:"apc",
         base_group:"astartes_veh"
     },
-    "whirlwind":{
+    "Whirlwind":{
         Durability:[25,0],
         Manuverability:[20,5],
         Gunnery:[40,5],
@@ -113,7 +113,7 @@ global.vehic_base_stats = {
 		veh_type:"firesupp",
         base_group:"astartes_veh"
     },
-    "land_speeder":{
+    "Land Speeder":{
         Durability:[35,0],
         Manuverability:[40,0],
         Gunnery:[30,0,],
@@ -123,7 +123,7 @@ global.vehic_base_stats = {
 		veh_type:"fav",
         base_group:"astartes_veh"
     },
-    "razorback":{
+    "Razorback":{
         Durability:[35,0],
         Manuverability:[30,5],
         Gunnery:[35,5,],
@@ -133,7 +133,7 @@ global.vehic_base_stats = {
 		veh_type:"apc",
         base_group:"astartes_veh"
     },
-    "vindicator":{
+    "Vindicator":{
         Durability:[35,0],
         Manuverability:[20,5],
         Gunnery:[40,5,],
@@ -147,7 +147,7 @@ global.vehic_base_stats = {
 }
 	
 	function TTRPG_veh_stats(faction, comp, veh, class = "vehicle") constructor{
-	Manuverability=0; Survivability=0;Sanctity=0;Gunnery=0;size = 0;planet_location=0;
+	Durability=0; Manuverability=0; Survivability=0;Sanctity=0;Gunnery=0;size = 0;planet_location=0;
 	if (!instance_exists(obj_controller) && class!="blank"){//game start unit planet location
 		planet_location=2;
 	}
@@ -188,6 +188,35 @@ global.vehic_base_stats = {
 	static armour = function(){ 
 		return obj_ini.armour[company][vehicle_number];
 	};
+		static repairs = function(tech){
+		if (hp()<=0) then exit;
+		var health_portion = 20;
+		var v_health = max_health();
+		var new_health;
+		if (tech){
+			if (base_group == "astartes_veh"){
+				if (global.vehic_trait_list[$ "custom"]==1){
+					health_portion=8;
+				}else{
+				if (global.vehic_trait_list[$ "super custom"]==1){
+					health_portion=6;
+				}
+			} else {
+				health_portion=10;
+			}
+		} else {
+			if (base_group == "astartes_veh"){
+				health_portion = 8;
+				}
+			}
+		}
+		new_health=hp()+(v_health/health_portion);
+		if (new_health>v_health) then new_health=v_health;
+		update_health(new_health);	
+	}
+	 static update_health = function(new_health){
+	    obj_ini.hp[company][marine_number] = new_health;
+	 };
 	static get_unit_size = function(){
 		var unit_role = veh_role();
 		var arm = veh_upgrade();
