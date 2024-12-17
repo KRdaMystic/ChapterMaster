@@ -1994,6 +1994,16 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 					basic_wep_string += $"Active Force Weapon: x{force_modifier}#  Base: 0.10#  WSxPSIxINT: x{(weapon_skill/100)*(psionic/10)*(intelligence/10)}#  EXP: x{experience/1000}#";
 				}		
 			};
+			if (primary_weapon.has_tag("martial") ||_wep2.has_tag("martial")){
+				var martial_modifier = (((dexterity/40)) + (experience/1000)+0.1);
+				primary_weapon.attack *= martial_modifier;
+				basic_wep_string += $"Martial Prowess: x{martial_modifier}#  Base: 0.10#  DEX: {(dexterity/40)}#  EXP: {experience/1000}#";
+			};
+			if (primary_weapon.has_tag("savage") ||_wep2.has_tag("savage")){
+				var savage_modifier = (((strength/40)) + (experience/1000)+0.1);
+				primary_weapon.attack *= savage_modifier;
+				basic_wep_string += $"Innate Savagery: x{savage_modifier}#  Base: 0.10#  STR: {(strength/40)}#  EXP: {experience/1000}#";
+			};
 			explanation_string = basic_wep_string + explanation_string
 
 			if (melee_carrying[0]>melee_carrying[1]){
