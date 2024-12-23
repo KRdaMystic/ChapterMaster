@@ -2027,7 +2027,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 
 			if IsSpecialist("libs") or has_trait("warp_touched"){
 				if (primary_weapon.has_tag("force")){
-					var force_modifier = (psionic * 2) * (intelligence/50);
+					var force_modifier = (psionic * 3) * (intelligence/40);
 					_melee_mod += force_modifier / 100;
 					explanation_string += $"  PSYxINT (Force): {_format_sign(force_modifier)}%#";
 				}		
@@ -2083,7 +2083,7 @@ function TTRPG_stats(faction, comp, mar, class = "marine", other_spawn_data={}) 
 				var side_arm = floor(secondary_modifier*((_melee_mod/100)*secondary_weapon.attack));
 				if (side_arm>0){
 					final_attack+=side_arm;
-					explanation_string+=$"Side Arm: +{side_arm}({side_arm_data})#";
+					explanation_string+=$"Side Arm: +{side_arm} ({side_arm_data})#";
 				}
 			}
 
