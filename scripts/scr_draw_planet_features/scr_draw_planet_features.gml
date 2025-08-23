@@ -110,6 +110,71 @@ function FeatureSelected(Feature, system, planet) constructor{
 					//TODO somthing if the forge has a hanger
 				}		
 				break;
+			
+			case P_features.Hospital:
+					draw_text_transformed(xx+(area_width/2), yy +10, "Chapter Apothecarion", 2, 2, 0);
+					draw_set_halign(fa_left);
+					draw_set_color(c_gray);
+	
+					draw_text(xx+10, yy+50, $"Working Apothecaries : {feature.apoths_working}/{worker_capacity}");
+					if (point_and_click(draw_unit_buttons([xx+10, yy+70], "Assign To Apothecarion",[1,1],c_red))){
+						obj_controller.unit_profile = false;
+						obj_controller.view_squad = false;
+						group_selection(techs,{
+							purpose:"Apothecarion Assignment",
+							purpose_code : "apothecarion_assignment",
+							number:worker_capacity,
+							system:planet_data.system,
+							feature:feature,
+							planet : planet_data.planet,
+							selections : []
+						});
+						destroy=true;
+	
+					}
+					//TODO move over to using the draw button object ot streamline this
+					var next_position = [xx+10, yy+95];
+					if (feature.size<3){
+						var upgrade_cost = 2000 * feature.size;
+						var last_button = draw_unit_buttons(next_position, $"Upgrade Apothecarion ({upgrade_cost} req)",[1,1],c_red);
+						next_position = [last_button[0], last_button[3]];
+						if (point_and_click(last_button) && obj_controller.requisition>=upgrade_cost){
+							obj_controller.requisition -=  upgrade_cost;
+							feature.size++;
+							worker_capacity*=2;
+					}
+				}
+				if (feature.size>1 && !feature.gene_vault){
+					var upgrade_cost = 2000;
+					var build_coords = draw_unit_buttons(next_position, $"Build a Geneseed Vault({upgrade_cost} req)",[1,1],c_red);
+					if (scr_hit(build_coords)){
+						tooltip_draw("Raises Geneseed capacity and when staffed Stability")
+					}
+					if (point_and_click(build_coords) && obj_controller.requisition>=upgrade_cost){
+						feature.vehicle_hanger=1;
+						obj_controller.requisition -=  upgrade_cost;
+						array_push(obj_controller.player_forge_data.vehicle_hanger,[obj_controller.selected.name,planet_data.planet]);
+					}					
+				} else if(feature.gene_vault){
+					draw_text(next_position[0], next_position[1], "Apothecarion has a Geneseed vault")
+					//TODO somthing if the forge has a hanger
+				}
+				if (feature.size>1 && !feature.nurse_quarters){
+					var upgrade_cost = 2000;
+					var build_coords = draw_unit_buttons(next_position, $"Build a Nurse Quarters({upgrade_cost} req)",[1,1],c_red);
+					if (scr_hit(build_coords)){
+						tooltip_draw("Provides nursing staff to assist daily operations further increasing local Apothecary output ")
+					}
+					if (point_and_click(build_coords) && obj_controller.requisition>=upgrade_cost){
+						feature.nurse_quarters=1;
+						obj_controller.requisition -=  upgrade_cost;
+						array_push(obj_controller.player_forge_data.nurse_quarters,[obj_controller.selected.name,planet_data.planet]);
+					}					
+				} else if(feature.nurse_quarters){
+					draw_text(next_position[0], next_position[1], "Apothecarion has a Nurse Quarters")
+				}			
+				break;
+
 			case P_features.Necron_Tomb:
 
 				generic=true;
