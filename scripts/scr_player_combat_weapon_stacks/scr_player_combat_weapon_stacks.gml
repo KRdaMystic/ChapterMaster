@@ -41,6 +41,9 @@ function add_data_to_stack(stack_index, weapon, unit_damage = false, head_role =
             var _armour = unit.get_armour_data();
             if (is_struct(_armour) && _armour.has_tag("dreadnought")) {
                 ammo[stack_index] = weapon.ammo * 3;
+            },
+			if (is_struct(_armour) && _armour.has_tag("terminator")) {
+                ammo[stack_index] = weapon.ammo * 2;
             }
 
             var _mobi = unit.get_mobility_data();
