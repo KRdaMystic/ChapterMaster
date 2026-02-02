@@ -12,9 +12,9 @@ global.weapons = {
         "melee_hands": 1,
 		"ranged_hands": 2,
         "ammo": 4,
-        "range": 22,
+        "range": 8,
         "spli": 12,
-        "arp": 0,
+        "arp": 3,
         "tags": [
 			"heavy_ranged",
             "volkite",
@@ -29,12 +29,12 @@ global.weapons = {
             "artifact": 590,
         },
         "description": "Featuring grater range, more precise fire and more stopping fire than the Charger, this is the rifle of the Volkite family, whereas its smaller brother is the assault rifle. A weapon most prominent in Tactical squads of the Great Crusade Legions, its potency is spoken of even those many thousands of years past their height.",
-        "melee_hands": 1,
+        "melee_hands": 0,
 		"ranged_hands": 2,
-        "ammo": 6,
-        "range": 16,
-        "spli": 10,
-        "arp": 0,
+        "ammo": 10,
+        "range": 6,
+        "spli": 6,
+        "arp": 2,
         "tags": [
             "volkite",
             "energy"
@@ -48,12 +48,12 @@ global.weapons = {
             "artifact": 440,
         },
         "description": "One of the deadliest of the mainstay weapons in the Imperial arsenal during the Great Crusade. The humble Charger is a thermal ray weapon that deflagrates organic matter, combusting the target in extreme cases. Some variants even arc over multiple targets.",
-        "melee_hands": 1,
-        "ranged_hands": 2,
+        "melee_hands": 0,
+        "ranged_hands": 1,
         "ammo": 10,
         "range": 10,
         "spli": 6,
-        "arp": 0,
+        "arp": 2,
         "tags": [
             "volkite",
             "energy"
@@ -72,7 +72,7 @@ global.weapons = {
         "ammo": 10,
         "range": 3,
         "spli": 4,
-        "arp": 0,
+        "arp": 2,
         "tags": [
             "volkite",
             "energy",
@@ -92,7 +92,7 @@ global.weapons = {
         "ammo": 10,
         "range": 3,
         "spli": 4,
-        "arp": 0,
+        "arp": 3,
         "tags": [
             "volkite",
             "energy",
@@ -117,7 +117,8 @@ global.weapons = {
         "arp": 0,
         "tags": [
             "bolt",
-            "pistol"
+            "pistol",
+            "boarding 1"
         ],
     },
     "Phobos Bolter": {
@@ -134,7 +135,10 @@ global.weapons = {
         "range": 13,
         "spli": 3,
         "arp": 0,
-        "tags": ["bolt"],
+        "tags": [
+            "bolt",
+            "boarding 1"
+        ],
     },
     "Mars Heavy Bolter": {
         "abbreviation": "MarsHvyBltr",
@@ -146,7 +150,7 @@ global.weapons = {
         "description": "This is the prototype that turned into the staple of all Heavy Bolter designs. Introduced in early Great Crusade, it was one of the very first heavy support weapons churned out by the forges of Mechanicum.",
         "melee_hands": 1,
 		"ranged_hands": 2,
-        "ammo": 12,
+        "ammo": 4,
         "range": 17,
         "spli": 9,
         "arp": 1,
@@ -169,7 +173,10 @@ global.weapons = {
         "range": 19,
         "spli": 11,
         "arp": 0,
-        "tags": ["bolt"],
+        "tags": [
+            "bolt", 
+            "boarding 2"
+        ],
     },
     //Plasma Pack
     "Ryza Plasma Gun": {
@@ -188,6 +195,7 @@ global.weapons = {
         "arp": 1,
         "tags": [
             "plasma",
+            "boarding 1",
             "energy"
         ],
     },
@@ -208,7 +216,8 @@ global.weapons = {
         "tags": [
             "plasma",
             "energy",
-            "pistol"
+            "pistol",
+            "boarding 1"
         ],
     },
     "Mars Plasma Cannon": {
@@ -221,7 +230,7 @@ global.weapons = {
         "description": "An ancient Plasma Cannon variant born in the bowels of Mother Mars. Once a staple of heavy weapons squads in the time of Legiones Astartes, now a revered relic with power beyond compare with any modern weapons, even those made in the forges of Mars and Ryza in this dark age. Sharing some design and components with Ryzan patterns, it features the same purple glow that makes them so easily distinguishable.",
         "melee_hands": 1,
 		"ranged_hands": 2,
-        "ammo": 18,
+        "ammo": 4,
         "range": 16,
         "spli": 8,
         "arp": 1,
@@ -249,7 +258,7 @@ global.weapons = {
         "tags": [
             "melta",
             "energy",
-            "boarding"
+            "boarding 2"
         ],
     },
     "Proteus Multi-Melta": {
@@ -262,7 +271,7 @@ global.weapons = {
         "description": "This Multi-Melta design originates, like many others used by Legiones Astartes, in the Dark Age of Technology. Deadlier than the current designs fielded by the Space Marine Chapters, it is a relic of both of the zenith of mankind's science and the last moments of the Emperor's true vision.",
         "melee_hands": 1,
 		"ranged_hands": 2,
-        "ammo": 6,
+        "ammo": 4,
         "range": 4.5,
         "spli": 2,
         "arp": 1,
@@ -270,7 +279,7 @@ global.weapons = {
 			"heavy_ranged",
             "melta",
             "energy",
-            "boarding"
+            "boarding 1"
         ],
     },
     //Flamer Pack
@@ -288,7 +297,10 @@ global.weapons = {
         "range": 2.5,
         "spli": 6,
         "arp": -1,
-        "tags": ["flame"], //Shouldn't it also feature "boarding"?
+        "tags": [
+            "flame", 
+            "boarding 2"
+        ] 
     },
     //Melee Pack
     "Power Scythe": {
@@ -310,7 +322,10 @@ global.weapons = {
         "range": 1,
         "spli": 6,
         "arp": 1,
-        "tags": ["power"],
+        "tags": [
+            "power",
+            "martial" 
+        ],
     },
     //Laser Pack
     "Ryza Lascannon": {
@@ -323,7 +338,7 @@ global.weapons = {
         "description": "The Forge World of Ryza is known not only for its mastery of Plasma weaponry, but also for its genius in Las weapon designs. This revered Ryzan Lascannon pattern can be dated to the Great Crusade, and as such it is the pinnacle of its kind as the Imperium was then. A common sight across the Legiones Astartes heavy support squads as well as Solar Auxilia, any Chapter blessed with one should count themselves lucky.",
         "melee_hands": 1,
 		"ranged_hands": 2,
-        "ammo": 10,
+        "ammo": 3,
         "range": 24,
         "spli": 1,
         "arp": 1,
@@ -344,7 +359,7 @@ global.weapons = {
         "description": "Originating from the Warmaster's homeworld [allegedly untrue] of Cthonia, this Autocannon pattern was the chosen type of this weapon for Terminator Squads throughout the Great Crusade and subsequent Horus Heresy. While later designs may have outshined it in fire rate or range, this remains the hardest hitting autocannon to date, perhaps with the Kalibrax as a strong competitor.",
         "melee_hands": 1,
 		"ranged_hands": 2,
-        "ammo": 30,
+        "ammo": 4,
         "range": 20,
         "spli": 15,
         "arp": 1,
@@ -1264,7 +1279,7 @@ global.weapons = {
         "description": "A bigger version of the Grav-Gun which utilises the gravitic reaction principle most commonly seen powering grav-vehicles such as the Land Speeder.",
         "melee_hands": 1,
         "ranged_hands": 2,
-        "ammo": 8,
+        "ammo": 2,
         "range": 6,
         "spli": 6,
         "arp": 4,
@@ -1341,7 +1356,7 @@ global.weapons = {
         "description": "A significantly heavier flamer typically utilized on vehicle mounts. To carry them on foot requires Power Armor.",
         "melee_hands": 1,
         "ranged_hands": 2,
-        "ammo": 8,
+        "ammo": 3,
         "range": 4,
         "spli": 20,
         "arp": 2,
@@ -1420,7 +1435,7 @@ global.weapons = {
         },
         "description": "A huge vehicle-mounted flame weapon that fires with explosive force. The reservoir is liable to explode.",
         "ranged_hands": 5,
-        "ammo": 0,
+        "ammo": 3,
         "range": 4.1,
         "spli": 20,
         "arp": 2,
@@ -1476,7 +1491,7 @@ global.weapons = {
         "description": "Though bearing longer range than the Meltagun, this weapon's great size usually restricts it to vehicles though those with Power Armor can carry this cumbersome weapon into battle.",
         "melee_hands": 1,
         "ranged_hands": 2,
-        "ammo": 8,
+        "ammo": 4,
         "range": 4.1,
         "spli": 10,
         "arp": 3,
@@ -1598,7 +1613,7 @@ global.weapons = {
         "description": "A heavy variant of the plasma gun, its power output is significantly higher and its damage capability shows. However, it maintains the overheating risk of the Plasma Gun",
         "melee_hands": 1,
         "ranged_hands": 2,
-        "ammo": 16,
+        "ammo": 4,
         "range": 10,
         "spli": 8,
         "arp": 3,
@@ -1657,7 +1672,7 @@ global.weapons = {
         "description": "A heavy rotary autocannon with a devastating fire rate that can be counted in the hundreds per minute. It is incredibly effective against infantry and light armored targets.",
         "melee_hands": 2.1,
         "ranged_hands": 3,
-        "ammo": 5,
+        "ammo": 4,
         "range": 12,
         "spli": 20,
         "arp": 2,
@@ -1677,7 +1692,7 @@ global.weapons = {
         "description": "Forged in the forges of Mars and carried into battle by the mightiest of the Emperor's warriors, the Kheres Assault Cannon is a weapon of devastating reputation. Its rotary barrels roar with unceasing fury, unleashing a deluge of mass-reactive shells that tear through flesh, ceramite, and adamantium alike.",
         "melee_hands": 2.1,
         "ranged_hands": 3,
-        "ammo": 5,
+        "ammo": 3,
         "range": 14,
         "spli": 20,
         "arp": 2,
@@ -1698,7 +1713,7 @@ global.weapons = {
         "description": "A rapid-firing weapon able to use a wide variety of ammunition, from mass-reactive explosive to solid shells. It has been found to be incredibly effective against large groups of targets and even Traitor Astartes to an extent.",
         "melee_hands": 0,
         "ranged_hands": 2,
-        "ammo": 25,
+        "ammo": 4,
         "range": 14,
         "spli": 12,
         "arp": 2,
@@ -1718,7 +1733,7 @@ global.weapons = {
         "description": "This shoulder fired weapon is capable of firing either armor-piercing or fragmentation rockets. It's ammunition is limited by what the bearer has carried with them.",
         "melee_hands": 1,
         "ranged_hands": 2,
-        "ammo": 6,
+        "ammo": 4,
         "range": 12,
         "spli": 10,
         "arp": 2,
@@ -1757,7 +1772,7 @@ global.weapons = {
         "description": "A formidable laser weapon, the lascannon can pierce most vehicles or power armored targets from a tremendous range. The weapon is known for its reliability in combat.",
         "melee_hands": 1,
         "ranged_hands": 2,
-        "ammo": 8,
+        "ammo": 3,
         "range": 20,
         "spli": 1,
         "arp": 4,
@@ -1777,7 +1792,7 @@ global.weapons = {
         "description": "The Conversion Beam Projector is a heavy energy weapon that harnesses advanced technology to project a concentrated beam of destructive energy. Armor detonates as the matter that comproises it is transformed into pure energy.",
         "melee_hands": 0,
         "ranged_hands": 1,
-        "ammo": 1,
+        "ammo": 3,
         "range": 20,
         "spli": 3,
         "arp": 4,
@@ -1796,7 +1811,7 @@ global.weapons = {
         "description": "An ancient relic of the Dark Age of Technology, the Heavy Conversion Beamer is a marvel of destructive science rarely entrusted to Imperial commanders. This esoteric weapon channels vast reserves of energy into a focused beam of coruscating light, tearing matter apart at the molecular level and converting it into raw energy in a cataclysmic chain reaction. The weapon’s lethality grows with distance — the further its target, the more apocalyptic the discharge. To stand at the far end of a Heavy Conversion Beamer’s wrath is to be annihilated in a searing blaze that leaves nothing but scorched ruin in its wake. Few battlefields have witnessed its fury and remained unchanged, for the weapon is as much a terror to its enemies as a reminder of the Imperium’s dwindling grasp on its most potent technologies.",
         "melee_hands": 0,
         "ranged_hands": 1,
-        "ammo": 1,
+        "ammo": 3,
         "range": 20,
         "spli": 3,
         "arp": 1,
@@ -1832,7 +1847,7 @@ global.weapons = {
         "description": "Twin-linked Heavy Bolters are an upgraded version of the standard Heavy Bolter weapon, which is known for its high rate of fire and effectiveness against infantry and light vehicles.",
         "melee_hands": 0,
         "ranged_hands": 0,
-        "ammo": 20,
+        "ammo": 5,
         "range": 16,
         "spli": 28,
         "arp": 2,
@@ -1875,7 +1890,7 @@ global.weapons = {
         "description": "The Heavy Bolter is a heavy weapon that fires larger and more powerful bolt shells compared to the standard Bolter.",
         "melee_hands": 1,
 		"ranged_hands": 2,
-        "ammo": 10,
+        "ammo": 4,
         "range": 14,
         "spli": 12,
         "arp": 2,
@@ -2270,9 +2285,9 @@ global.weapons = {
         "description": "An advanced thermal weapon from a bygone era, Volkite Culverins are able to ignite entire formations of enemy forces. In this case it is mounted to the sponsons on a vehicle.",
         "melee_hands": 0,
         "ranged_hands": 0,
-        "ammo": 25,
-        "range": 18,
-        "spli": 6,
+        "ammo": 6,
+        "range": 8,
+        "spli": 20,
         "arp": 3,
         "tags": [
             "vehicle",
@@ -2723,9 +2738,9 @@ global.weapons = {
         "description": "An advanced thermal weapon from a bygone era, Volkite sakers are optimized for spreading damage across swaths of enemy troops.",
         "melee_hands": 0,
         "ranged_hands": 0,
-        "ammo": 25,
-        "range": 18,
-        "spli": 30,
+        "ammo": 6,
+        "range": 10,
+        "spli": 8,
         "arp": 3,
         "tags": [
             "vehicle",
@@ -2937,7 +2952,7 @@ global.gear = {
             "abbreviation": "Artfcr",
             "armour_value": {
                 "standard": 30,
-                "master_crafted": 30, // This is already a custom suit of armor shouldnt Master crafted be its base state?
+                "master_crafted": 30, 
                 "artifact": 30,
             },
             "ranged_mod": {
