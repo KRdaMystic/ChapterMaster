@@ -754,8 +754,7 @@ function scr_draw_mass_equip_gui(){
                 eENGAGEMENT.NONE, // doesn't matter to non infantry/non hand slots
                 true, // include the company standard
                 false, // do not limit to available items
-
-            );
+                );
         }
 
         draw_set_color(0);
@@ -846,8 +845,7 @@ function scr_draw_role_settings_ui(){
                 scr_draw_mass_equip_gui();
             }
             var co = 100;
-            var ide;
-            ide = settings;
+            var index = settings;
 
             draw_set_halign(fa_center);
             draw_set_color(c_gray);
@@ -861,10 +859,11 @@ function scr_draw_role_settings_ui(){
             draw_set_font(fnt_40k_30b);
             draw_set_color(c_gray);
             draw_set_halign(fa_left);
+
             draw_text_transformed(678, 160, obj_ini.role[co][ide], 0.6, 0.6, 0);
-            var wid, hei;
-            wid = 0;
-            hei = string_height_ext(string(obj_ini.role[co][ide]) + "Q", -1, 580) * 0.6;
+
+            var wid = 0;
+            var hei = string_height_ext(string(obj_ini.role[co][ide]) + "Q", -1, 580) * 0.6;
             draw_rectangle(678 - 1, 160 - 1, 1056, 160 + hei, 1);
             draw_set_color(c_gray);
             draw_set_font(fnt_40k_14b);
@@ -872,7 +871,7 @@ function scr_draw_role_settings_ui(){
 
             var title = "";
             var geh = "";
-            spacing = 22;
+            var spacing = 22;
             x5 = 830;
             y5 = 207 - spacing;
 
@@ -880,23 +879,23 @@ function scr_draw_role_settings_ui(){
                 y5 += spacing;
                 if (gg == 0) {
                     title = "Main Weapon: ";
-                    geh = obj_ini.wep1[co][ide];
+                    geh = obj_ini.wep1[co][index];
                 }
                 if (gg == 1) {
                     title = "Secondary Weapon: ";
-                    geh = obj_ini.wep2[co][ide];
+                    geh = obj_ini.wep2[co][index];
                 }
                 if (gg == 2) {
                     title = "Armour: ";
-                    geh = obj_ini.armour[co][ide];
+                    geh = obj_ini.armour[co][index];
                 }
                 if (gg == 3) {
                     title = "Special Item: ";
-                    geh = obj_ini.gear[co][ide];
+                    geh = obj_ini.gear[co][index];
                 }
                 if (gg == 4) {
                     title = "Mobility Item: ";
-                    geh = obj_ini.mobi[co][ide];
+                    geh = obj_ini.mobi[co][index];
                 }
 
                 draw_set_halign(fa_right);
@@ -912,10 +911,10 @@ function scr_draw_role_settings_ui(){
 
                     var nep = false;
 
-                    if (((obj_ini.armour[co][ide] == "Terminator Armour") || (obj_ini.armour[co][ide] == "Dreadnought")) && (gg == 3)) {
+                    if (((obj_ini.armour[co][index] == "Terminator Armour") || (obj_ini.armour[co][index] == "Dreadnought")) && (gg == 3)) {
                         nep = true;
                     }
-                    if ((ide == 6) && ((gg == 2) || (gg == 4))) {
+                    if ((index == 6) && ((gg == 2) || (gg == 4))) {
                         nep = true;
                     }
 
@@ -932,8 +931,7 @@ function scr_draw_role_settings_ui(){
                                 gg, // slot
                                 is_hand_slot ? (obj_mass_equip.tab == 0 ? eENGAGEMENT.RANGED : eENGAGEMENT.MELEE) : eENGAGEMENT.NONE,
                                 true, // include company standard
-                                false, // show all regardless of inventory
-
+                                false // show all regardless of inventory
                             );
                         }
                     }

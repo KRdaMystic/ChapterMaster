@@ -98,6 +98,7 @@ enum eMENU {
     ROLE_SETTINGS = 23,
     FORMATIONS_SETTINGS = 24,
     GAME_HELP = 30,
+    SECRET_LAIR = 60
 }
 
 enum eLUCK {
