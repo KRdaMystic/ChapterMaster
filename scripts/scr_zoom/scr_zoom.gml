@@ -31,7 +31,9 @@ function set_zoom_to_default() {
 /// @description This script will zoom in and out of the game view based on the keys pressed.
 /// @self obj_controller
 function scr_zoom_keys() {
-    var zoom_speed = 0.1;
+    static zoom_speed = 0.1;
+    static min_zoom = 0.3;
+    static max_zoom = 2.5;
 
     if (keyboard_check(vk_shift)) {
         zoom_speed *= 2;
@@ -40,12 +42,12 @@ function scr_zoom_keys() {
     //this is changes the zoom based on scolling but you can set it how ever you like
     var zoom_delta = 0;
     if (keyboard_check(vk_subtract) || keyboard_check(187) || keyboard_check(24) || mouse_wheel_down()) {
-        if (obj_controller.map_scale > 0.1) {
+        if (obj_controller.map_scale > min_zoom) {
             zoom_delta = -1;
         }
     }
     if (keyboard_check(vk_add) || mouse_wheel_up()) {
-        if (obj_controller.map_scale < 3) {
+        if (obj_controller.map_scale < max_zoom) {
             zoom_delta = +1
         }
     }
