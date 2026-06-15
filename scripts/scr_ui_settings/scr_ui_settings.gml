@@ -306,14 +306,10 @@ function setup_ui_chapter_settings(){
         ], 
         "Automatic Boarding", 
         {
-            x1 : 370,
+            x1 : 400,
             y1 : 710,
         }
     );
-
-    _sets.auto_board_multi.toggles[0].active = command_set[25];
-
-    _sets.auto_board_multi.toggles[1].active = command_set[26];
 }
 
 function scr_ui_settings() {
@@ -440,6 +436,10 @@ function scr_ui_settings() {
         command_set[24] = _post_board.toggles[1].active;
 
         var _auto_board = settings_buttons_ui_components.auto_board_multi;
+
+        _auto_board.toggles[0].active = command_set[25];
+
+        _auto_board.toggles[1].active = command_set[26];
 
         _auto_board.draw();
 
@@ -592,11 +592,72 @@ function scr_select_role_settings_ui(){
         }
         settings = _button.role_id;
         menu = eMENU.ROLE_SETTINGS;
+        setup_role_settings_buttons();
         with (obj_mass_equip) {
             instance_destroy();
         }
         instance_create(0, 0, obj_mass_equip);      
     }
+}
+
+function setup_role_settings_buttons(){
+    role_settings_ui = {};
+    var _button_x = 830;
+    role_settings_ui.main_weapon_button = new UnitButtonObject({
+        style : "pixel",
+        x1 : _button_x,
+        y1 : 185,
+        label : $"Main Weapon: {obj_ini.wep1[100][settings]}",
+        set_width : true,
+        w : 250,
+        active : true,
+        tooltip : "click to change main weapon",
+        slot_index : eEQUIPMENT_SLOT.WEAPON_ONE
+    });
+    role_settings_ui.secondary_weapon_button = new UnitButtonObject({
+        style : "pixel",
+        x1 : _button_x,
+        y1 : role_settings_ui.main_weapon_button.y2,
+        label : $"Secondary Weapon: {obj_ini.wep2[100][settings]}",
+        set_width : true,
+        w : 250,
+        active : true,
+        tooltip : "click to change secondary weapon",
+        slot_index : eEQUIPMENT_SLOT.WEAPON_TWO
+    });
+    role_settings_ui.armour_button = new UnitButtonObject({
+        style : "pixel",
+        x1 : _button_x,
+        y1 : role_settings_ui.secondary_weapon_button.y2,
+        label : $"Armour: {obj_ini.armour[100][settings]}",
+        set_width : true,
+        w : 250,
+        active : true,
+        tooltip : "click to change armour",
+        slot_index : eEQUIPMENT_SLOT.ARMOUR
+    });
+    role_settings_ui.gear_button = new UnitButtonObject({
+        style : "pixel",
+        x1 : _button_x,
+        y1 : role_settings_ui.armour_button.y2,
+        label : $"Special Item: {obj_ini.gear[100][settings]}",
+        set_width : true,
+        w : 250,
+        active : true,
+        tooltip : "click to Special Item",
+        slot_index : eEQUIPMENT_SLOT.GEAR
+    });
+    role_settings_ui.mobi_button = new UnitButtonObject({
+        style : "pixel",
+        x1 : _button_x,
+        y1 : role_settings_ui.gear_button.y2,
+        label : $"Mobility Item: {obj_ini.mobi[100][settings]}",
+        set_width : true,
+        w : 250,
+        active : true,
+        tooltip : "click to change Mobility Item",
+        slot_index : eEQUIPMENT_SLOT.MOBILITY
+    });
 }
 
 function scr_draw_mass_equip_gui(){
@@ -825,6 +886,7 @@ function scr_draw_mass_equip_gui(){
                     }
                     tab = -1;
                     refresh = true;
+                    setup_role_settings_buttons();
                 }
             }
             y3 += space;
@@ -841,108 +903,68 @@ function scr_draw_mass_equip_gui(){
 }
 
 function scr_draw_role_settings_ui(){
-    if (menu == eMENU.ROLE_SETTINGS) {
-        if (settings > 0) {
-            with (obj_mass_equip){
-                scr_draw_mass_equip_gui();
+    if (menu != eMENU.ROLE_SETTINGS) {
+        return;
+    }
+
+    if (settings > 0) {
+        with (obj_mass_equip){
+            scr_draw_mass_equip_gui();
+        }
+        var _index = settings;
+
+        var _roles = active_roles();
+
+        var _buttons = [
+            role_settings_ui.main_weapon_button,
+            role_settings_ui.secondary_weapon_button,
+            role_settings_ui.armour_button,
+            role_settings_ui.gear_button,
+            role_settings_ui.mobi_button
+        ]
+
+        var _button_clicked = false;
+        var _slot_clicked = -1;
+        for (var i=0;i<array_length(_buttons);i++){
+            var _but = _buttons[i];
+            var _allow_click = true;
+            if (i == eEQUIPMENT_SLOT.GEAR){
+                var _armour = obj_ini.armour[100][_index];
+                var _armour_tags = gear_weapon_data("armour",  _armour, "tags");
+                if (_armour_tags !=0 ){
+                    if (array_contains(_armour_tags, "terminator") || array_contains(_armour_tags, "dreadnought")){
+                        _allow_click = false;
+                    }
+                }
+            } else if (i == eEQUIPMENT_SLOT.ARMOUR || i == eEQUIPMENT_SLOT.MOBILITY) {
+                _allow_click = _index != eROLE.DREADNOUGHT;
             }
-            var co = 100;
-            var index = settings;
-
-            draw_set_halign(fa_center);
-            draw_set_color(c_gray);
-            draw_set_font(fnt_40k_30b);
-            draw_text_transformed(800, 66, string(obj_ini.role[100][settings]) + " Settings", 1, 1, 0);
-
-            // New: 678,160
-            // Old: 444,550
-            // Dif: 234,-390
-
-            draw_set_font(fnt_40k_30b);
-            draw_set_color(c_gray);
-            draw_set_halign(fa_left);
-
-            draw_text_transformed(678, 160, obj_ini.role[co][ide], 0.6, 0.6, 0);
-
-            var wid = 0;
-            var hei = string_height_ext(string(obj_ini.role[co][ide]) + "Q", -1, 580) * 0.6;
-            draw_rectangle(678 - 1, 160 - 1, 1056, 160 + hei, 1);
-            draw_set_color(c_gray);
-            draw_set_font(fnt_40k_14b);
-            draw_set_halign(fa_right);
-
-            var title = "";
-            var geh = "";
-            var spacing = 22;
-            x5 = 830;
-            y5 = 207 - spacing;
-
-            for (var gg = 0; gg <= 4; gg++) {
-                y5 += spacing;
-                if (gg == 0) {
-                    title = "Main Weapon: ";
-                    geh = obj_ini.wep1[co][index];
-                }
-                if (gg == 1) {
-                    title = "Secondary Weapon: ";
-                    geh = obj_ini.wep2[co][index];
-                }
-                if (gg == 2) {
-                    title = "Armour: ";
-                    geh = obj_ini.armour[co][index];
-                }
-                if (gg == 3) {
-                    title = "Special Item: ";
-                    geh = obj_ini.gear[co][index];
-                }
-                if (gg == 4) {
-                    title = "Mobility Item: ";
-                    geh = obj_ini.mobi[co][index];
-                }
-
-                draw_set_halign(fa_right);
-                draw_set_color(c_gray);
-                draw_rectangle(x5, y5, x5 - string_width(title), y5 + string_height(title) - 2, 0);
-                draw_set_color(0);
-                draw_text(x5, y5, string(title));
-
-                if (scr_hit(x5 - string_width(title), y5, x5, y5 + string_height(title) - 2) == true) {
-                    draw_set_color(c_white);
-                    draw_set_alpha(0.2);
-                    draw_rectangle(x5, y5, x5 - string_width(title), y5 + string_height(title) - 2, 0);
-
-                    var nep = false;
-
-                    if (((obj_ini.armour[co][index] == "Terminator Armour") || (obj_ini.armour[co][index] == "Dreadnought")) && (gg == 3)) {
-                        nep = true;
-                    }
-                    if ((index == 6) && ((gg == 2) || (gg == 4))) {
-                        nep = true;
-                    }
-
-                    if (mouse_button_clicked() && !nep) {
-                        if (obj_mass_equip.tab != -1) {
-                            obj_mass_equip.refresh = true;
-                        } else if (obj_mass_equip.tab == -1) {
-                            obj_mass_equip.tab = gg;
-                            obj_mass_equip.item_name = [];
-                            var is_hand_slot = gg == 0 || gg == 1;
-                            scr_get_item_names(
-                                obj_mass_equip.item_name,
-                                obj_controller.settings, // eROLE
-                                gg, // slot
-                                is_hand_slot ? (obj_mass_equip.tab == 0 ? eENGAGEMENT.RANGED : eENGAGEMENT.MELEE) : eENGAGEMENT.NONE,
-                                true, // include company standard
-                                false // show all regardless of inventory
-                            );
-                        }
-                    }
-                }
-                draw_set_alpha(1);
-                draw_set_color(c_gray);
-                draw_set_halign(fa_left);
-                draw_text(x5 + 5, y5, string(geh));
+            if (_but.draw(_allow_click)){
+                _button_clicked = true;
+                _slot_clicked = _but.slot_index;
             }
         }
+
+        if (!_button_clicked){
+            return;
+        }
+
+        if (obj_mass_equip.tab != -1) {
+            obj_mass_equip.refresh = true;
+        } else if (obj_mass_equip.tab == -1) {
+            obj_mass_equip.tab = _slot_clicked;
+            obj_mass_equip.item_name = [];
+            var is_hand_slot = _slot_clicked == eEQUIPMENT_SLOT.WEAPON_ONE || _slot_clicked == eEQUIPMENT_SLOT.WEAPON_TWO;
+            scr_get_item_names(
+                obj_mass_equip.item_name,
+                obj_controller.settings, // eROLE
+                _slot_clicked, // slot
+                is_hand_slot ? (obj_mass_equip.tab == 0 ? eENGAGEMENT.RANGED : eENGAGEMENT.MELEE) : eENGAGEMENT.NONE,
+                true, // include company standard
+                false // show all regardless of inventory
+            );
+        }
+        
     }
+
 }
