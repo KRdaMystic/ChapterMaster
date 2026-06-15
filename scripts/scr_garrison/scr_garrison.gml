@@ -28,7 +28,7 @@ function disposition_description_chart(dispo) {
     }
 }
 
-function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") constructor {
+function GarrisonForce(system, planet, type = "garrison") constructor {
     garrison_squads = [];
     total_garrison = 0;
     garrison_leader = false;
@@ -36,44 +36,68 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
     members = [];
     time_on_planet = 0;
     viable_garrison = 0;
-    var operative, unit, member;
-    for (var ops = 0; ops < array_length(planet_operatives); ops++) {
-        var _op = planet_operatives[ops];
-        if (_op.type == "squad") {
-            if (_op.job != type) {
-                continue;
-            }
-            //marine garrison on planet
-            var _squad = fetch_squad(_op.reference);
-            if (array_length(_squad.members) <= 0) {
-                array_delete(planet_operatives, ops, 1);
-                ops--;
-                continue;
-            }
+    self.type = type;
+    self.system = system;
+    self.planet = planet;
 
-            operative = _squad;
-            array_push(garrison_squads, operative);
-            total_garrison += array_length(operative.members);
+    operatives = system.p_operatives[planet];
+
+    static evaluate_operative_squad = function(operative_squad){
+        //marine garrison on planet
+        var _squad = fetch_squad(operative_squad.reference);
+        if (array_length(_squad.members) > 0) {
+            array_push(garrison_squads, _squad);
+            total_garrison += array_length(_squad.members);
             garrison_force = true;
-            for (var i = 0; i < array_length(operative.members); i++) {
-                unit = operative.fetch_member(i);
-                if (!is_struct(unit)) {
+            for (var i = 0; i < array_length(_squad.members); i++) {
+                var _unit = _squad.fetch_member(i);
+                if (!is_struct(_unit)) {
                     continue;
                 }
-                if (unit.name() == "") {
+                if (_unit.name() == "") {
                     continue;
                 }
-                array_push(members, unit);
-                if (unit.hp() > 0) {
+                array_push(members, _unit);
+                if (_unit.hp() > 0) {
                     viable_garrison++;
                 }
+            } 
+        } else {
+            return "delete";
+        }
+    }
+
+    static update = function(){
+        garrison_squads = [];
+        members = [];
+        total_garrison = 0;
+        viable_garrison = 0;
+        garrison_force = false;
+        var _op_num = array_length(operatives);
+        for (var _ops = _op_num - 1; _ops >= 0; _ops--) {
+            var _op = operatives[_ops];
+            if (_op.type == "squad") {
+                if (_op.job != type){
+                    continue;
+                }
+                if (evaluate_operative_squad(_op) == "delete"){
+                    array_delete(operatives, _ops, 1);
+                }
             }
-            if (turn_end) {
-                _op.task_time++;
-            }
-            if (_op.task_time > time_on_planet) {
-                time_on_planet = _op.task_time;
-            }
+        }
+    }
+
+    update();
+
+    static increase_time_on_planet = function(){
+        var _op_num = array_length(operatives);
+        for (var _ops = 0; _ops < _op_num; _ops++) {
+            var _operative_squad = operatives[_ops];
+
+            _operative_squad.task_time++;
+
+
+            time_on_planet = max(_operative_squad.task_time , time_on_planet);
         }
     }
 
@@ -81,49 +105,48 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
         var unit;
         var member_count = array_length(members);
         var members_lost = 0;
-        for (var i = 0; i < member_count; i++) {
+        for (var i = member_count - 1; i >= 0; i--) {
             unit = members[i];
-            if (unit.hp() > 0) {
-                if (win_or_loss == "win") {
-                    if (irandom(1) == 0) {
-                        unit.add_or_sub_health(-40);
+            if (unit.hp() <= 0) {
+                continue;
+            }
+
+            if (win_or_loss == "win") {
+                if (irandom(1) == 0) {
+                    unit.add_or_sub_health(-40);
+                }
+                if (unit.hp() < 0) {
+                    if (unit.calculate_death()) {
+                        kill_and_recover(unit.company, unit.marine_number);
+                        members_lost++;
+                        array_delete(members, i, 1);
                     }
-                    if (unit.hp() < 0) {
-                        if (unit.calculate_death()) {
-                            kill_and_recover(unit.company, unit.marine_number);
-                            members_lost++;
-                            array_delete(members, i, 1);
-                            i--;
-                            member_count--;
-                        }
-                    }
-                } else if (win_or_loss == "loose") {
-                    unit.add_or_sub_health(-50);
-                    if (unit.hp() < 0) {
-                        if (unit.calculate_death()) {
-                            kill_and_recover(unit.company, unit.marine_number);
-                            array_delete(members, i, 1);
-                            i--;
-                            members--;
-                            members_lost++;
-                        }
+                }
+            } else if (win_or_loss == "loose") {
+                unit.add_or_sub_health(-50);
+                if (unit.hp() < 0) {
+                    if (unit.calculate_death()) {
+                        kill_and_recover(unit.company, unit.marine_number);
+                        array_delete(members, i, 1);
+                        members_lost++;
                     }
                 }
             }
+
         }
         return members_lost;
     };
 
     static find_leader = function() {
         //find leader of garrison by finding most senior squad leader
-        garrison_leader = "none";
+        garrison_leader = false;
         var hierarchy = role_hierarchy();
         var leader_hier_pos = array_length(hierarchy);
         var unit;
         for (var _squad = 0; _squad < array_length(garrison_squads); _squad++) {
             var _leader = garrison_squads[_squad].determine_leader();
             unit = fetch_unit(_leader);
-            if (garrison_leader == "none") {
+            if (garrison_leader == false) {
                 garrison_leader = unit;
                 for (var r = 0; r < array_length(hierarchy); r++) {
                     if (hierarchy[r] == unit.role()) {
@@ -187,9 +210,9 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
         return report_string;
     };
 
-    static garrison_disposition_change = function(star, planet, up_or_down = false) {
+    static garrison_disposition_change = function(up_or_down = false) {
         dispo_change = 0;
-        var _pdata = new PlanetData(planet, star);
+        var _pdata = system.get_planet_data(planet);
         if (array_contains(obj_controller.imperial_factions, _pdata.current_owner)) {
             var _planet_disposition = _pdata.player_disposition;
 
@@ -209,9 +232,9 @@ function GarrisonForce(planet_operatives, turn_end = false, type = "garrison") c
             if (is_struct(garrison_leader)) {
                 _diplomatic_leader = garrison_leader.has_trait("honorable");
             } else {
-                scr_alert("yellow", "DEBUG", $"DEBUG: Garrison _Leader on {star.name} {planet} couldn't be found!", 0, 0);
-                scr_event_log("yellow", $"DEBUG: Garrison _Leader on {star.name} {planet} couldn't be found!");
-                LOGGER.error($"DEBUG: Garrison _Leader on {star.name} {planet} couldn't be found!");
+                scr_alert("yellow", "DEBUG", $"DEBUG: Garrison _Leader on {_pdata.name()} couldn't be found!", 0, 0);
+                scr_event_log("yellow", $"DEBUG: Garrison _Leader on {_pdata.name()} couldn't be found!");
+                LOGGER.error($"DEBUG: Garrison _Leader on {_pdata.name()} couldn't be found!");
             }
             var _garrison_size_mod = total_garrison / 10;
 
@@ -334,7 +357,7 @@ function determine_pdf_defence(pdf, garrison = "none", planet_forti = 0, enemy =
         defence_mult += garrison_mult;
         var leader_bonus = garrison.garrison_leader.wisdom / 30;
         defence_mult *= leader_bonus; //modified by how good a commander the garrison _leader is
-        explanations += $"     Garrison _Leader Bonus:X{leader_bonus}(WIS/30)#";
+        explanations += $"     Garrison Leader Bonus:X{leader_bonus}(WIS/30)#";
         //makes pdf more effective if planet has defences or marines present
     }
 

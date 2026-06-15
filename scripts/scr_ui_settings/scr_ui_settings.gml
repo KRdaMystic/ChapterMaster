@@ -557,6 +557,7 @@ function scr_ui_settings() {
 }
 
 
+
 function scr_select_company_settings_ui(){
 // Company Settings
     var _comp_buttons = settings_buttons_ui_components.company_settings_selection_buttons;
@@ -838,6 +839,7 @@ function scr_draw_mass_equip_gui(){
     /*  */
 
 }
+
 function scr_draw_role_settings_ui(){
     if (menu == eMENU.ROLE_SETTINGS) {
         if (settings > 0) {

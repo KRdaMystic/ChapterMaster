@@ -1,473 +1,348 @@
-function scr_purge_world(star, planet, action_type, action_score) {
-    var pop_before, pop_after, sci1, sci2, txt1, txt2, max_kill, overkill, heres_before, heres_after, kill;
-    var isquest, thequest, questnum;
-    isquest = 0;
-    thequest = "";
-    questnum = 0;
-    pop_after = 0;
-    txt1 = "";
-    txt2 = "";
-    overkill = 0;
 
-    if (((action_type == eDROP_TYPE.PURGEFIRE) || (action_type == eDROP_TYPE.PURGESELECTIVE)) && (star.p_traitors[planet] == 0) && (star.p_chaos[planet] == 0) && (obj_controller.turn >= obj_controller.chaos_turn)) {
-        if ((planet_feature_bool(star.p_feature[planet], eP_FEATURES.WARLORD10) == 1) && (obj_controller.known[10] == 0) && (obj_controller.faction_gender[10] == 1)) {
-            with (obj_drop_select) {
-                var pop = instance_create(0, 0, obj_popup);
-                pop.image = "chaos_symbol";
-                pop.title = "Concealed Heresy";
-                pop.text = $"Your astartes set out and begin to cleanse {planet_numeral_name(planet, star)} of possible heresy.  The general populace appears to be devout in their faith, but a disturbing trend appears- the odd citizen cursing your forces, frothing at the mouth, and screaming out heresy most foul.  One week into the cleansing a large hostile force is detected approaching and encircling your forces.";
-                exit;
-            }
-        }
-        if ((planet_feature_bool(star.p_feature[planet], eP_FEATURES.WARLORD10) == 1) && (obj_controller.known[10] >= 2) && (obj_controller.faction_gender[10] == 1)) {
-            with (obj_drop_select) {
-                attacking = 10;
-                obj_controller.cooldown = 30;
-                combating = 1; // Start battle here
+function PlayerPurge(action_type, action_score, planet_data) constructor{
+	pop_before = 0;
+	max_kill = 0;
+	pop_after = 0;
+	overkill = 0;
+	self.planet_data = planet_data;
+	self.action_type = action_type;
+	self.action_score = action_score;
+	population_reduction_percentage = 0;
 
-                instance_deactivate_all(true);
-                instance_activate_object(obj_controller);
-                instance_activate_object(obj_ini);
-                instance_activate_object(obj_drop_select);
+	heres_after = 0;
+	heres_before = 0;
 
-                instance_create(0, 0, obj_ncombat);
-                obj_ncombat.battle_object = p_target;
-                obj_ncombat.battle_loc = p_target.name;
-                obj_ncombat.battle_id = obj_controller.selecting_planet;
-                obj_ncombat.dropping = 0;
-                obj_ncombat.attacking = 10;
-                obj_ncombat.enemy = 10;
-                obj_ncombat.formation_set = 1;
 
-                /*
-			obj_ncombat.battle_object=p_target;
-			obj_ncombat.battle_loc=p_target.name;
-			obj_ncombat.battle_id=obj_controller.selecting_planet;
-			obj_ncombat.dropping=1-attack;
-			obj_ncombat.attacking=attack;
-			obj_ncombat.enemy=attacking;
-			obj_ncombat.formation_set=formation_possible[formation_current];
-			*/
+	static calculate_max_kills = function(){
+		switch (action_type){
+			case eDROP_TYPE.PURGEBOMBARD:
+				max_kill = 15000000 * action_score;
+				if (pop_before > 0){
+					overkill = max(pop_before * 0.1, ((heres_before / 200) * pop_before));
+				}
+				break;
+			case eDROP_TYPE.PURGEFIRE:
+				max_kill = 12000 * action_score;
+				if (pop_before > 0){
+					overkill = max(pop_before * 0.1, ((heres_before / 200) * pop_before));
+				}
+				break;
+			case eDROP_TYPE.PURGESELECTIVE:
+				max_kill=action_score * 30;
+				break;
+		}	
+		kill=min(max_kill, pop_before);
 
-                obj_ncombat.leader = 1;
-                obj_ncombat.threat = 5;
-                obj_ncombat.battle_special = "WL10_later";
-                scr_battle_allies();
-                setup_battle_formations();
-                roster.add_to_battle();
-            }
-        }
-    }
+		if (overkill > 0){
+			kill=min(kill, overkill);
+		}
+	}
 
-    // TODO - while I don't expect Surface to Orbit weapons retaliating against player's purge bombardment, it might still be worthwhile to consider possible situations
+	calculate_influence_reduction = function(){
+		switch (action_type){
+			case eDROP_TYPE.PURGEBOMBARD:
+			    if (population_reduction_percentage>0){
+			    	influence_reduction=min((population_reduction_percentage*2), action_score*2);// How much hurresy to get rid of
+			    }
+			    break;
+			case eDROP_TYPE.PURGEFIRE:
+				influence_reduction = min((population_reduction_percentage * 2), round(action_score / 25));
+				break;
+			case eDROP_TYPE.PURGESELECTIVE:
+				influence_reduction = round(action_score / 50);
+				break;			    
+		}
+		influence_reduction = min(influence_reduction, heres_before);
+	}
 
-    if (action_type == eDROP_TYPE.PURGEBOMBARD) {
-        // Bombardment
-        txt1 = choose("Your cruiser and larger ship", "The heavens rumble and thunder as your ship");
-        if (ships_selected > 1) {
-            txt1 += "s";
-        }
-        txt1 += choose(" position themselves over the target in close orbit, and unleash", " unload");
-        if (ships_selected == 1) {
-            txt1 += "s";
-        }
-        txt1 += $" annihilation upon {planet_numeral_name(planet, star)}. Even from space the explosions can be seen, {choose("tearing ground", "hammering", "battering", "thundering")} across the planet's surface.";
+	static calculate_deaths = function(){
 
-        if (star.p_large[planet] == 0) {
-            max_kill = action_score * 15000000;
-        }
-        if (star.p_large[planet] == 1) {
-            max_kill = action_score * 0.015;
-        } // Population if large
 
-        pop_before = star.p_population[planet];
+		calculate_max_kills();
 
-        heres_before = max(star.p_heresy[planet] + star.p_heresy_secret[planet], star.p_influence[planet][eFACTION.TAU]); // Starting heresy
+		pop_after = (pop_before - kill);
+    
+	    population_reduction_percentage = (pop_after/pop_before)*100;// Relative % of people murderized
 
-        // Minimum kills
-        if (pop_before > 0) {
-            overkill = max(pop_before * 0.1, ((heres_before / 200) * pop_before));
-        }
-        if (pop_before == 0) {
-            overkill = 0;
+
+	    calculate_influence_reduction();
+
+	    heres_after = max(heres_before - influence_reduction, 0);
+	}
+
+	static population_death_string = function(){
+        var _death_string = "\n\nThe planet had a population of "
+        if (!planet_data.large_population){
+        	_death_string += $"{scr_display_number(floor(pop_before))} and {scr_display_number(floor(kill))}";
+        } else {
+        	_death_string += $"{pop_before / LARGE_PLANET_MOD} billion and {scr_display_number(kill)}";
         }
 
-        kill = min(max_kill, overkill, pop_before); // How many people ARE going to be killed
+		switch (action_type){
+			case eDROP_TYPE.PURGEBOMBARD:
+			    _death_string +=  "were purged over the duration of the bombardment.";
+			    break;
+			case eDROP_TYPE.PURGEFIRE:
+				_death_string += " over the duration of the cleansing."
+				break;
+			case eDROP_TYPE.PURGESELECTIVE:
+				_death_string += " over the duration of the search.";
+				break;			    
+		}
 
-        pop_after = pop_before - kill;
-        sci1 = 0;
-        sci2 = 0;
+        _death_string += " were purged";
 
-        if (pop_before > 0) {
-            sci1 = (pop_after / pop_before) * 100;
-        } // Relative % of people murderized
-        if (sci1 > 0) {
-            sci2 = min((sci1 * 2), action_score * 2);
-        } // How much hurresy to get rid of
-        heres_after = heres_before - sci2;
-        if ((pop_before > 0) && (pop_after == 0)) {
-            heres_after = 0;
-        }
+        switch(heres_target){
+        	case "corruption":
+        		_death_string += $"\n\nHeresy has fallen to {heres_after}%.";
+        		break;
+        	case "tau":
+        		_death_string += $"\n\Tau influence is now effecting {heres_after}% of the population.";
+        		break;
+        	case "genestealers":
+        		_death_string += $"\n\Genestealer influence is now effecting {heres_after}% of the population.";
+        		break;
+        } 
 
-        if (star.p_large[planet] == 0) {
-            pop_after = round(pop_after);
-        }
-        if ((pop_after <= 0) && (pop_before > 0)) {
-            heres_after = 0;
-        }
+        return _death_string;
+	}
 
-        var _displayed_population = star.p_large[planet] == 1 ? $"{pop_before} billion" : scr_display_number(floor(pop_before));
-        var _displayed_killed = star.p_large[planet] == 1 ? $"{kill} billion" : scr_display_number(floor(kill));
-        txt1 += $"##The world had {_displayed_population} Imperium subjects. {_displayed_killed} were purged over the duration of the bombardment.##Heresy has fallen down to {max(0, heres_after)}%.";
+	static bombard_repercussions = function(){
+		var _type = planet_data.planet_type;
 
-        if (pop_after <= 0) {
-            if ((star.p_owner[planet] == 2) && (obj_controller.faction_status[2] != "War")) {
-                if (star.p_type[planet] == "Temperate" || star.p_type[planet] == "Hive" || star.p_type[planet] == "Desert") {
-                    var _disp_hit = -10;
-                    if (star.p_type[planet] == "Temperate") {
-                        _disp_hit = -5;
-                    }
-                    if (star.p_type[planet] == "Desert") {
-                        _disp_hit = -3;
-                    }
+	    if (pop_after <=0 ){
+	        if (planet_data.current_owner == eFACTION.IMPERIUM && planet_data.owner_status() != "War"){
+	            if (_type == "Temperate" || _type == "Hive" || _type == "Desert"){
+	            	var _disp_hit = -10;
+		            if (_type = "Temperate"){
+		            	_disp_hit = -5;
+		            }
+		            if (_type="Desert"){
+		            	_disp_hit = -3;
+		            }         	
+	                scr_audience(eFACTION.IMPERIUM, "bombard_angry", _disp_hit, "", 0, 0);
+	            }
+	        }
+	    }
+	    if (planet_data.current_owner == eFACTION.MECHANICUS && planet_data.owner_status() != "War"){
 
-                    scr_audience(eFACTION.IMPERIUM, "bombard_angry", _disp_hit, "", 0, 0);
+	    	if (_type="Forge"){
+	    		_disp_hit =-15;
+	    	}
+	        if (_type="Ice"){
+	        	_disp_hit =-7;
+	        }
+	    	scr_audience(eFACTION.INQUISITION, "bombard_angry", _disp_hit, "", 0, 0);
+
+	    }		
+	}
+}
+
+function scr_purge_world(action_type, action_score) {
+
+	var _purge = new PlayerPurge(action_type, action_score, self);
+
+	var _isquest=0,_thequest="",_questnum=0;
+
+
+	_purge.pop_before = population_as_small();
+
+	_purge.heres_before = max(total_corruption(), population_influences[eFACTION.TAU],population_influences[eFACTION.TYRANIDS]);// Starting heresy
+
+
+	if (!action_type == eDROP_TYPE.PURGEASSASSINATE){
+		_purge.calculate_deaths();
+	}
+	var _heres_target = "corruption";
+
+	if (max(population_influences[eFACTION.TAU],population_influences[eFACTION.TYRANIDS])  > total_corruption()){
+		if  (population_influences[eFACTION.TAU] > population_influences[eFACTION.TYRANIDS]){
+			_heres_target = "tau";
+		} else{
+			_heres_target = "genestealers";
+		}
+		
+	}
+
+	_purge.heres_target = _heres_target;
+
+
+	var _no_chaos = (planet_forces[eFACTION.HERETICS] + planet_forces[eFACTION.CHAOS]) == 0;
+	if ((action_type==eDROP_TYPE.PURGEFIRE || action_type==eDROP_TYPE.PURGESELECTIVE) && _no_chaos && obj_controller.turn>=obj_controller.chaos_turn){
+	    if (has_feature(eP_FEATURES.WARLORD10) && obj_controller.known[10]=0 && obj_controller.faction_gender[10]=1){
+	    	with(obj_drop_select){
+		        var pop=instance_create(0,0,obj_popup);
+		        pop.image="chaos_symbol";
+		        pop.title="Concealed Heresy";
+		        pop.text=$"Your astartes set out and begin to cleanse {name()} of possible heresy.  The general populace appears to be devout in their faith, but a disturbing trend appears- the odd citizen cursing your forces, frothing at the mouth, and screaming out heresy most foul.  One week into the cleansing a large hostile force is detected approaching and encircling your forces.";        
+		        exit;   
+		    }
+		}
+	    if (has_feature(eP_FEATURES.WARLORD10) && obj_controller.known[10]>=2 && obj_controller.faction_gender[10]=1){
+	    	with(obj_drop_select){
+
+				attacking=10;
+				obj_controller.cooldown=30;
+				combating=1;// Start battle here
+
+				instance_deactivate_all(true);
+				instance_activate_object(obj_controller);
+				instance_activate_object(obj_ini);
+				instance_activate_object(obj_drop_select);
+
+				instance_create(0,0,obj_ncombat);
+				obj_ncombat.battle_object=p_target;
+				obj_ncombat.battle_loc=p_target.name;
+				obj_ncombat.battle_id=obj_controller.selecting_planet;
+				obj_ncombat.dropping=0;
+				obj_ncombat.attacking=10;
+				obj_ncombat.enemy=10;
+				obj_ncombat.formation_set=1;
+
+				obj_ncombat.leader=1;
+				obj_ncombat.threat=5;
+				obj_ncombat.battle_special="WL10_later";
+	            scr_battle_allies();
+	            setup_battle_formations();
+	            roster.add_to_battle();
+        	}
+	    }
+	}
+
+
+	// TODO - while I don't expect Surface to Orbit weapons retaliating against player's purge bombardment, it might still be worthwhile to consider possible situations
+
+	if (action_type=eDROP_TYPE.PURGEBOMBARD){// Bombardment
+		var _ship = string_plural("ship", obj_drop_select.ships_selected);
+	    _popup_text=choose($"Your cruiser and larger {_ship}", $"The heavens rumble and thunder as your {_ship}");
+	    _popup_text+=choose(" position themselves over the target in close orbit, and unleash", " unload");
+	    var _adjective = choose("tearing ground", "hammering", "battering", "thundering");
+		_popup_text+= $" annihilation upon {name()}. Even from space the explosions can be seen, {_adjective} across the planet's surface.";
+
+		_purge.bombard_repercussions();
+	}
+
+
+	if (action_type=eDROP_TYPE.PURGEFIRE){// Burn baby burn
+	    var i=0;
+	    if (has_problem("cleanse")){
+        	_isquest = true;
+	        _thequest="cleanse";
+	        _questnum=i;
+	    }
+
+	    if (_isquest){
+	        if (_thequest="cleanse" && action_score>=20){
+	        	remove_problem(_thequest);
+            	
+            	alter_disposition(eFACTION.INQUISITION,obj_controller.demanding ? choose(0,0,1) :1);
+            
+	            _popup_text="Your marines scour the underhive of {name()}, spraying mutants down with promethium as they go.  It takes several days but a sizeable dent is put in their numbers.";        
+	            scr_event_log("","Inquisition Mission Completed: The mutants of {name()} have been cleansed by promethium.");
+	            add_disposition(choose(1,2,3));
+	        }
+	    }else { // TODO add more variation, with planets, features, marine equipment perhaps?
+	        _popup_text=choose(
+				$"Timing their visits right, Your forces scour {name()} burning down whatever the local heretic communities call their homes. Their screams were quickly extinguished by fire, turning whatever it was before, into ash.",
+				$"Your forces scour {name()}, burning homes and towns that reek of heresy. The screams and wails of the damned carry through the air."
+			);
+     	
+
+	        var nid_influence = population_influences[eFACTION.TYRANIDS];
+            if (has_feature(eP_FEATURES.GENE_STEALER_CULT)) {
+                var cult = get_features(eP_FEATURES.GENE_STEALER_CULT)[0];
+                if (cult.hiding) {
+
                 }
-            }
-        }
-        if ((star.p_owner[planet] == 3) && (obj_controller.faction_status[3] != "War")) {
-            if (star.p_type[planet] == "Forge") {
-                _disp_hit = -15;
-            }
-            if (star.p_type[planet] == "Ice") {
-                _disp_hit = -7;
-            }
-            scr_audience(eFACTION.INQUISITION, "bombard_angry", _disp_hit, "", 0, 0);
-        }
-    }
-
-    if (action_type == eDROP_TYPE.PURGEFIRE) {
-        // Burn baby burn
-        var i = 0;
-        if (has_problem_planet(planet, "cleanse", star)) {
-            isquest = 1;
-            thequest = "cleanse";
-            questnum = i;
-        }
-
-        if (isquest == 1) {
-            if ((thequest == "cleanse") && (action_score >= 20)) {
-                remove_planet_problem(planet, thequest, star);
-
-                if (obj_controller.demanding == 0) {
-                    obj_controller.disposition[4] += 1;
-                }
-                if (obj_controller.demanding == 1) {
-                    obj_controller.disposition[4] += choose(0, 0, 1);
-                }
-
-                txt1 = "Your marines scour the underhive of " + string(star.name) + " " + string(planet) + ", spraying mutants down with promethium as they go.  It takes several days but a sizeable dent is put in their numbers.";
-                scr_event_log("", "Inquisition Mission Completed: The mutants of " + string(star.name) + " " + string(scr_roman(planet)) + " have been cleansed by promethium.");
-                scr_gov_disp(star.name, planet, choose(1, 2, 3));
-            }
-        } else if (isquest == 0) {
-            // TODO add more variation, with planets, features, marine equipment perhaps?
-            txt1 = choose($"Timing their visits right, Your forces scour {star.name} {planet} burning down whatever the local heretic communities call their homes. Their screams were quickly extinguished by fire, turning whatever it was before, into ash.", $"Your forces scour {star.name} {planet}, burning homes and towns that reek of heresy. The screams and wails of the damned carry through the air.");
-
-            if (star.p_large[planet] == 0) {
-                max_kill = action_score * 12000;
-            } // Population if normal
-            if (star.p_large[planet] == 1) {
-                max_kill = action_score * 0.0000012;
-            } // Population if large
-
-            pop_before = star.p_population[planet];
-
-            heres_before = max(star.p_heresy[planet] + star.p_heresy_secret[planet], star.p_influence[planet][eFACTION.TAU]); // Starting heresy
-
-            // Minimum kills
-            if (pop_before > 0) {
-                overkill = min(pop_before * 0.01, ((heres_before / 200) * pop_before));
-            }
-            if (pop_before == 0) {
-                overkill = 0;
-            }
-
-            kill = min(max_kill, overkill, pop_before); // How many people ARE going to be killed
-
-            if (star.p_large[planet] == 0) {
-                pop_after = pop_before - kill;
-            }
-            if (star.p_large[planet] == 1) {
-                pop_after = pop_before;
-            }
-
-            sci1 = 0;
-            sci2 = 0;
-            if (pop_before > 0) {
-                sci1 = (pop_after / pop_before) * 100;
-            } // Relative % of people murderized
-            if (sci1 > 0) {
-                sci2 = min((sci1 * 2), round(action_score / 25));
-            } // How much hurresy to get rid of
-            heres_after = heres_before - sci2;
-            if ((pop_before > 0) && (pop_after == 0)) {
-                heres_after = 0;
-            }
-
-            var nid_influence = star.p_influence[planet][eFACTION.TYRANIDS];
-            if (planet_feature_bool(star.p_feature[planet], eP_FEATURES.GENE_STEALER_CULT)) {
-                var cult = return_planet_features(star.p_feature[planet], eP_FEATURES.GENE_STEALER_CULT)[0];
-                if (cult.hiding) {}
             } else {
                 if (nid_influence > 25) {
-                    txt1 += " Scores of mutant offspring from a genestealer infestation are burnt, while we have damaged their influence over this world, the mutants appear to lack the organisation of a true cult";
+                    _popup_text += " Scores of mutant offspring from a genestealer infestation are burnt, while we have damaged their influence over this world, the mutants appear to lack the organisation of a true cult";
                     adjust_influence(eFACTION.TYRANIDS, -10, planet, star);
                 } else if (nid_influence > 0) {
-                    txt1 += " There are signs of a genestealer infestation but the cultists are too unorganized to do any real damage to their influence on this world";
+                    _popup_text += " There are signs of a genestealer infestation but the cultists are too unorganized to do any real damage to their influence on this world";
                 }
             }
-            if (star.p_large[planet] == 0) {
-                pop_after = round(pop_after);
-            }
-            if ((pop_after <= 0) && (pop_before > 0)) {
-                heres_after = 0;
-            }
-            if (star.p_large[planet] == 0) {
-                txt1 += "##The planet had a population of " + string(scr_display_number(floor(pop_before))) + " and " + string(scr_display_number(floor(kill))) + " were purged over the duration of the cleansing.##Heresy has fallen down to " + string(max(0, heres_after)) + "%.";
-            }
-            if (star.p_large[planet] == 1) {
-                txt1 += "##The planet had a population of " + string(pop_before) + " billion and " + string(scr_display_number(action_score * 12000)) + " were purged over the duration of the cleansing.##Heresy has fallen down to " + string(max(0, heres_after)) + "%.";
-            }
-        }
-    }
 
-    if (action_type == eDROP_TYPE.PURGESELECTIVE) {
-        // Blam!
-        var i = 0;
-        if (has_problem_planet(planet, "purge", star)) {
-            isquest = 1;
-            thequest = "purge";
-            questnum = i;
-        }
+            _popup_text +=  _purge.population_death_string();
 
-        if (isquest == 1) {
-            if ((thequest == "purge") && (action_score >= 10)) {
-                remove_planet_problem(planet, "purge", star);
+	    }
+	}
 
-                if (obj_controller.demanding == 0) {
-                    obj_controller.disposition[4] += 1;
-                }
-                if (obj_controller.demanding == 1) {
-                    obj_controller.disposition[4] += choose(0, 0, 1);
-                }
 
-                txt1 = "Your marines drop fast and hard, blowing through guards and mercenaries with minimal resistance.  Before ten minutes have passed all your targets are executed.";
-                scr_event_log("", "Inquisition Mission Completed: The unruly Nobles of " + string(star.name) + " " + string(scr_roman(planet)) + " have been purged.");
-                scr_gov_disp(star.name, planet, choose(1, 2, 3));
-            }
-        } else if (isquest == 0) {
-            // TODO add more variation, with planets, features, possibly marine equipment
-            txt1 = choose($"Your marines move across {star.name} {scr_roman(planet)}, searching for high profile targets. Once found, they are dragged outside from their lairs. Their execution would soon follow.", $"Your marines move across {star.name} {scr_roman(planet)}, rooting out sources of corruption. Heretics are dragged from their lairs and executed in the streets.");
+	if (action_type=eDROP_TYPE.PURGESELECTIVE){// Blam!
+	    var i=0;
+	    if (has_problem("purge")){
+        	_isquest=1;
+        	_thequest="purge";
+        	_questnum=i;
+	    }
 
-            if (star.p_large[planet] == 0) {
-                max_kill = action_score * 30;
-            } // Population if normal
-            if (star.p_large[planet] == 1) {
-                max_kill = 0;
-            } // Population if large
+	    if (_isquest=1){
+	        if (_thequest="purge" && action_score>=10){
+	        	remove_problem("purge");
+            
+	            alter_disposition(eFACTION.INQUISITION,obj_controller.demanding ? choose(0,0,1) :1);
+            
+	            _popup_text="Your marines drop fast and hard, blowing through guards and mercenaries with minimal resistance.  Before ten minutes have passed all your targets are executed.";        
+	            scr_event_log("","Inquisition Mission Completed: The unruly Nobles of {name()} have been purged.");
+	            add_disposition(choose(1,2,3));
+	        }
+	    }
+	    else if (_isquest=0){ // TODO add more variation, with planets, features, possibly marine equipment
+	    	_popup_text = $"Your marines move across {name()},"
+	        _popup_text += choose(
+				$"searching for high profile targets. Once found, they are dragged outside from their lairs. Their execution would soon follow.",
+				$"rooting out sources of corruption. Heretics are dragged from their lairs and executed in the streets."
+			);
+	        
+	        _popup_text +=  _purge.population_death_string();
+	    }
+	}
 
-            pop_before = star.p_population[planet];
 
-            heres_before = max(star.p_heresy[planet] + star.p_heresy_secret[planet], star.p_influence[planet][eFACTION.TAU]); // Starting heresy
 
-            // Minimum kills
-            kill = min(action_score * 30, pop_before); // How many people ARE going to be killed
+	if (action_type == eDROP_TYPE.PURGEASSASSINATE){
+		assasinate_governor_setup(action_score);
+	}
 
-            if (star.p_large[planet] == 0) {
-                pop_after = pop_before - kill;
-            }
-            sci2 = round(action_score / 50);
-            heres_after = heres_before - sci2;
-            if ((pop_before > 0) && (pop_after == 0)) {
-                heres_after = 0;
-            }
+	else if (action_type!=eDROP_TYPE.PURGEASSASSINATE){
+	    if (_isquest=0){// DO EET
+	        var _txt2=_popup_text;
+	        switch(_purge.heres_target){
+	        	case "corruption":
+	        		alter_corruption(-_purge.influence_reduction);
+	        		break;
+	        	case "tau":
+	        		alter_influence(eFACTION.TAU , -_purge.influence_reduction);
+	        		break;
+	        	case "genestealers":
+	        		alter_influence(eFACTION.TYRANIDS , -_purge.influence_reduction);
+	        		break;
+	        } 
 
-            if (star.p_large[planet] == 0) {
-                pop_after = round(pop_after);
-            }
-            if ((pop_after <= 0) && (pop_before > 0)) {
-                heres_after = 0;
-            }
-            if (star.p_large[planet] == 0) {
-                txt1 += "##The planet had a population of " + string(scr_display_number(floor(pop_before))) + " and " + string(scr_display_number(floor(kill))) + " die over the duration of the search.##Heresy has fallen to " + string(max(0, heres_after)) + "%.";
-            }
-            if (star.p_large[planet] == 1) {
-                txt1 += "##The planet had a population of " + string(pop_before) + " billion and " + string(action_score * 30) + " die over the duration of the search.##Heresy has fallen to " + string(max(0, heres_after)) + "%.";
-            }
-        }
-    }
+	        set_population(population_large_conversion(_purge.pop_after));
+        
+	        var pip=instance_create(0,0,obj_popup);
+	        pip.title="Purge Results";
+	        pip.text=_txt2;
+	    }
+	    if (_isquest){// DO EET
+	        var pip=instance_create(0,0,obj_popup);
+	        scr_popup("Inquisition Mission Completed", _popup_text, "inquisition")
+	        // scr_event_log("","Inquisition Mission Completed: The unruly nobles of {name()} have been silenced.");
+	    }
+	}
 
-    if (action_type == eDROP_TYPE.PURGEASSASSINATE) {
-        var aroll = roll_dice_chapter(1, 100, "high");
-        var chance = 100;
-        // var siz_penalty=0;
 
-        // Disposition
-        aroll += floor(star.dispo[planet] / 10);
+	if instance_exists(obj_drop_select){
+		with(obj_drop_select){
+			if (instance_exists(sh_target)){
+				sh_target.acted=5;
+			}
+			instance_destroy();
+		}
+	}
 
-        // Advantages
-        if (scr_has_adv("Ambushers")) {
-            aroll += 10;
-        }
-        if (scr_has_adv("Lightning Warriors")) {
-            aroll += 5;
-        }
 
-        // Size - unused
-        // if ((action_score > 5) && (action_score <= 10)) { siz_penalty = 5; }
-        // if ((action_score > 10) && (action_score <= 20)) { siz_penalty = 20; }
-        // if ((action_score > 20) && (action_score <= 50)) { siz_penalty = 30; }
-        // if ((action_score > 50) && (action_score <= 100)) { siz_penalty = 50; }
-        // if ((action_score > 100) && (action_score <= 200)) { siz_penalty = 75; }
-        // if (action_score > 200) { siz_penalty = 125; }
-
-        var spec1 = 0, spec2 = 0, txt = ""; // TODO consider making it a battle with Planetary governor's guards
-        txt = "Your Astartes descend upon the surface of " + string(star.name) + " " + string(scr_roman(planet)) + " and plot the movements and schedule of the governor.  ";
-        txt += "Once the time is right their target is ambushed " + choose("in their home", "in the streets", "while driving", "taking a piss") + " and tranquilized.  ";
-
-        if (scr_has_disadv("Never Forgive")) {
-            spec1 = 1;
-        }
-        if (global.chapter_name == "Space Wolves" || obj_ini.progenitor == ePROGENITOR.SPACE_WOLVES) {
-            spec1 = 3;
-        }
-        if (global.chapter_name == "Iron Hands" || obj_ini.progenitor == ePROGENITOR.IRON_HANDS) {
-            spec1 = 6;
-        }
-        if (obj_ini.omophagea == 1) {
-            spec1 = choose(spec1, 20);
-        }
-
-        if (spec1 == 1) {
-            txt += "They are brought to the already-prepared facilities for Fallen, tortured to make " + string(choose("him", "him", "her")) + " appear a heretic, and then incinerated.  ";
-        }
-        if (spec1 == 3) {
-            txt += string(choose("He", "He", "She")) + " is tossed to the Fenrisian Wolves and viciously mauled, torn apart, and eaten.  The beasts leave nothing but bloody scraps.  ";
-        }
-        if (spec1 == 6) {
-            txt += string(choose("He", "He", "She")) + " is stuck in with the other criminals, and scum, to be turned into a servitor.  Soon nothing remains that could be likened to the former Governor.  ";
-        }
-        if (spec1 == 20) {
-            if (action_score > 1) {
-                txt += "Things get out of hand, and the Governor is torn limb from limb and consumed.  " + string(choose("His", "His", "Her")) + " flesh is torn off and eaten, bone pulverized, and marrow sucked free.  ";
-            }
-            if (action_score == 1) {
-                txt += "Your battle brother chops apart the Governor and eats a sizeable portion of " + string(choose("his", "his", "her")) + " flesh, focusing upon the eyes, teeth, and fingers.  Once full the rest is disposed of.  ";
-            }
-        }
-
-        if (spec1 == 0) {
-            spec2 = choose(1, 2, 3, 4, 5, 5, 5);
-            if (spec2 == 1) {
-                txt += "Their still-living body is disintegrated by acid.  ";
-            }
-            if (spec2 == 2) {
-                txt += "The Governor is jettisoned into the local star at the first opporunity.  ";
-            }
-            if (spec2 == 3) {
-                txt += string(choose("He", "He", "She")) + " is burned as fuel for one of your vessels.  ";
-            }
-            if (spec2 == 4) {
-                txt += "A few grenades is all it takes to blow " + string(choose("his", "his", "her")) + " body to smithereens.  ";
-            }
-            if (spec2 == 5) {
-                txt += string(choose("He", "He", "She")) + " is executed in a mundane fashion and buried.  ";
-            }
-        }
-
-        txt += "What is thy will?";
-
-        var pip = instance_create(0, 0, obj_popup);
-        pip.title = "Planetary Governor Assassinated";
-        pip.text = txt;
-        pip.planet = planet;
-        pip.p_data = new PlanetData(planet, star);
-        var options = [
-            {
-                str1: "Allow the official successor to become Planetary Governor.",
-                choice_func: allow_governor_successor,
-            },
-            {
-                str1: "Ensure that a sympathetic successor will be the one to rule.",
-                choice_func: install_sympathetic_successor,
-            },
-            {
-                str1: "Remove all successors and install a loyal Chapter Serf.",
-                choice_func: install_chapter_surf,
-            }
-        ];
-        pip.add_option(options);
-        pip.cooldown = 20;
-
-        // Result-  this is the multiplier for the chance of discovery with the inquisition, can also be used to determine
-        // the new Governor disposition if they are the official successor
-        if (aroll < chance) {
-            // Discovered
-            pip.estimate = 2;
-        } else if (aroll >= chance) {
-            // Success
-            pip.estimate = 1;
-        }
-        // If there are enemy non-chaos forces then they may be used as a cover
-        // Does not work with chaos because if the governor dies, with chaos present, the new governor would possibly be investigated
-        if ((star.p_orks[planet] >= 4) || (star.p_necrons[planet] >= 3) || (star.p_tyranids[planet] >= 5)) {
-            pip.estimate = pip.estimate * 0.5;
-        }
-    }
-
-    if (action_type != eDROP_TYPE.PURGEASSASSINATE) {
-        if (isquest == 0) {
-            // DO EET
-            txt2 = txt1;
-            star.p_heresy[planet] -= sci2;
-            star.p_influence[planet][eFACTION.TAU] -= sci2;
-            if (action_type < eDROP_TYPE.PURGESELECTIVE) {
-                star.p_population[planet] = pop_after;
-            }
-            if ((action_type == eDROP_TYPE.PURGESELECTIVE) && (star.p_large[planet] == 0)) {
-                star.p_population[planet] = pop_after;
-            }
-
-            if (star.p_heresy[planet] < 0) {
-                star.p_heresy[planet] = 0;
-            }
-            if (star.p_influence[planet][eFACTION.TAU] < 0) {
-                star.p_influence[planet][eFACTION.TAU] = 0;
-            }
-
-            var pip = instance_create(0, 0, obj_popup);
-            pip.title = "Purge Results";
-            pip.text = txt2;
-        }
-        if (isquest == 1) {
-            // DO EET
-            var pip;
-            pip = instance_create(0, 0, obj_popup);
-            pip.title = "Inquisition Mission Completed";
-            pip.text = txt1;
-            pip.image = "inquisition";
-            // scr_event_log("","Inquisition Mission Completed: The unruly nobles of "+string(star.name)+" "+string(scr_roman(planet))+" have been silenced.");
-        }
-    }
-
-    if (instance_exists(obj_drop_select)) {
-        if (instance_exists(sh_target)) {
-            sh_target.acted = 5;
-        }
-        with (obj_drop_select) {
-            instance_destroy();
-        }
-        instance_destroy();
-    }
 }
+
